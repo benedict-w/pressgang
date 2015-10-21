@@ -1,0 +1,9 @@
+<p>
+    <label for="{{ id }}">
+        {{ label }}
+        <input id="{{ id }}" type="text" name="{{ name }}" value="{{ value }}"{% if class %} class="{{ class }}"{% endif %} placeholder="{{ placeholder }}">
+    </label>
+    {% if help %}
+    <small>{{ help }}</small>
+    {% endif %}
+</p>

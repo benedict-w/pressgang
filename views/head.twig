@@ -1,0 +1,13 @@
+<head>
+    <meta charset="{{site.charset}}" />
+    <title>{{ wp_title ? "%s - %s"|format(wp_title,site.name) : site.name }}</title>
+    <meta name="description" content="{{ site.description }}" />
+    <meta name="keywords" content="{{ site.keywords }}"/>
+    <link rel="stylesheet" href="{{ theme.link }}/style.css" media="screen" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="pingback" href="{{ site.pingback_url }}" />
+    <!-- wp head -->
+    {{ function('wp_head') }}
+</head>

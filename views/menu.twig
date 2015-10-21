@@ -1,0 +1,20 @@
+<ul class="menu {{ class }}">
+    {% for item in menu.get_items %}
+        <li class="{{ item.classes | join(' ') }} {% if item.get_children %} {{ 'dropdown' }} {% endif %}">
+            <a href="{{ item.get_link }}" target="{{ item.is_external ? '_blank' : '_self' }}" {% if item.get_children %} class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" {% endif %}>{{ item.title }}
+                {% if item.get_children %}
+                    <span class="caret"></span>
+                {% endif %}
+            </a>
+            {% if item.get_children %}
+                <ul class="sub-menu{% if 'nav' in class %} dropdown-menu{% endif %}">
+                    {% for child in item.get_children %}
+                        <li class="{{ item.classes | join(' ') }}">
+                            <a href="{{ child.get_link }}" target="{{ item.is_external ? '_blank' : '_self' }}">{{ child.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

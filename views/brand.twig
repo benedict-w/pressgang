@@ -1,0 +1,10 @@
+<!-- brand -->
+<h1 title="{{ site.name }}">
+    <a class="navbar-brand" href="/" title="{{ site.name }}" rel="home">
+        {% if site.logo %}
+            <img src="{{ site.logo }}" alt="{{ site.name }}" class="logo">
+        {% else %}
+            {{ site.name }}
+        {% endif %}
+    </a>
+</h1>

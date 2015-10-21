@@ -1,0 +1,9 @@
+<p>
+    <label for="{{ id }}">
+        {{ label }}
+        <input id="{{ id }}" type="number" name="{{ name }}" value="{{ value }}" class="{{ class }}" max="{{ max }}" min="{{ min }}">
+    </label>
+    {% if help %}
+    <small>{{ help }}</small>
+    {% endif %}
+</p>

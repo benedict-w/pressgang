@@ -1,0 +1,32 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                {% block content %}
+                <section class="page">
+                    <header class="page-header">
+                        <h1 class="page-title">{{ page.title }}</h1>
+                    </header>
+                    <div class="page-body">
+                        {% if page.thumbnail %}
+                        <div class="page-thumbnail">
+                            {% include 'img.twig' with { 'src': page.thumbnail, 'alt': page.title } %}
+                        </div>
+                        {% endif %}
+                        <div class="page-content">
+                            {{ page.content }}
+                        </div>
+                    </div>
+                </section>
+                {% endblock %}
+            </div>
+            <div class="col-md-3">
+                {% block sidebar %}
+                {% include('sidebar.twig') %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

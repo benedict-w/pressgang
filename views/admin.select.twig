@@ -1,0 +1,11 @@
+<p>
+    <label for="{{ id }}">{{ label }}</label>
+    <select class="{{ class }}" id="{{ id }}" name="{{ name }}">
+        {% for option in options %}
+        <option value="{{ option.id }}" {% if (option.id == value) %}selected{% endif %}>{{ option.title }}</option>
+        {% endfor %}
+    </select>
+    {% if help %}
+        <small>{{ help }}</small>
+    {% endif %}
+</p>

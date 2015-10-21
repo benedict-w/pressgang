@@ -1,0 +1,17 @@
+<article class="post-preview">
+    <header>
+        <h2 class="post-title">
+            <a href="{{ post.permalink }}" rel="bookmark">{{ post.title }}</a>
+        </h2>
+    </header>
+    <div class="post-body">
+        {% if post.thumbnail %}
+        <a href="{{ post.permalink }}" rel="bookmark" class="post-thumbnail">
+            {% include 'img.twig' with { 'src': post.thumbnail.src|relative, 'alt': post.title } %}
+        </a>
+        {% endif %}
+        <div class="post-excerpt">
+            {{ post.get_preview(40) }}
+        </div>
+    </div>
+</article>

@@ -1,0 +1,32 @@
+{% extends "page.twig" %}
+
+{% block content %}
+    {% block before_archive %}
+    <!-- before archive -->
+    {% endblock %}
+
+    {% block archive %}
+        <div class="row">
+        {% if posts|length %}
+        {% for post in posts %}
+            {% block post_preview %}
+            <div class="col-md-6">
+                {% include 'post-preview.twig' %}
+            </div>
+            {% endblock %}
+        {% endfor %}
+        {% else %}
+            {% include 'no-posts.twig' %}
+        {% endif %}
+        </div>
+    {% endblock %}
+
+    {% block pagination %}
+        <div class="row">
+            <div class="col-md-12">
+                {% include 'pagination.twig' %}
+            </div>
+        </div>
+    {% endblock %}
+
+{% endblock %}

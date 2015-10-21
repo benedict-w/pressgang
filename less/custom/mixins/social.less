@@ -1,0 +1,170 @@
+@import '../../font-awesome/font-awesome.less';
+
+// See - http://designpieces.com/2012/12/social-media-colours-hex-and-rgb/
+
+@social-color: #fff;
+
+@facebook-color: #3b5998;
+@twitter-color: #4099ff;
+@instagram-color: #3f729b;
+@pinterest-color: #cb2027;
+@vimeo-color: #aad450;
+@youtube-color: #bb0000;
+@flickr-color: #ff0084;
+@linkedin-color: #007bb5;
+@rss-color: #ff9900;
+
+@facebook-icon: @fa-var-facebook;
+@twitter-icon: @fa-var-twitter;
+@instagram-icon: @fa-var-instagram;
+@pinterest-icon: @fa-var-pinterest-p;
+@vimeo-icon: @fa-var-vimeo-square;
+@youtube-icon: @fa-var-youtube;
+@flickr-icon: @fa-var-flickr;
+@linkedin-icon: @fa-var-linkedin;
+@rss-icon: @fa-var-rss;
+
+// To display a background circle provide the @circle argument with a color value
+
+.social-menu (@color: #ddd, @size: 30px, @circle: '', @diameter: '') {
+  .list-inline;
+  margin-bottom: 0;
+  li {
+    a {
+      text-align: center;
+      text-decoration: none;
+      white-space: nowrap;
+      overflow: hidden;
+      width: @size;
+      height: @size;
+      .fa-icon;
+      font-size: @size;
+      .transition();
+      &:before {
+        display: inline-block;
+        width: @size;
+      }
+    }
+
+    &.facebook a {
+      .icon(@facebook-icon);
+    }
+    &.twitter a {
+      .icon(@twitter-icon);
+    }
+    &.instagram a {
+      .icon(@instagram-icon);
+    }
+    &.pinterest a {
+      .icon(@pinterest-icon);
+    }
+    &.vimeo a {
+      .icon(@vimeo-icon);
+    }
+    &.youtube a {
+      .icon(@youtube-icon);
+    }
+    &.flickr a {
+      .icon(@flickr-icon);
+    }
+    &.linkedin a {
+      .icon(@linkedin-icon);
+    }
+    &.rss a {
+      .icon(@rss-icon);
+    }
+
+    // when circle use brand as background color
+    & when not (@circle = '') {
+      a {
+        & when (@diameter = '') {
+          .circle-icon(floor(@size * 1.5));
+        }
+        & when not (@diameter = '') {
+          .circle-icon(@diameter);
+        }
+      }
+      &.facebook a {
+        .icon-a(@color, @social-color, @circle, @facebook-color);
+      }
+      &.twitter a {
+        .icon-a(@color, @social-color, @circle, @twitter-color);
+      }
+      &.instagram a {
+        .icon-a(@color, @social-color, @circle, @instagram-color);
+      }
+      &.pinterest a {
+        .icon-a(@color, @social-color, @circle, @pinterest-color);
+      }
+      &.vimeo a {
+        .icon-a(@color, @social-color, @circle, @vimeo-color);
+      }
+      &.youtube a {
+        .icon-a(@color, @social-color, @circle, @youtube-color);
+      }
+      &.flickr a {
+        .icon-a(@color, @social-color, @circle, @flickr-color);
+      }
+      &.linkedin a {
+        .icon-a(@color, @social-color, @circle, @linkedin-color);
+      }
+      &.rss a {
+        .icon-a(@color, @social-color, @circle, @rss-color);
+      }
+    }
+
+    // no circle
+
+    & when (@circle = '') {
+      &.facebook a {
+        .icon-a(@color, @facebook-color);
+      }
+      &.twitter a {
+        .icon-a(@color, @twitter-color);
+      }
+      &.instagram a {
+        .icon-a(@color, @instagram-color);
+      }
+      &.pinterest a {
+        .icon-a(@color, @pinterest-color);
+      }
+      &.vimeo a {
+        .icon-a(@color, @vimeo-color);
+      }
+      &.youtube a {
+        .icon-a(@color, @youtube-color);
+      }
+      &.flickr a {
+        .icon-a(@color, @flickr-color);
+      }
+      &.linkedin a {
+        .icon-a(@color, @linkedin-color);
+      }
+    }
+  }
+}
+
+.icon(@icon-content) {
+  &:before {
+    content: @icon-content;
+  }
+}
+
+.icon-a(@color, @hover-color, @bg-color: none, @hover-bg-color: none){
+  color: @color;
+  background-color: @bg-color;
+  &:hover {
+    color: @hover-color;
+    background-color: @hover-bg-color;
+  }
+}
+
+.circle-icon(@diameter) {
+  width: @diameter;
+  height: @diameter;
+  border-radius: 50%;
+  line-height: @diameter;
+  &:before {
+    width: @diameter;
+  }
+}

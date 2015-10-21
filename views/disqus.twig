@@ -1,0 +1,13 @@
+{% if function('comments_open') %}
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = '{{ disqus_shortname }}';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>{{ __("Please enable JavaScript to view the comments", THEMENAME) }} <a href="http://disqus.com/?ref_noscript" target="_blank">{{ __("powered by Disqus", THEMENAME) }}.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink" target="_blank">{{ __("Comments powered by", THEMENAME) }} <span class="logo-disqus">{{ __("Disqus", THEMENAME) }}</span></a>
+{% endif %}
