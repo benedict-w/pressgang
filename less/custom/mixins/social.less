@@ -13,6 +13,7 @@
 @flickr-color: #ff0084;
 @linkedin-color: #007bb5;
 @rss-color: #ff9900;
+@bloglovin-color: #000;
 
 @facebook-icon: @fa-var-facebook;
 @twitter-icon: @fa-var-twitter;
@@ -23,6 +24,7 @@
 @flickr-icon: @fa-var-flickr;
 @linkedin-icon: @fa-var-linkedin;
 @rss-icon: @fa-var-rss;
+@bloglovin-icon: @fa-var-bold;
 
 // To display a background circle provide the @circle argument with a color value
 
@@ -39,7 +41,7 @@
       height: @size;
       .fa-icon;
       font-size: @size;
-      .transition();
+      .transition(all 0.3s ease-in-out);
       &:before {
         display: inline-block;
         width: @size;
@@ -72,6 +74,9 @@
     }
     &.rss a {
       .icon(@rss-icon);
+    }
+    &.bloglovin a {
+      .icon(@bloglovin-icon);
     }
 
     // when circle use brand as background color
@@ -111,6 +116,9 @@
       &.rss a {
         .icon-a(@color, @social-color, @circle, @rss-color);
       }
+      &.bloglovin a {
+        .icon-a(@color, @social-color, @circle, @bloglovin-color);
+      }
     }
 
     // no circle
@@ -140,6 +148,13 @@
       &.linkedin a {
         .icon-a(@color, @linkedin-color);
       }
+      &.rss a {
+        .icon-a(@color, @rss-color);
+      }
+      &.bloglovin a {
+        .icon-a(@color, @bloglovin-color);
+      }
+
     }
   }
 }
