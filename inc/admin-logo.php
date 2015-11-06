@@ -4,7 +4,11 @@ namespace PressGang;
 
 class AdminLogo {
 
-    public function init () {
+    /**
+     * init
+     *
+     */
+    public static function init () {
         add_action('login_enqueue_scripts', array('PressGang\AdminLogo', 'add_login_logo'));
     }
 
