@@ -76,12 +76,18 @@ class Slider extends CustomPostType {
      */
     public static function render() {
 
+        // uniquely identify each slider on the page
+        static $id = 0;
+        $id++;
+
+        // TODO enque bootstrap JS?
+
         $slides = array();
         foreach(parent::get_posts() as $slide) {
             $slides[] = new \TimberPost($slide);
         }
 
-        $carousel['id'] = sprintf("%s-carousel", self::$post_type);
+        $carousel['id'] = sprintf("%s-carousel-%s", self::$post_type, $id);
         $carousel['slides'] = $slides;
 
         if (count($slides)) {

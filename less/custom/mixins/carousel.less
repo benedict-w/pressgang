@@ -1,0 +1,41 @@
+@carousel-control-bg-color: #000;
+
+.fa-carousel(@no-grad: true) {
+  .carousel-control {
+    // from .fa
+    display: inline-block;
+    text-rendering: auto; // optimizelegibility throws things off #1094
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0); // ensures no half-pixel rendering in firefox
+    .icon-next, .icon-prev {
+      font: normal normal normal @carousel-control-font-size FontAwesome;
+      background-color: @carousel-control-bg-color;
+      padding: 5px;
+    }
+    .icon-prev {
+      &:before {
+        content: @fa-var-chevron-left;
+      }
+    }
+    .icon-next {
+      &:before {
+        content: @fa-var-chevron-right;
+      }
+    }
+    & when (@no-grad) {
+      &.left, &.right {
+        background: none;
+      }
+    }
+  }
+  // override scaling
+  @media screen and (min-width: @screen-sm-min) {
+    .carousel-control {
+      .icon-prev, .icon-next {
+        width: @carousel-control-width;
+        height: @carousel-control-width;
+      }
+    }
+  }
+}

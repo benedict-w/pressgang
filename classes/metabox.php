@@ -4,28 +4,36 @@ namespace PressGang;
 
 class MetaBox
 {
-    static $meta_name = '';
-    static $post_type = '';
-    static $title = '';
-    static $fields = array();
+    protected $meta_name = '';
+    protected $post_type = '';
+    protected $title = '';
+    protected $fields = array();
+    protected $context = 'advanced';
+    protected $priority = 'default';
+    protected $callback_args = array();
 
     /**
+     * __construct
+     *
      * @param $meta_name
      * @param $post_type
      * @param $title
      * @param array $fields array(array('id', 'name', 'label', 'type', 'class'), ...)
      */
-    public function __construct($meta_name, $post_type, $title, $fields = array()) {
-        static::$post_type = $post_type;
-        static::$meta_name = $meta_name;
-        static::$fields = $fields;
-        static::$title = $title;
+    public function __construct($meta_name, $post_type, $title, $fields = array(), $context = 'advanced', $priority = 'default', $callback_args = array()) {
+        $this->post_type = $post_type;
+        $this->meta_name = $meta_name;
+        $this->fields = $fields;
+        $this->title = $title;
+        $this->context = $context;
+        $this->priority = $priority;
+        $this->callback_args = $callback_args;
 
         // hook to add metabox
-        add_action('add_meta_boxes', array('PressGang\MetaBox', 'add_meta_box'));
+        add_action('add_meta_boxes', array($this, 'add_meta_box'));
 
         // hook to save post meta
-        add_action('save_post', array('PressGang\MetaBox', 'save_post_meta'), 10, 2);
+        add_action('save_post', array($this, 'save_post_meta'), 10, 2);
     }
 
     /**
@@ -37,9 +45,9 @@ class MetaBox
      *
      * @param $post_type
      */
-    public static function add_meta_box($post_type) {
-        if ($post_type === static::$post_type) {
-            add_meta_box(sprintf("metabox_%s", static::$post_type), static::$title, array('PressGang\MetaBox', 'render_meta_box_content'), static::$post_type, 'normal');
+    public function add_meta_box($post_type) {
+        if ($post_type === $this->post_type) {
+            add_meta_box(sprintf("metabox_%s", $this->post_type), $this->title, array($this, 'render_meta_box_content'), $this->post_type, $this->context, $this->priority, $this->callback_args);
         }
     }
 
@@ -48,12 +56,12 @@ class MetaBox
      *
      * @param $post
      */
-    public static function render_meta_box_content($post)
+    public function render_meta_box_content($post)
     {
         // add a nonce - https://codex.wordpress.org/WordPress_Nonces
-        wp_nonce_field(static::$meta_name, sprintf("%s_nonce", static::$meta_name));
+        wp_nonce_field($this->meta_name, sprintf("%s_nonce", $this->meta_name));
 
-        foreach (static::$fields as &$field) {
+        foreach ($this->fields as &$field) {
 
             $field['value'] = get_post_meta($post->ID, $field['name'], true);
 
@@ -79,21 +87,21 @@ class MetaBox
      * @param $post_id
      * @param $post
      */
-    public static function save_post_meta($post_id, $post)
+    public function save_post_meta($post_id, $post)
     {
         // check post type
-        if (get_post_type_object($post->post_type) !== static::$post_type) {
+        if (get_post_type_object($post->post_type) !== $this->post_type) {
             // verify nonce
-            $nonce = sprintf("%s_nonce", static::$meta_name);
-            if (isset($_POST[$nonce]) && wp_verify_nonce($_POST[$nonce], static::$meta_name)) {
+            $nonce = sprintf("%s_nonce", $this->meta_name);
+            if (isset($_POST[$nonce]) && wp_verify_nonce($_POST[$nonce], $this->meta_name)) {
                 // check user can edit
                 if (current_user_can('edit_posts', $post_id)) {
 
                     // get the existing data
-                    $old = static::get_field_values($post);
+                    $old = $this->get_field_values($post);
 
                     // get the new data
-                    $new = static::sanitize_custom_input();
+                    $new = $this->sanitize_custom_input();
 
                     // add new values that did not previously exist
                     foreach ($new as $key => $new_value) {
@@ -129,11 +137,11 @@ class MetaBox
      * @param $post
      * @return array
      */
-    protected static function get_field_values($post) {
+    protected function get_field_values($post) {
 
         $values = array();
 
-        foreach(static::$fields as &$field) {
+        foreach($this->fields as &$field) {
             $values[$field['name']] = get_post_meta($post->ID, $field['name'], true);
         }
 
@@ -147,11 +155,11 @@ class MetaBox
      *
      * @return array
      */
-    protected static function sanitize_custom_input() {
+    protected function sanitize_custom_input() {
 
         $values = array();
 
-        foreach(static::$fields as &$field) {
+        foreach($this->fields as &$field) {
             switch($field['type']) {
                 case ('text') :
                     $values[$field['name']] = filter_input(INPUT_POST, $field['name'], FILTER_SANITIZE_STRING);

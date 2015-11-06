@@ -1,21 +1,21 @@
 <div id="{{ id }}" class="carousel slide {{ class }}" data-ride="carousel">
     <!-- indicators -->
-    {% for slide in slides %}
     <ol class="carousel-indicators">
+    {% for slide in slides %}
         <li data-target="#{{ id }}" data-slide-to="{{ loop.index }}" {% if loop.index == 1 %}class="active"{% endif %}></li>
-    </ol>
     {% endfor %}
+    </ol>
 
     <!-- slides -->
     <div class="carousel-inner" role="listbox">
         {% for slide in slides %}
         <div class="item{% if loop.index == 1 %} active{% endif %}">
             <a href="{{ slide.slide_url }}" title="{{ slide.post_title }}">
-                <img src="{{ slide.thumbnail.src('original')|relative }}" alt="{{ slide.post_title }}" srcset="
-                    {{ slide.thumbnail.src('original')|relative|retina(1) }} 1x,
-                    {{ slide.thumbnail.src('original')|relative|retina(2) }} 2x,
-                    {{ slide.thumbnail.src('original')|relative|retina(3) }} 3x,
-                    {{ slide.thumbnail.src('original')|relative|retina(4) }} 4x">
+                <img src="{{ slide.thumbnail.src(1140,500)|relative }}" alt="{{ slide.post_title }}" srcset="
+                    {{ slide.thumbnail.src(1140,500)|relative|retina(1) }} 1x,
+                    {{ slide.thumbnail.src(1140,500)|relative|retina(2) }} 2x,
+                    {{ slide.thumbnail.src(1140,500)|relative|retina(3) }} 3x,
+                    {{ slide.thumbnail.src(1140,500)|relative|retina(4) }} 4x">
             </a>
             <div class="carousel-caption">
                 <h2 class="carousel-title">{{ slide.post_title }}</h2>
