@@ -53,11 +53,17 @@ class Scripts {
             }
 
             if (isset($args['src']) && $args['src']) {
-                wp_register_script($key, $args['src'], $args['deps'], $args['ver'], $args['in_footer']);
-            }
 
-            // enqueue on given hook
-            add_action($args['hook'], function () use ($key) { wp_enqueue_script($key); });
+                // register scripts
+                add_action($args['hook'], function () use ($args) {
+                    wp_register_script($args['handle'], $args['src'], $args['deps'], $args['ver'], $args['in_footer']);
+                });
+
+                // enqueue on given hook
+                add_action($args['hook'], function () use ($args) {
+                    wp_enqueue_script($args['handle']);
+                });
+            }
         }
     }
 

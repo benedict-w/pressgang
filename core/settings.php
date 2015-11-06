@@ -44,16 +44,16 @@ return array (
     /*
      * scripts
      *
-     * Array of scripts on $handle => $args array where $args match wp_register_script, wit addtional 'hook' param
+     * Array of scripts on $handle => $args array where $args match wp_register_script, wit additional 'hook' param
      * for the action to enque the script on (default = wp_enqueue_scripts)
      *
     */
     'scripts' => array(
         'bootstrap' => array(
-            get_template_directory_uri() . '/js/build/bootstrap.min.js',
-            array('jquery'),
-            '3.2.0',
-            true
+            'src' => get_template_directory_uri() . '/js/build/bootstrap.min.js',
+            'deps' => array('jquery'),
+            'version' => '3.2.0',
+            'in_footer' => true
         ),
     ),
 
