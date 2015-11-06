@@ -46,6 +46,8 @@ class PressGang extends Site {
      */
     function add_to_twig( $twig ) {
         $twig->addFunction('esc_attr', new \Twig_SimpleFunction('esc_attr', 'esc_attr'));
+        $twig->addFunction('esc_url', new \Twig_SimpleFunction('esc_url', 'esc_url'));
+        $twig->addFunction('get_search_query', new \Twig_SimpleFunction('get_search_query', 'get_search_query'));
         return $twig;
     }
 }
