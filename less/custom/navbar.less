@@ -1,0 +1,26 @@
+.navbar {
+  .search-form {
+    .navbar-form;
+    margin-right: 0;
+    padding-right: 0;
+    #search-submit {
+      margin-top: @grid-gutter-width / 2;
+    }
+  }
+}
+
+/* small devices (tablets, 768px and up) */
+@media (min-width: @screen-sm-min) {
+  header {
+    .navbar {
+      .search-form {
+        .pull-right;
+        clear: right;
+        #search-submit {
+          float: none;
+          margin-top: 0;
+        }
+      }
+    }
+  }
+}
