@@ -1,9 +1,40 @@
 /* Fixed Navbar
 -------------------------------------------------- */
 body {
-  padding-top: @header-height;
+  padding-top: @collapse-header-height;
+  &.admin-bar {
+    .navbar-fixed-top {
+      margin-top: @collapse-wp-admin-bar-height;
+    }
+  }
 }
 
-body.admin-bar .navbar-fixed-top {
-  margin-top: @wp-admin-bar-height;
+header {
+  .navbar {
+    min-height: @collapse-header-height;
+  }
+}
+
+/* also fix the wp admin bar */
+#wpadminbar {
+  position: fixed !important;
+}
+
+@media (min-width: @grid-float-breakpoint) {
+  body {
+    padding-top: @header-height;
+  }
+  header {
+    .navbar {
+      min-height: @header-height !important;
+    }
+  }
+}
+
+@media (min-width: 782px) {
+  body.admin-bar {
+    .navbar-fixed-top {
+      margin-top: @wp-admin-bar-height;
+    }
+  }
 }
