@@ -10,15 +10,29 @@
     <div class="carousel-inner" role="listbox">
         {% for slide in slides %}
         <div class="item{% if loop.index == 1 %} active{% endif %}">
+            {% if slide.slide_url %}
             <a href="{{ slide.slide_url }}" title="{{ slide.post_title }}">
-                <img src="{{ slide.thumbnail.src(1140,500)|relative }}" alt="{{ slide.post_title }}" srcset="
-                    {{ slide.thumbnail.src(1140,500)|relative|retina(1) }} 1x,
-                    {{ slide.thumbnail.src(1140,500)|relative|retina(2) }} 2x,
-                    {{ slide.thumbnail.src(1140,500)|relative|retina(3) }} 3x,
-                    {{ slide.thumbnail.src(1140,500)|relative|retina(4) }} 4x">
+            {% endif %}
+                <div class="focuspoint" data-focus-x="{{ slide.x_focus|default(0) }}" data-focus-y="{{ slide.y_focus|default(0) }}" data-image-w="{{ slide.width }}" data-image-h="{{ slide.height }}">
+                    <img src="{{ slide.thumbnail.src(slide.width, slide.height)|relative }}" alt="{{ slide.post_title }}" srcset="
+                        {{ slide.thumbnail.src(slide.width, slide.height)|relative|retina(1) }} 1x,
+                        {{ slide.thumbnail.src(slide.width, slide.height)|relative|retina(2) }} 2x,
+                        {{ slide.thumbnail.src(slide.width, slide.height)|relative|retina(3) }} 3x,
+                        {{ slide.thumbnail.src(slide.width, slide.height)|relative|retina(4) }} 4x">
+                </div>
+            {% if slide.slide_url %}
             </a>
+            {% endif %}
             <div class="carousel-caption">
-                <h2 class="carousel-title">{{ slide.post_title }}</h2>
+                <h2 class="carousel-title">
+                    {% if slide.slide_url %}
+                    <a href="{{ slide.slide_url }}" title="{{ slide.post_title }}">
+                    {% endif %}
+                    {{ slide.post_title }}
+                    {% if slide.slide_url %}
+                    </a>
+                    {% endif %}
+                </h2>
                 {% if slide.content %}
                 <p class="carousel-content">{{ slide.content }}</p>
                 {% endif %}

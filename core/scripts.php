@@ -21,7 +21,7 @@ class Scripts {
      */
     public function __construct() {
         static::$scripts = Config::get('scripts');
-        static::register_scripts();
+        add_action('init', array('PressGang\Scripts', 'register_scripts'));
     }
 
     /**

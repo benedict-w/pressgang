@@ -47,7 +47,7 @@ class MetaBox
      */
     public function add_meta_box($post_type) {
         if ($post_type === $this->post_type) {
-            add_meta_box(sprintf("metabox_%s", $this->post_type), $this->title, array($this, 'render_meta_box_content'), $this->post_type, $this->context, $this->priority, $this->callback_args);
+            add_meta_box(sprintf("metabox_%s_%s", $this->post_type, $this->meta_name), $this->title, array($this, 'render_meta_box_content'), $this->post_type, $this->context, $this->priority, $this->callback_args);
         }
     }
 
