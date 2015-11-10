@@ -1,3 +1,4 @@
+<!-- menu -->
 <ul class="menu {{ class }}">
     {% for item in menu.get_items %}
         <li class="{{ item.classes | join(' ') }} {% if item.get_children %} {{ 'dropdown' }} {% endif %}">
