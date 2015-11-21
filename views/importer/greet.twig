@@ -1,0 +1,18 @@
+<p>{{ __("Choose a CSV (.csv) file to upload, then click Upload file and import.", TEXTDOMAIN) }}</p>
+<strong>{{  __("Requirements:", TEXTDOMAIN) }}</strong>
+<ol>
+    <li>{{ __("The ID column in the CSV must match exactly the existing Post ID, otherwise a new post will be created.", TEXTDOMAIN) }}</li>
+    <li>{{ __("Use UTF-8 as charset.", TEXTDOMAIN) }}</li>
+    <li>{{ __("Use field delimiter: '%s'", TEXTDOMAIN)|format(delimiter) }}</li>
+    <li>{{ __("Quote all text cells.", TEXTDOMAIN) }}</li>
+    <li>{{ __("Accepted columns headers are:", TEXTDOMAIN) }}
+        <ul>
+            {% for header in headers %}
+            <li>{{ header }}</li>
+            {% endfor %}
+        </ul>
+    </li>
+</ol>
+<p>{{ __("From Open Office please export as .csv before import", TEXTDOMAIN) }}</p>
+
+{{ function('wp_import_upload_form', action) }}

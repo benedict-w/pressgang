@@ -1,0 +1,8 @@
+<label>
+    <span class="customize-skin-select-control">{{ label }}</span>
+    <select>
+        {% for option in options %}
+            <option value="{{ option.value }}"{% if option.selected %} selected{% endif %}>{{ option.name }}</option>
+        {% endfor %}
+    </select>
+</label>

@@ -1,0 +1,8 @@
+<div class="error">
+    <strong>{{  __("Invalid headers found:", TEXTDOMAIN) }}</strong>
+    <ul>
+        {% for header in headers %}
+        <li>{{ function('esc_html', header) }}</li>
+        {% endfor %}
+    </ul>
+</div>
