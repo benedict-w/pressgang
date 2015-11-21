@@ -32,7 +32,7 @@ class Customizer {
      *
      * @param $wp_customize
      */
-    private static function main($wp_customize) {
+    protected static function main($wp_customize) {
 
         // logo
 
@@ -79,7 +79,7 @@ class Customizer {
      *
      * @param $wp_customize
      */
-    private static function footer ($wp_customize) {
+    protected static function footer ($wp_customize) {
         $wp_customize->add_panel( 'footer', array(
             'title' => __("Footer", THEMENAME),
             'description' => __("Customise elements of the theme footer"),
