@@ -58,6 +58,14 @@ return array (
     ),
 
     /*
+     * custom-post-types
+     *
+     * Array of custom_post_types to be registered
+     *
+     */
+    'custom-post-types' => array(),
+
+    /*
      * support
      *
      * Include theme support
