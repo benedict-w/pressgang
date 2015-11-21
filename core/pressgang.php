@@ -36,6 +36,7 @@ class PressGang extends Site {
      */
     function add_to_context( $context ) {
         $context['site'] = $this;
+        $context['THEMENAME'] = THEMENAME;
         return $context;
     }
 
