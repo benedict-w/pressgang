@@ -1,6 +1,5 @@
 <?php
 /**
- * Template Name: Single
  * Description: Single post template
  *
  * @package WordPress
