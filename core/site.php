@@ -9,6 +9,7 @@ namespace PressGang;
  */
 class Site extends \TimberSite
 {
+    public $stylesheet;
     public $keywords;
     public $logo;
     public $copyright;
@@ -23,13 +24,17 @@ class Site extends \TimberSite
     {
         parent::__construct($site_name_or_id);
 
+        $this->stylesheet = get_theme_mod('stylesheet', 'styles.css');
+
         // add custom params
         $this->keywords = apply_filters('site_keywords', implode(', ', array_map(function ($tag) { return $tag->name;}, get_tags(array('orderby' => 'count', 'order' => 'DESC', 'number' => 20)))));
         $this->logo = apply_filters('site_logo', get_theme_mod('logo'));
         $this->copyright = apply_filters('site_copyright', get_theme_mod('copyright'));
 
         // replace the site icon with an image object
-        $this->site_icon = new \TimberImage($this->site_icon);
+        if ($this->site_icon) {
+            $this->site_icon = new \TimberImage($this->site_icon);
+        }
 
         $this->add_open_graph();
     }
