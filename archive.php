@@ -1,7 +1,12 @@
 <?php
 
 $page_title = post_type_archive_title('', false);
-// TODO archive title
+
+if (is_category()) {
+    $page_title = single_cat_title('', false);
+}
+
+// TODO more archive titles
 
 
 $context = Timber::get_context();
