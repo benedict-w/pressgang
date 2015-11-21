@@ -1,1 +1,14 @@
 {% extends "page.twig" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <h1 class="page-heading">{{ title }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <p class="alert alert-warning">{{ content }}</p>
+        </div>
+    </div>
+{% endblock %}
