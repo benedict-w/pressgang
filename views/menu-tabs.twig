@@ -1,0 +1,8 @@
+<!-- tabs -->
+<ul class="nav nav-tabs">
+    {% for item in menu.get_items %}
+    <li role="button" {% if function('get_page_link') == item.get_link %}class="active"{% endif %}>
+        <a href="{{ item.get_link|relative }}">{{ item.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
