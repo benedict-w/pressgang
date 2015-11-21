@@ -1,0 +1,13 @@
+<a id="language-selector" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    {% for language in languages if language.active %}
+        <img src="{{ language.country_flag_url }}" title="{{ language.translated_name }}">&nbsp;{{ language.native_name }}
+    {% endfor %}
+    <span class="caret"></span>
+</a>
+<ul class="dropdown-menu" aria-labelledby="language-switcher">
+    {% for language in languages %}
+    <li>
+        <a href="{{ language.url }}"><img src="{{ language.country_flag_url }}" title="{{ language.translated_name }}">&nbsp;{{ language.native_name }}</a>
+    </li>
+    {% endfor %}
+</ul>
