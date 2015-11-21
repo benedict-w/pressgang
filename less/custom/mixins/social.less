@@ -12,6 +12,8 @@
 @youtube-color: #bb0000;
 @flickr-color: #ff0084;
 @linkedin-color: #007bb5;
+@xing-color: #dae600;
+@google-plus-color: #dd4b39;
 @rss-color: #ff9900;
 @bloglovin-color: #000;
 
@@ -23,6 +25,8 @@
 @youtube-icon: @fa-var-youtube;
 @flickr-icon: @fa-var-flickr;
 @linkedin-icon: @fa-var-linkedin;
+@xing-icon: @fa-var-xing;
+@google-plus-icon: @fa-var-google-plus;
 @rss-icon: @fa-var-rss;
 @bloglovin-icon: @fa-var-bold;
 
@@ -66,11 +70,17 @@
     &.youtube a {
       .icon(@youtube-icon);
     }
+    &.google-plus a {
+      .icon(@google-plus-icon);
+    }
     &.flickr a {
       .icon(@flickr-icon);
     }
     &.linkedin a {
       .icon(@linkedin-icon);
+    }
+    &.xing a {
+      .icon(@xing-icon);
     }
     &.rss a {
       .icon(@rss-icon);
@@ -107,11 +117,17 @@
       &.youtube a {
         .icon-a(@color, @social-color, @circle, @youtube-color);
       }
+      &.google-plus a {
+        .icon-a(@color, @social-color, @circle, @google-plus-color);
+      }
       &.flickr a {
         .icon-a(@color, @social-color, @circle, @flickr-color);
       }
       &.linkedin a {
         .icon-a(@color, @social-color, @circle, @linkedin-color);
+      }
+      &.xing a {
+        .icon-a(@color, @social-color, @circle, @xing-color);
       }
       &.rss a {
         .icon-a(@color, @social-color, @circle, @rss-color);
@@ -142,11 +158,17 @@
       &.youtube a {
         .icon-a(@color, @youtube-color);
       }
+      &.google-plus a {
+        .icon-a(@color, @google-plus-color);
+      }
       &.flickr a {
         .icon-a(@color, @flickr-color);
       }
       &.linkedin a {
         .icon-a(@color, @linkedin-color);
+      }
+      &.xing a {
+        .icon-a(@color, @xing-color);
       }
       &.rss a {
         .icon-a(@color, @rss-color);
