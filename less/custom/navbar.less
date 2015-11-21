@@ -4,7 +4,7 @@
     margin-right: 0;
     padding-right: 0;
     #search-submit {
-      margin-top: @grid-gutter-width / 2;
+
     }
   }
 }
@@ -21,6 +21,16 @@
           margin-top: 0;
         }
       }
+    }
+  }
+}
+
+@media (min-width: @grid-float-breakpoint) {
+  .navbar-nav {
+    .pull-right();
+    margin-right: -@navbar-padding-horizontal;
+    ~ .navbar-nav {
+      margin-right: 0;
     }
   }
 }
