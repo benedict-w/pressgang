@@ -1,13 +1,14 @@
 /*
- Theme Name:   PressGang
- Theme URI:    http://benedict-wallis.com
- Description:  PressGang Master Theme
- Author:       Ben Wallis
- Author URI:   http://www.benedict-wallis.com
- Version:      1.0.0
- License:      GNU General Public License v2 or later
- License URI:  http://www.gnu.org/licenses/gpl-2.0.html
- Text Domain:  PressGang
-*/
+ * Theme Name:   PressGang
+ * Theme URI:    http://benedict-wallis.com
+ * Description:  PressGang Master Theme
+ * Author:       Ben Wallis
+ * Author URI:   http://www.benedict-wallis.com
+ * Version:      1.0.0
+ * License:      GNU General Public License v2 or later
+ * License URI:  http://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:  PressGang
+ * Domain Path:  /lang
+ */
 
 @import "css/styles.css";
