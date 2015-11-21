@@ -1,7 +1,7 @@
 <!-- menu -->
 <ul class="menu {{ class }}">
     {% for item in menu.get_items %}
-        <li class="{{ item.classes | join(' ') }} {% if item.get_children %} {{ 'dropdown' }} {% endif %}">
+        <li class="{{ item.classes | join(' ') }}{% if item.current %} active{% endif %}{% if item.get_children %} dropdown{% endif %}">
             <a href="{{ item.get_link }}" target="{{ item.is_external ? '_blank' : '_self' }}" {% if item.get_children %} class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" {% endif %}>{{ item.title }}
                 {% if item.get_children %}
                     <span class="caret"></span>
