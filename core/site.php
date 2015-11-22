@@ -27,7 +27,10 @@ class Site extends \TimberSite
         $this->stylesheet = get_theme_mod('stylesheet', 'styles.css');
 
         // add custom params
-        $this->keywords = apply_filters('site_keywords', implode(', ', array_map(function ($tag) { return $tag->name;}, get_tags(array('orderby' => 'count', 'order' => 'DESC', 'number' => 20)))));
+        $this->keywords = apply_filters('site_keywords', implode(', ', array_map(function ($tag) {
+            return $tag->name;
+        }, get_tags(array('orderby' => 'count', 'order' => 'DESC', 'number' => 20)))));
+
         $this->logo = apply_filters('site_logo', get_theme_mod('logo'));
         $this->copyright = apply_filters('site_copyright', get_theme_mod('copyright'));
 
@@ -45,8 +48,8 @@ class Site extends \TimberSite
      * Add custom open_graph params
      *
      */
-    protected function add_open_graph() {
-
+    protected function add_open_graph()
+    {
         global $wp;
 
         $this->open_graph = array();
