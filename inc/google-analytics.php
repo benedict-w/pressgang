@@ -47,7 +47,6 @@ class GoogleAnalytics {
     public static function script () {
         if ($google_analytics_id = urlencode(get_theme_mod('google-analytics-id'))) {
             \Timber::render('google-analytics.twig', array(
-                'url' => '', // TODO get from Site
                 'google_analytics_id' => $google_analytics_id,
             ));
         }
