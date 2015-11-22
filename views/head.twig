@@ -1,4 +1,4 @@
-<head>
+<head {{ site.language_attributes }}>
     <meta charset="{{ site.charset}}" />
     <title>{{ function('wp_title', '|', false, 'right') }}</title>
     <meta name="description" content="{{ site.description|apply_filters('meta_description') }}" />
