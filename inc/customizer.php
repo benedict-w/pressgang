@@ -61,15 +61,16 @@ class Customizer {
         ) );
 
         $wp_customize->add_setting(
-            'google-analytics-id',
+            'google_verification_code',
             array(
                 'default'   => '',
                 'sanitize_callback' => 'sanitize_text_field',
             )
         );
 
-        $wp_customize->add_control( new \WP_Customize_Control( $wp_customize, 'google-analytics-id', array(
-            'label' => __("Google Analytics ID", THEMENAME),
+        $wp_customize->add_control( new \WP_Customize_Control( $wp_customize, 'google_verification_code', array(
+            'label' => __("Google Webmaster Verification Code", THEMENAME),
+            'description' => sprintf(__("See %s"), 'https://goo.gl/kXrMha'),
             'section'  => 'google',
         ) ) );
     }
@@ -82,7 +83,7 @@ class Customizer {
     protected static function footer ($wp_customize) {
         $wp_customize->add_panel( 'footer', array(
             'title' => __("Footer", THEMENAME),
-            'description' => __("Customise elements of the theme footer"),
+            'description' => __("Customise elements of the theme footer", THEMENAME),
             'priority' => 160,
         ) );
 

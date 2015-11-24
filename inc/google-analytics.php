@@ -21,8 +21,8 @@ class GoogleAnalytics {
      */
     public static function customizer($wp_customize) {
 
-        $wp_customize->add_section( 'google-analytics' , array(
-            'title' => __("Google Analytics", THEMENAME),
+        $wp_customize->add_section( 'google' , array(
+            'title' => __("Google", THEMENAME),
         ) );
 
         $wp_customize->add_setting(
@@ -35,7 +35,7 @@ class GoogleAnalytics {
 
         $wp_customize->add_control( new \WP_Customize_Control( $wp_customize, 'google-analytics-id', array(
             'label' => __("Google Analytics ID", THEMENAME),
-            'section'  => 'google-analytics',
+            'section'  => 'google',
         ) ) );
     }
 

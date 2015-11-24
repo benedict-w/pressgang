@@ -39,6 +39,9 @@ class Site extends \TimberSite
             $this->site_icon = new \TimberImage($this->site_icon);
         }
 
+        // google webmaster site verification code
+        $this->google_site_verification = get_theme_mod('google_verification_code');
+
         $this->add_open_graph();
     }
 
