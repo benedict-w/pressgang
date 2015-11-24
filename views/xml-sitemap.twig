@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{% for item in posts %}
+    <url>
+        <loc>{{ item.link }}</loc>
+        <lastmod>{{ item.post_modified|date('c') }}</lastmod>
+        <changefreq>{{ item.change_frequency }}</changefreq>
+        <priority>{{ item.priority }}</priority>
+    </url>
+{% endfor %}
+</urlset>
