@@ -8,6 +8,7 @@
 {% endblock %}
 <body class="{{ body_class }}">
     <div id="wrap">
+        <noscript>{{ __("Your browser does not support JavaScript!", THEMENAME) }}</noscript>
         {% block header %}
         <header id="header">
             {% include 'header.twig' %}
