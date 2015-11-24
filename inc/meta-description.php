@@ -34,8 +34,9 @@ class MetaDescription {
         }
 
         // limit to SEO recommended length
-        if (count($description) > 155) {
-            $description = \TimberHelper::trim_words(substr($description, 0, 155)) . '...';
+        if (strlen($description) > 155) {
+            $description = substr($description, 0, 155);
+            $description = \TimberHelper::trim_words($description, str_word_count($description) - 1);
         }
 
         return $description;
