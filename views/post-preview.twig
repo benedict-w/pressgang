@@ -11,7 +11,7 @@
         </a>
         {% endif %}
         <div class="post-excerpt">
-            {{ post.get_preview(40) }}
+            {{ post.get_preview(40, false, __("Read more", THEMENAME)) }}
         </div>
     </div>
 </article>
