@@ -4,10 +4,11 @@ $page_title = post_type_archive_title('', false);
 
 if (is_category()) {
     $page_title = single_cat_title('', false);
+} else if (is_tax()) {
+    $page_title = single_term_title('', false);
 }
 
 // TODO more archive titles
-
 
 $context = Timber::get_context();
 $context['page_title'] = $page_title;
