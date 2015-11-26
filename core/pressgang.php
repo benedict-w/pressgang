@@ -36,7 +36,6 @@ class PressGang extends Site {
      */
     function add_to_context( $context ) {
         $context['site'] = $this;
-        $context['THEMENAME'] = THEMENAME;
         return $context;
     }
 
@@ -49,6 +48,9 @@ class PressGang extends Site {
         $twig->addFunction('esc_attr', new \Twig_SimpleFunction('esc_attr', 'esc_attr'));
         $twig->addFunction('esc_url', new \Twig_SimpleFunction('esc_url', 'esc_url'));
         $twig->addFunction('get_search_query', new \Twig_SimpleFunction('get_search_query', 'get_search_query'));
+
+        // add text-domain to global
+        $twig->addGlobal('THEMENAME', THEMENAME);
         return $twig;
     }
 }
