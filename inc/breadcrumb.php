@@ -55,10 +55,8 @@ class Breadcrumb {
         // do not display on the homepage
         if ( !is_front_page() ) {
 
-            $breadcrumb = array();
-
             // home page
-            $this->append_link($this->home_title, 'breadcrumb-home', get_home_url());
+            $this->append_link($this->home_title, 'breadcrumb-home', get_site_url());
 
             if ( is_archive() && !is_tax() && !is_category() && !is_tag() ) {
 
@@ -69,7 +67,8 @@ class Breadcrumb {
             else if ( is_archive() && is_tax() && !is_category() && !is_tag() ) {
 
                 // if custom post type
-                if($post_type = get_post_type() !== 'post') {
+                $post_type = get_post_type();
+                if($post_type !== 'post') {
 
                     $post_type_object = get_post_type_object($post_type);
                     $post_type_archive = get_post_type_archive_link($post_type);
@@ -239,7 +238,7 @@ class Breadcrumb {
     /**
      * render
      *
-     * Renders the breadcrumb and linked to {{ breadcrumb() }} in Twig     *
+     * Renders the breadcrumb and linked to {{ breadcrumb() }} in Twig
      *
      */
     public function render() {
