@@ -5,7 +5,7 @@ namespace PressGang;
 require_once __DIR__ . '/../library/pluralizer.php';
 
 /**
- * Class Widgets
+ * Class CustomPostTypes
  *
  * @package PressGang
  */
