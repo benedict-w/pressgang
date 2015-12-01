@@ -10,17 +10,26 @@
     {% endblock %}
 
     {% block archive %}
-        <div class="row">
         {% if posts|length %}
         {% for post in posts %}
-            {% block post_preview %}
-            <div class="col-md-6">
-                {% include 'post-preview.twig' %}
+            {% if loop.index0 is even %}
+            <div class="row">
+            {% endif %}
+                {%  block post_preview %}
+                <div class="col-md-6">
+                    {% include 'post-preview.twig' %}
+                </div>
+                {% endblock %}
+            {% if loop.index0 is odd or loop.last %}
             </div>
-            {% endblock %}
+            {% endif %}
         {% endfor %}
         {% else %}
-            {% include 'no-posts.twig' %}
+            <div class="row">
+                <div class="col-xs-12">
+                    {% include 'no-posts.twig' %}
+                </div>
+            </div>
         {% endif %}
         </div>
     {% endblock %}
