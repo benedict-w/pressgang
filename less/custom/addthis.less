@@ -1,5 +1,15 @@
-@addthis-height: 32px;
+@addthis-height: 25px;
 
 .addthis_native_toolbox {
   min-height: @addthis-height;
+  max-width:100% !important;
+  margin-bottom: @grid-gutter-width / 2;
+}
+
+/* responsive fix */
+@media all and (max-width:480px) {
+  .at300b,
+  .addthis_counter{
+    clear:both !important
+  }
 }
