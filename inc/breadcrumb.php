@@ -60,7 +60,7 @@ class Breadcrumb {
 
             if ( is_archive() && !is_tax() && !is_category() && !is_tag() ) {
 
-                $this->append_link(post_type_archive_title($prefix, false), 'breadcrumb-archive');
+                $this->append_link(post_type_archive_title($prefix, false), 'breadcrumb-archive breadcrumb-current');
 
             }
 
@@ -76,7 +76,7 @@ class Breadcrumb {
                     $this->append_link($post_type_object->labels->name, "breadcrumb-{$post_type}", $post_type_archive);
                 }
 
-                $this->append_link(get_queried_object()->name, 'breadcrumb-taxonomy');
+                $this->append_link(get_queried_object()->name, 'breadcrumb-taxonomy breadcrumb-current');
 
             }
 
@@ -108,7 +108,7 @@ class Breadcrumb {
 
                     // create breadcrumbs for parents
                     foreach($cat_parents as $parent) {
-                        $this->append_link($parent, 'breadcrumb-parent-category', null);
+                        $this->append_link($parent, 'breadcrumb-parent-category breadcrumb-current');
                     }
 
                 }
@@ -127,7 +127,7 @@ class Breadcrumb {
 
                 }
 
-                $this->append_link(get_the_title());
+                $this->append_link(get_the_title(), 'breadcrumb-current');
 
 
             } else if (is_category()) {
@@ -152,12 +152,12 @@ class Breadcrumb {
                     }
 
                     // current page
-                    $this->append_link(get_the_title(), 'breadcrumb-page');
+                    $this->append_link(get_the_title(), 'breadcrumb-page breadcrumb-current');
 
                 } else {
 
                     // just display current page if no parents
-                    $this->append_link(get_the_title(), 'breadcrumb-page');
+                    $this->append_link(get_the_title(), 'breadcrumb-page breadcrumb-current');
 
                 }
 
@@ -172,7 +172,7 @@ class Breadcrumb {
                 $terms = get_terms($taxonomy, $args);
 
                 // display the tag name
-                $this->append_link($terms[0]->name, "breadcrumb-tag breadcrumb-{$terms[0]->slug}");
+                $this->append_link($terms[0]->name, "breadcrumb-tag breadcrumb-{$terms[0]->slug} breadcrumb-current");
 
             } elseif ( is_day() ) {
                 // year link
@@ -189,11 +189,11 @@ class Breadcrumb {
                 $this->append_link(get_the_time('Y'),  "breadcrumb-year", get_year_link( get_the_time('Y')));
 
                 // month link
-                $this->append_link(get_the_time('M'),  "breadcrumb-month");
+                $this->append_link(get_the_time('M'),  "breadcrumb-month breadcrumb-current");
 
             } else if ( is_year() ) {
 
-                $this->append_link(get_the_time('Y'),  "breadcrumb-year");
+                $this->append_link(get_the_time('Y'),  "breadcrumb-year breadcrumb-current");
 
             } else if ( is_author() ) {
 
@@ -204,17 +204,17 @@ class Breadcrumb {
             } else if ( get_query_var('paged') ) {
 
                 // paged archives
-                $this->append_link(get_query_var('paged'), "breadcrumb-paged");
+                $this->append_link(get_query_var('paged'), "breadcrumb-paged breadcrumb-current");
 
             } else if ( is_search() ) {
 
                 // search results page
-                $this->append_link(get_search_query(), "breadcrumb-search");
+                $this->append_link(get_search_query(), "breadcrumb-search breadcrumb-current");
 
             } elseif ( is_404() ) {
 
                 // 404
-                $this->append_link(__("Error 404", THEMENAME), "breadcrumb-404");
+                $this->append_link(__("Error 404", THEMENAME), "breadcrumb-404 breadcrumb-current");
             }
 
         }
