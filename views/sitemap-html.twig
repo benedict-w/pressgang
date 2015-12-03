@@ -1,0 +1,7 @@
+{% if posts|length %}
+<ul class="sitemap-{{ posts[0].post_type }}">
+    {% for post in posts %}
+    <li><a href="{{ post.link }}">{{ post.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}

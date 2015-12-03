@@ -16,7 +16,7 @@ class Sitemap
      */
    public function __construct($change_frequency = 'daily', $priority = '0.5')
    {
-       // set the detault change frequency
+       // set the default change frequency
         if(in_array($change_frequency, $this->frequencies)) {
             $this->change_frequency = $change_frequency;
         }
@@ -25,15 +25,29 @@ class Sitemap
         $this->priority = number_format($priority, 1);
 
         // update sitemap.xml when a post is saved
-        add_action("save_post", array($this, 'create_sitemap'));
+        add_action("save_post", array($this, 'create_sitemap'), 10, 3);
+
+        // add a sitemap shortcode
+        add_shortcode('sitemap', array($this, 'html_sitemap'));
+
+       // we need to redirect requests to individual sitemaps files on multisite installs
+       if (is_multisite()) {
+           // TODO - not working! add redirect manually
+           // add_action('init', array($this, 'add_rewrite'));
+       }
    }
 
     /**
      * Function to create sitemap.xml file in root directory
      *
      */
-    public function create_sitemap()
+    public function create_sitemap($post_id, $post, $update)
     {
+        // only create a site map if the post is new or no file exists
+        if (wp_is_post_revision($post_id) || is_file($this->path())) {
+            return false;
+        }
+
         $post_types = array('page', 'post');
 
         $custom_post_types = Config::get('custom-post-types');
@@ -113,11 +127,68 @@ class Sitemap
             'posts' => $posts,
         );
 
-        $sitemap = \Timber::compile('xml-sitemap.twig', $data);
+        $sitemap = \Timber::compile('sitemap-xml.twig', $data);
 
-        $fp = fopen(get_stylesheet_directory() . "/sitemap.xml", 'w');
+        $path = $this->path();
+
+        $fp = fopen($path, 'w');
         fwrite($fp, $sitemap);
         fclose($fp);
+    }
+
+    /**
+     * html_sitemap
+     *
+     * @param array $post_types
+     */
+    public function html_sitemap ($atts = array()) {
+
+        $atts = shortcode_atts( array(
+            'post_type' => 'page',
+        ), $atts );
+
+        $data['posts'] = \Timber::get_posts(array(
+            'numberposts' => -1,
+            'post_type' => $atts['post_type'],
+            'post_status' => 'publish',
+        ));
+
+        return \Timber::compile('sitemap-html.twig', $data);
+    }
+
+    /**
+     * filename
+     *
+     * @return string
+     */
+    private function filename() {
+
+        $filename = "sitemap.xml";
+
+        if (is_multisite()) {
+            $filename = sprintf("%s-sitemap.xml", get_blog_details()->domain);
+        }
+
+        return $filename;
+    }
+
+    /**
+     * path
+     *
+     * @return string
+     */
+    private function path() {
+        return sprintf("%s%s", ABSPATH, $this->filename());
+    }
+
+    /**
+     * add_rewrite
+     *
+     */
+    public function add_rewrite() {
+        global $wp_rewrite;
+        add_rewrite_rule('sitemap\.xml$', $this->filename());
+        $wp_rewrite->flush_rules();
     }
 }
 
