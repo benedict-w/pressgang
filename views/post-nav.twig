@@ -1,6 +1,6 @@
-<nav class="pager">
-    <ul>
-        <li>{{ function('previous_post_link', '%link', __("Next: %title")) }}</li>
-        <li>{{ function('next_post_link', '%link', __("Previous: %title")) }}</li>
+<nav>
+    <ul class="pager">
+        <li>{{ function('previous_post_link', '%link', __("Next: %title", THEMENAME)) }}</li>
+        <li>{{ function('next_post_link', '%link', __("Previous: %title", THEMENAME)) }}</li>
     </ul>
 </nav>
