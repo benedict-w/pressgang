@@ -23,4 +23,4 @@ if (!class_exists('\TimberTheme')) {
  * Go!
  *
  */
-require_once('core/pressgang.php');
+require_once('core/site.php');

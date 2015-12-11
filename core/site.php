@@ -2,6 +2,9 @@
 
 namespace PressGang;
 
+require_once('loader.php');
+require_once('site.php');
+
 /**
  * Class Site
  *
@@ -21,8 +24,6 @@ class Site extends \TimberSite
      */
     function __construct($site_name_or_id = null)
     {
-        parent::__construct($site_name_or_id);
-
         $this->stylesheet = get_theme_mod('stylesheet', 'styles.css');
 
         // add custom params
@@ -41,7 +42,38 @@ class Site extends \TimberSite
         // google webmaster site verification code
         $this->google_site_verification = get_theme_mod('google_verification_code');
 
+        add_filter('timber_context', array($this, 'add_to_context'));
+        add_filter('get_twig', array($this, 'add_to_twig'));
+
         add_filter('meta_description', array('PressGang\Site', 'meta_description'));
+
+        parent::__construct($site_name_or_id);
+    }
+
+    /**
+     * add_to_context
+     *
+     * @param $context
+     * @return mixed
+     */
+    public function add_to_context( $context ) {
+        $context['site'] = $this;
+        return $context;
+    }
+
+    /**
+     * add_to_twig
+     *
+     * Add Custom Functions to Twig
+     */
+    public function add_to_twig( $twig ) {
+        $twig->addFunction('esc_attr', new \Twig_SimpleFunction('esc_attr', 'esc_attr'));
+        $twig->addFunction('esc_url', new \Twig_SimpleFunction('esc_url', 'esc_url'));
+        $twig->addFunction('get_search_query', new \Twig_SimpleFunction('get_search_query', 'get_search_query'));
+
+        // add text-domain to global
+        $twig->addGlobal('THEMENAME', THEMENAME);
+        return $twig;
     }
 
     /**
@@ -59,7 +91,7 @@ class Site extends \TimberSite
 
         // else use preview
         if (empty($description)) {
-            $description = wptexturize($post->get_preview(40, true, false, true));
+            $description = str_replace('', "'", $post->get_preview(40, true, false, true));
         }
 
         // finally use the blog description
@@ -78,3 +110,5 @@ class Site extends \TimberSite
         return $description;
     }
 }
+
+new Site();
