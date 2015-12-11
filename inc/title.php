@@ -81,7 +81,7 @@ class Title {
             $title .= $separator . sprintf('%s', max($paged, $page));
         }
 
-        return $title;
+        return trim($title);
     }
 }
 

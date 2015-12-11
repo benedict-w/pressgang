@@ -13,7 +13,6 @@ class Site extends \TimberSite
     public $keywords;
     public $logo;
     public $copyright;
-    public $open_graph;
 
     /**
      *__construct
@@ -42,36 +41,40 @@ class Site extends \TimberSite
         // google webmaster site verification code
         $this->google_site_verification = get_theme_mod('google_verification_code');
 
-        $this->add_open_graph();
+        add_filter('meta_description', array('PressGang\Site', 'meta_description'));
     }
 
     /**
-     * add_open_graph
+     * add meta_description
      *
-     * Add custom open_graph params
+     * hook after post has loaded to add a unique meta-description
      *
      */
-    protected function add_open_graph()
+    public static function meta_description()
     {
-        global $wp;
-
-        $this->open_graph = array();
-
         $post = new \TimberPost();
 
-        $img = has_post_thumbnail($post->id)
-            ? wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'medium')[0]
-            : (get_theme_mod('og_img')
-                ? get_theme_mod('og_img')
-                : esc_url(get_theme_mod('logo')));
+        // check for custom field
+        $description = wptexturize($post->get_field('meta_description'));
 
-        $type = is_author() ? 'profile' : (is_single() ? 'article' : 'website');
+        // else use preview
+        if (empty($description)) {
+            $description = wptexturize($post->get_preview(40, true, false, true));
+        }
 
-        $this->open_graph['site_name'] = esc_attr(apply_filters('og_site_name', get_bloginfo()));
-        $this->open_graph['title'] = esc_attr(apply_filters('og_title', $this->title));
-        $this->open_graph['description'] = esc_attr(apply_filters('og_description', $this->description));
-        $this->open_graph['type'] = esc_attr(apply_filters('og_type', $type));
-        $this->open_graph['url'] = rtrim(esc_url(apply_filters('og_url', home_url(add_query_arg(array(), $wp->request)))), '/') . '/'; // slash fixes Facebook Debugger "Circular Redirect Path"
-        $this->open_graph['image'] = esc_url(apply_filters('og_image', $img));
+        // finally use the blog description
+        if (empty($description)) {
+            $description = get_bloginfo('description', 'display');
+        }
+
+        $description = esc_attr($description);
+
+        // limit to SEO recommended length
+        if (strlen($description) > 155) {
+            $description = substr($description, 0, 155);
+            $description = \TimberHelper::trim_words($description, str_word_count($description) - 1);
+        }
+
+        return $description;
     }
 }
