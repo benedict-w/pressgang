@@ -7,4 +7,13 @@ jQuery(function($) {
         $(this).find('.focuspoint').focusPoint('adjustFocus');
     });
 
+    // magnific
+    $('.magnific-popup').magnificPopup({
+        delegate: 'a',
+        type: 'image',
+        gallery: {
+            enabled: true
+        }
+    });
+
 });

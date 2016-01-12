@@ -1,0 +1,12 @@
+<!-- gallery -->
+<div id="{{ id }}" class="gallery magnific-popup {{ class }}">
+    <div class="row">
+        {% for thumbnail in thumbnails %}
+        <div class="col-lg-3 col-md-4 col-xs-6">
+            <a class="thumbnail" href="{{ thumbnail.url }}">
+                <img src="{{ thumbnail.src|resize(400, 300)|relative }}" alt="{{ thumbnail.post_title }}" class="img-responsive">
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
