@@ -1,5 +1,5 @@
 <!-- search -->
-<form id="search-form" role="search" method="get" class="search-form {{ class }}" action="{{ esc_url(function('home_url', '/')) }}">
+<form id="search-form" method="get" class="search-form {{ class }}" action="{{ esc_url(function('home_url', '/')) }}">
     <div class="input-group">
         <label for="s" class="sr-only">{{ __("Search", THEMENAME) }}</label>
         <input id="s" name="s" type="text" value="{{ get_search_query() }}" placeholder="{{ __("Search", THEMENAME) }}" class="form-control">
