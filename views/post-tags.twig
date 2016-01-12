@@ -1,3 +1,4 @@
+{% if post.terms('tags').length %}
 <nav class="tag-list">
     <span>{{ __("Tags") }}</span>
     <ul class="fa-ul">
@@ -6,3 +7,4 @@
         {% endfor %}
     </ul>
 </nav>
+{% endif %}
