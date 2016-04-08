@@ -1,0 +1,16 @@
+{
+    "name": "benedict-w/pressgang",
+    "description": "Package for the Wordpress Pressgang parent theme",
+    "type": "wordpress-theme",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Benedict Wallis",
+            "email": "ben@benedict-wallis.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.4.0"
+    }
+}
