@@ -1,10 +1,12 @@
 <div id="{{ id }}" class="carousel slide {{ class }}" data-ride="carousel">
+    {% if slides|length > 1 %}
     <!-- indicators -->
     <ol class="carousel-indicators">
     {% for slide in slides %}
         <li data-target="#{{ id }}" data-slide-to="{{ loop.index }}" {% if loop.index == 1 %}class="active"{% endif %}></li>
     {% endfor %}
     </ol>
+    {% endif %}
 
     <!-- slides -->
     <div class="carousel-inner" role="listbox">
@@ -13,13 +15,8 @@
             {% if slide.slide_url %}
             <a href="{{ slide.slide_url }}" title="{{ slide.post_title }}">
             {% endif %}
-                <div class="focuspoint" data-focus-x="{{ slide.x_focus|default(0) }}" data-focus-y="{{ slide.y_focus|default(0) }}" data-image-w="{{ slide.width }}" data-image-h="{{ slide.height }}">
-                    <img src="{{ slide.thumbnail.src(slide.width, slide.height)|relative }}" alt="{{ slide.post_title }}" srcset="
-                        {{ slide.thumbnail.src(slide.width, slide.height)|relative|retina(1) }} 1x,
-                        {{ slide.thumbnail.src(slide.width, slide.height)|relative|retina(2) }} 2x,
-                        {{ slide.thumbnail.src(slide.width, slide.height)|relative|retina(3) }} 3x,
-                        {{ slide.thumbnail.src(slide.width, slide.height)|relative|retina(4) }} 4x">
-                </div>
+            {% set thumbnail = function('is_a', slide, 'TimberImage') ? slide : slide.thumbnail %}
+            <img src="{{ thumbnail.src(slide.width, slide.height)|relative }}" alt="{{ slide.post_title }}">
             {% if slide.slide_url %}
             </a>
             {% endif %}
@@ -34,13 +31,14 @@
                     {% endif %}
                 </h2>
                 {% if slide.content %}
-                <p class="carousel-content">{{ slide.content }}</p>
+                <div class="carousel-content">{{ slide.content }}</div>
                 {% endif %}
             </div>
         </div>
         {% endfor %}
     </div>
 
+    {% if slides|length > 1 %}
     <!-- controls -->
     <a class="left carousel-control" href="#{{ id }}" role="button" data-slide="prev">
         <span class="icon-prev" aria-hidden="true"></span>
@@ -50,4 +48,5 @@
         <span class="icon-next" aria-hidden="true"></span>
         <span class="sr-only">{{ __(next)|default("&gt;") }}</span>
     </a>
+    {% endif %}
 </div>
