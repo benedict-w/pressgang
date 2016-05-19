@@ -17,11 +17,15 @@ return array (
     /*
      * menus
      *
-     * Array representing each Menu in the theme.
+     * Associative rray representing each Menu in the theme.
+     *
+     * [$key => $description]
      *
      * @var array
      */
-    'menus' => array(),
+    'menus' => array(
+        'primary' => "Primary Navigation"
+    ),
 
     /*
      * widgets
@@ -40,6 +44,15 @@ return array (
      * @var array
      */
     'actions' => array(),
+
+    /*
+     * templates
+     *
+     * Load any of the Pressgang page templates into the childtheme
+     *
+     * @var array
+     */
+    'templates' => array(),
 
     /*
      * scripts
