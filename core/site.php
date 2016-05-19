@@ -71,6 +71,8 @@ class Site extends \TimberSite
         $twig->addFunction('esc_url', new \Twig_SimpleFunction('esc_url', 'esc_url'));
         $twig->addFunction('get_search_query', new \Twig_SimpleFunction('get_search_query', 'get_search_query'));
 
+        $twig->addFunction('meta_description', new \Twig_SimpleFunction('meta_description', array('PressGang\Site', 'meta_description')));
+
         // add text-domain to global
         $twig->addGlobal('THEMENAME', THEMENAME);
         return $twig;
@@ -96,7 +98,7 @@ class Site extends \TimberSite
 
         // finally use the blog description
         if (empty($description)) {
-            $description = get_bloginfo('description', 'display');
+            $description = get_bloginfo('description', 'raw');
         }
 
         $description = esc_attr($description);
