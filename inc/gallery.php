@@ -15,9 +15,10 @@ class Gallery {
             'ver' => '1.0.1',
             'in_footer' => true
         );
+
         // TODO do this in one place?
 
-        // load pressgang which inits the focus point
+        // load pressgang.js which inits the magnific popup
         Scripts::$scripts['pressgang'] = array(
             'src' => get_template_directory_uri() . '/js/custom/pressgang.js',
             'deps' => array('magnific-popup'),
