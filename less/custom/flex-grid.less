@@ -1,0 +1,38 @@
+.row-flex {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex:1 1 auto;
+  & > div[class*='col-']:extend(.row-flex) {}
+}
+
+.row-flex,
+.container-flex {
+  > div[class*='col-'] {
+    margin: -.2px; /* hack adjust for wrapping */
+    div {
+      width:100%;
+    }
+  }
+}
+
+.row-flex-wrap {
+  -webkit-flex-flow: row wrap;
+  align-content: flex-start;
+  flex:0;
+}
+
+.flex-col {
+  display: flex;
+  display: -webkit-flex;
+  flex: 1 100%;
+  flex-flow: column nowrap;
+}
+
+.flex-grow {
+  display: flex;
+  -webkit-flex: 2;
+  flex: 2;
+}

@@ -1,7 +1,7 @@
 /* Fixed Navbar
 -------------------------------------------------- */
 body {
-  padding-top: @collapse-header-height;
+  padding-top: @collapse-header-height + @grid-gutter-width;
   &.admin-bar {
     .navbar-fixed-top {
       margin-top: @collapse-wp-admin-bar-height;
@@ -9,9 +9,16 @@ body {
   }
 }
 
-header {
+#header {
+  min-height: @collapse-header-height;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1030;
+  width: 100%;
   .navbar {
     min-height: @collapse-header-height;
+    margin: 0;
   }
 }
 
@@ -22,9 +29,10 @@ header {
 
 @media (min-width: @grid-float-breakpoint) {
   body {
-    padding-top: @header-height;
+    padding-top: @header-height + @grid-gutter-width;;
   }
   header {
+    min-height: @header-height;
     .navbar {
       min-height: @header-height !important;
     }
