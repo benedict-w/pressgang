@@ -16,6 +16,9 @@
 @google-plus-color: #dd4b39;
 @rss-color: #ff9900;
 @bloglovin-color: #000;
+@github-color: #333;
+@stackoverflow-color: #fe7a15;
+@behance-color: #1769ff;
 
 @facebook-icon: @fa-var-facebook;
 @twitter-icon: @fa-var-twitter;
@@ -29,6 +32,9 @@
 @google-plus-icon: @fa-var-google-plus;
 @rss-icon: @fa-var-rss;
 @bloglovin-icon: @fa-var-bold;
+@github-icon: @fa-var-github;
+@stackoverflow-icon: @fa-var-stack-overflow;
+@behance-icon: @fa-var-behance;
 
 // To display a background circle provide the @circle argument with a color value
 
@@ -49,6 +55,7 @@
       &:before {
         display: inline-block;
         width: @size;
+        margin-right: 2000px;
       }
     }
 
@@ -87,6 +94,16 @@
     }
     &.bloglovin a {
       .icon(@bloglovin-icon);
+    }
+    &.github a {
+      .icon(@github-icon);
+    }
+    &.stackoverflow a {
+      .icon(@stackoverflow-icon);
+    }
+    &.behance a {
+      .icon(@behance-icon);
+      width: floor(@size * 1.2);
     }
 
     // when circle use brand as background color
@@ -135,6 +152,15 @@
       &.bloglovin a {
         .icon-a(@color, @social-color, @circle, @bloglovin-color);
       }
+      &.github a {
+        .icon-a(@color, @social-color, @circle, @github-color);
+      }
+      &.stackoverflow a {
+        .icon-a(@color, @social-color, @circle, @stackoverflow-color);
+      }
+      &.behance a {
+        .icon-a(@color, @social-color, @circle, @behance-color);
+      }
     }
 
     // no circle
@@ -176,7 +202,15 @@
       &.bloglovin a {
         .icon-a(@color, @bloglovin-color);
       }
-
+      &.github a {
+        .icon-a(@color, @github-color);
+      }
+      &.stackoverflow a {
+        .icon-a(@color, @stackoverflow-color);
+      }
+      &.behance a {
+        .icon-a(@color, @behance-color);
+      }
     }
   }
 }
@@ -187,7 +221,7 @@
   }
 }
 
-.icon-a(@color, @hover-color, @bg-color: none, @hover-bg-color: none){
+.icon-a(@color, @hover-color, @bg-color: inherit, @hover-bg-color: inherit){
   color: @color;
   background-color: @bg-color;
   &:hover {
