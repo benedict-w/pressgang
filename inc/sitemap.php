@@ -131,9 +131,10 @@ class Sitemap
 
         $path = $this->path();
 
-        $fp = fopen($path, 'w');
-        fwrite($fp, $sitemap);
-        fclose($fp);
+        if ($fp = fopen($path, 'w')) {
+            fwrite($fp, $sitemap);
+            fclose($fp);
+        }
     }
 
     /**
