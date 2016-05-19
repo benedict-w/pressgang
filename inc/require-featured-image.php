@@ -9,6 +9,9 @@ namespace PressGang;
  */
 class RequiredFeaturedImage {
 
+
+    // TODO this causes an auto draft to be created - needs debugging!
+
     protected $post_types = array('post');
 
     /**
