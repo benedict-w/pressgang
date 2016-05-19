@@ -28,7 +28,8 @@ class Loader {
 
         // load inc files
         foreach (Config::get('inc') as $key=>&$file) {
-            locate_template("inc/{$file}", true, true);
+            $inc = preg_match('/.php/', $file) ? "inc/{$file}" : "inc/{$file}.php";
+            locate_template($inc, true, true);
         }
     }
 }
