@@ -37,13 +37,22 @@ class CustomPostTypes
 
         foreach(static::$custom_post_types as $key=>&$args) {
 
+            // TODO DRY - also in custom-taxonomies.php
+
             $name = __(ucfirst($key), THEMENAME);
+            $plural = Pluralizer::pluralize($name);
 
             $defaults = array(
                 'labels' =>  array(
-                    'name' => Pluralizer::pluralize($name),
+                    'name' => $plural,
                     'singular_name' => $name,
-                    'add_new_item' => __(sprintf("Add new %s", ucfirst($key)), THEMENAME),
+                    'add_new_item' => __(sprintf("Add new %s", $name), THEMENAME),
+                    'search_items' =>  __(sprintf("Search %s", $name), THEMENAME),
+                    'all_items' => __(sprintf("All %s", $plural), THEMENAME),
+                    'edit_item' => __(sprintf("Edit %s", $name), THEMENAME),
+                    'update_item' => __(sprintf("Update %s", $name), THEMENAME),
+                    'new_item_name' => __(sprintf("New %s", $name), THEMENAME),
+                    'menu_name' => $plural,
                 ),
             );
 
