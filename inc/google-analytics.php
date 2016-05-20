@@ -11,7 +11,7 @@ class GoogleAnalytics {
      */
     public static function init() {
         add_action('customize_register', array('PressGang\GoogleAnalytics', 'customizer'));
-        add_action('wp_footer', array('PressGang\GoogleAnalytics', 'script'));
+        add_action('wp_head', array('PressGang\GoogleAnalytics', 'script'));
     }
 
     /**
