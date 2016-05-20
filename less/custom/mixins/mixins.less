@@ -202,6 +202,30 @@
   column-rule: @rule;
 }
 
+.hyphens(@hyphen: auto) {
+  -ms-hyphens: @hyphen;
+  -moz-hyphens: @hyphen;
+  -webkit-hyphens: @hyphen;
+  hyphens: @hyphen;
+}
+
+.word-break() {
+  /* These are technically the same, but use both */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
+}
+
+.dont-break-out() {
+  .word-break();
+  .hyphens();
+}
+
 /* Responsive Embed (e.g. for Vimeo, Youtube, etc.)
 -------------------------------------------------- */
 .embed-container() {
