@@ -36,12 +36,14 @@ class Menus {
      */
     public static function register() {
         foreach(static::$menus as $location=>&$description) {
+            // allow filtering of the menu in child themes and plugins if required
             $menu = apply_filters("menu_{$location}", array(
                 $location => $description,
             ));
 
+            // remove any invalid items
             if (!$menu) {
-                unset(static::$menus[$location]); // remove from timber context bindings
+                unset(static::$menus[$location]);
             }
         }
         register_nav_menus(static::$menus);

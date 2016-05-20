@@ -57,7 +57,8 @@ class AddThis {
     /**
      * button
      *
-     * Displays the addthis sharing button setup on their dashboard page
+     * Displays the addthis sharing button configured on the addthis.com dashboard page
+     *
      */
     public static function button() {
         if ($addthis_id = get_theme_mod('addthis-id')) {
