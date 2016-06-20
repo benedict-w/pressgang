@@ -1,11 +1,11 @@
 <p>
-    <label for="{{ id }}">{{ label }}</label>
-    <select class="{{ class }}" id="{{ id }}" name="{{ name }}">
+    <label for="{{ id|e('html_attr') }}">{{ label|e }}</label>
+    <select class="{{ class|e('html_attr') }}" id="{{ id|e('html_attr') }}" name="{{ name|e('html_attr') }}">
         {% for option in options %}
-        <option value="{{ option.id }}" {% if (option.id == value) %}selected{% endif %}>{{ option.title }}</option>
+        <option value="{{ option.id|e('html_attr') }}" {% if (option.id == value) %}selected{% endif %}>{{ option.title|e }}</option>
         {% endfor %}
     </select>
     {% if help %}
-        <small>{{ help }}</small>
+        <small>{{ help|e }}</small>
     {% endif %}
 </p>

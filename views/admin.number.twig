@@ -1,9 +1,9 @@
 <p>
-    <label for="{{ id }}">
-        {{ label }}
-        <input id="{{ id }}" type="number" name="{{ name }}" value="{{ value }}" class="{{ class }}" max="{{ max }}" min="{{ min }}">
+    <label for="{{ id|e('html_attr') }}">
+        {{ label|e }}
+        <input id="{{ id|e('html_attr') }}" type="number" name="{{ name|e('html_attr') }}" value="{{ value|e('html_attr') }}" class="{{ class|e('html_attr') }}" max="{{ max|e('html_attr') }}" min="{{ min|e('html_attr') }}">
     </label>
     {% if help %}
-    <small>{{ help }}</small>
+    <small>{{ help|e }}</small>
     {% endif %}
 </p>

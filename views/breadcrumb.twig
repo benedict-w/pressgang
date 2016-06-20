@@ -2,9 +2,9 @@
     {% for breadcrumb in breadcrumbs %}
     <li class="{{ breadcrumb.class }}">
         {% if breadcrumb.url %}
-            <a href="{{ breadcrumb.url }}">{{ breadcrumb.title }}</a>
+            <a href="{{ breadcrumb.url|e('html_attr') }}">{{ breadcrumb.title|e }}</a>
         {% else %}
-            {{ breadcrumb.title }}
+            {{ breadcrumb.title|e }}
         {% endif %}
     </li>
     {% endfor %}

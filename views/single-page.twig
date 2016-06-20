@@ -6,16 +6,20 @@
             <div class="col-md-12">
                 {% for page in pages %}
                 {% block content %}
-                    <section id="{{ page.post_name }}" class="page">
-                        {% if (loop.index0) %}
-                        <h1>{{ page.title }}</h1>
-                        {%  endif %}
-                        <div class="page-body">
-                            <div class="page-content">
-                                {{ page.content }}
+                    {% if page.template %}
+                    {{ include(page.template, { page: page}) }}
+                    {% else %}
+                        <section id="{{ page.post_name }}" class="page">
+                            {% if (loop.index0) %}
+                                <h1>{{ page.title|e }}</h1>
+                            {%  endif %}
+                            <div class="page-body">
+                                <div class="page-content">
+                                    {{ page.content|e }}
+                                </div>
                             </div>
-                        </div>
-                    </section>
+                        </section>
+                    {% endif %}
                 {% endblock %}
                 {% endfor %}
             </div>

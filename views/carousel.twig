@@ -1,9 +1,9 @@
-<div id="{{ id }}" class="carousel slide {{ class }}" data-ride="carousel">
+<div id="{{ id|e('html_attr') }}" class="carousel slide {{ class|e('html_attr') }}" data-ride="carousel">
     {% if slides|length > 1 %}
     <!-- indicators -->
     <ol class="carousel-indicators">
     {% for slide in slides %}
-        <li data-target="#{{ id }}" data-slide-to="{{ loop.index }}" {% if loop.index == 1 %}class="active"{% endif %}></li>
+        <li data-target="#{{ id|e('html_attr') }}" data-slide-to="{{ loop.index }}" {% if loop.index == 1 %}class="active"{% endif %}></li>
     {% endfor %}
     </ol>
     {% endif %}
@@ -13,25 +13,25 @@
         {% for slide in slides %}
         <div class="item{% if loop.index == 1 %} active{% endif %}">
             {% if slide.slide_url %}
-            <a href="{{ slide.slide_url }}" title="{{ slide.post_title }}">
+            <a href="{{ slide.slide_url|e('html_attr') }}" title="{{ slide.post_title|e('html_attr') }}">
             {% endif %}
             {% set thumbnail = function('is_a', slide, 'TimberImage') ? slide : slide.thumbnail %}
-            <img src="{{ thumbnail.src(slide.width, slide.height)|relative }}" alt="{{ slide.post_title }}">
+            <img src="{{ thumbnail.src(slide.width, slide.height)|relative|e('html_attr') }}" alt="{{ slide.post_title|e('html_attr') }}">
             {% if slide.slide_url %}
             </a>
             {% endif %}
             <div class="carousel-caption">
                 <h2 class="carousel-title">
                     {% if slide.slide_url %}
-                    <a href="{{ slide.slide_url }}" title="{{ slide.post_title }}">
+                    <a href="{{ slide.slide_url|e('html_attr') }}" title="{{ slide.post_title|e('html_attr') }}">
                     {% endif %}
-                    {{ slide.post_title }}
+                    {{ slide.post_title|e }}
                     {% if slide.slide_url %}
                     </a>
                     {% endif %}
                 </h2>
                 {% if slide.content %}
-                <div class="carousel-content">{{ slide.content }}</div>
+                <div class="carousel-content">{{ slide.content|e }}</div>
                 {% endif %}
             </div>
         </div>
@@ -40,11 +40,11 @@
 
     {% if slides|length > 1 %}
     <!-- controls -->
-    <a class="left carousel-control" href="#{{ id }}" role="button" data-slide="prev">
+    <a class="left carousel-control" href="#{{ id|e('html_attr') }}" role="button" data-slide="prev">
         <span class="icon-prev" aria-hidden="true"></span>
         <span class="sr-only">{{ __(previous)|default("&lt;") }}</span>
     </a>
-    <a class="right carousel-control" href="#{{ id }}" role="button" data-slide="next">
+    <a class="right carousel-control" href="#{{ id|e('html_attr') }}" role="button" data-slide="next">
         <span class="icon-next" aria-hidden="true"></span>
         <span class="sr-only">{{ __(next)|default("&gt;") }}</span>
     </a>

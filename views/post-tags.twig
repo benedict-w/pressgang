@@ -3,7 +3,7 @@
     <span>{{ __("Tags") }}</span>
     <ul class="fa-ul">
         {% for term in post.terms('tags') %}
-        <li><i class="fa-li fa fa-tag"></i><a href="{{term.link}}">{{term.name}}</a></li>
+        <li><i class="fa-li fa fa-tag"></i><a href="{{ term.link|e('html_attr') }}">{{ term.name|e }}</a></li>
         {% endfor %}
     </ul>
 </nav>

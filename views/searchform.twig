@@ -1,8 +1,8 @@
 <!-- search -->
-<form id="search-form" method="get" class="search-form {{ class }}" action="{{ esc_url(function('home_url', '/')) }}">
+<form id="search-form" method="get" class="search-form {{ class|e('html_attr') }}" action="{{ esc_url(function('home_url', '/')) }}">
     <div class="input-group">
         <label for="s" class="sr-only">{{ __("Search", THEMENAME) }}</label>
-        <input id="s" name="s" type="text" value="{{ get_search_query() }}" placeholder="{{ __("Search", THEMENAME) }}" class="form-control">
+        <input id="s" name="s" type="text" value="{{ get_search_query()|e('html_attr') }}" placeholder="{{ __("Search", THEMENAME) }}" class="form-control">
         <span class="input-group-btn">
             <button id="search-submit" type="submit" class="btn"><span class="fa fa-search"></span></button>
         </span>

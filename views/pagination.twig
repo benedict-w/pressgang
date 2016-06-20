@@ -10,15 +10,15 @@
         {% for page in pagination.pages %}
             <li>
                 {% if page.link %}
-                    <a href="{{ page.link }}" class="pagination-page">{{ page.title }}</a>
+                    <a href="{{ page.link }}" class="pagination-page">{{ page.title|e }}</a>
                 {% else %}
-                    <span class="{{ page.class }}">{{ page.title }}</span>
+                    <span class="{{ page.class|e('html_attr') }}">{{ page.title|e }}</span>
                 {% endif %}
             </li>
         {% endfor %}
         {% if pagination.next.link|length %}
             <li>
-                <a href="{{ pagination.next.link }}" aria-label="Next" class="pagination-next">
+                <a href="{{ pagination.next.link|e('html_attr') }}" aria-label="Next" class="pagination-next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>

@@ -1,9 +1,9 @@
 <p>
-    <label for="{{ id }}">
-        {{ label }}
-        <input id="{{ id }}" type="text" name="{{ name }}" value="{{ value }}"{% if class %} class="{{ class }}"{% endif %} placeholder="{{ placeholder }}">
+    <label for="{{ id|e('html_attr') }}">
+        {{ label|e }}
+        <input id="{{ id|e('html_attr') }}" type="text" name="{{ name|e('html_attr') }}" value="{{ value|e('html_attr') }}"{% if class %} class="{{ class|e('html_attr') }}"{% endif %} placeholder="{{ placeholder|e('html_attr') }}">
     </label>
     {% if help %}
-    <small>{{ help }}</small>
+    <small>{{ help|e }}</small>
     {% endif %}
 </p>

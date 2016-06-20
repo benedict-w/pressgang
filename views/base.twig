@@ -6,7 +6,7 @@
 {% block head %}
 {% include 'head.twig' %}
 {% endblock %}
-<body class="{{ body_class }}">
+<body class="{{ body_class|e('html_attr') }}">
     <div id="wrap">
         <noscript>
             <strong>{{ __("Warning!", THEMENAME) }}</strong> {{ __("Your browser does not support JavaScript!", THEMENAME) }}

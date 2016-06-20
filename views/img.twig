@@ -1,1 +1,1 @@
-<img src="{{ src }}" alt="{{ esc_attr(alt) }}" class="{{ class }}">
+<img src="{{ src|e('html_attr') }}" alt="{{ alt|e('html_attr') }}" class="{{ class|e('html_attr') }}">

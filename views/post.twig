@@ -1,6 +1,6 @@
 <article>
     <header>
-        <h1 class="post-title">{{ post.title }}</h1>
+        <h1 class="post-title">{{ post.title|e }}</h1>
         {% block after-post-header %}
         {% do action('after_post_header') %}
         {% endblock %}
@@ -12,7 +12,7 @@
         </div>
         {% endif %}
         <div class="post-content">
-            {{ post.content }}
+            {{ post.content|e }}
         </div>
         {% block after-post-content %}
         {% include('post-meta.twig') %}
