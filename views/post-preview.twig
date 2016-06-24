@@ -1,13 +1,13 @@
 <article class="post-preview">
     <header>
         <h2 class="post-title">
-            <a href="{{ post.link|e('html_attr') }}" rel="bookmark">{{ post.title|e }}</a>
+            <a href="{{ post.link|e('html_attr') }}" rel="bookmark">{{ post.title }}</a>
         </h2>
     </header>
     <div class="post-body">
         {% if post.thumbnail %}
         <a href="{{ post.link }}" rel="bookmark" class="post-thumbnail">
-            {% include 'img.twig' with { 'src': post.thumbnail.src|relative|e('html_attr'), 'alt': post.title|e } %}
+            {% include 'img.twig' with { 'src': post.thumbnail.src|relative, 'alt': post.title } %}
         </a>
         {% endif %}
         <div class="post-excerpt">

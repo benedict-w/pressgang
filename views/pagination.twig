@@ -10,9 +10,9 @@
         {% for page in pagination.pages %}
             <li>
                 {% if page.link %}
-                    <a href="{{ page.link }}" class="pagination-page">{{ page.title|e }}</a>
+                    <a href="{{ page.link }}" class="pagination-page">{{ page.title }}</a>
                 {% else %}
-                    <span class="{{ page.class|e('html_attr') }}">{{ page.title|e }}</span>
+                    <span class="{{ page.class|e('html_attr') }}">{{ page.title }}</span>
                 {% endif %}
             </li>
         {% endfor %}

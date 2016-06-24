@@ -7,16 +7,16 @@
                 {% block content %}
                 <section class="page">
                     <header class="page-header">
-                        <h1 class="page-title">{{ page.title|e }}</h1>
+                        <h1 class="page-title">{{ page.title }}</h1>
                     </header>
                     <div class="page-body">
-                        {% if page.thumbnail|e %}
+                        {% if page.thumbnail %}
                         <div class="page-thumbnail">
                             {% include 'img.twig' with { 'src': page.thumbnail, 'alt': page.title } %}
                         </div>
                         {% endif %}
                         <div class="page-content">
-                            {{ page.content|e }}
+                            {{ page.content }}
                         </div>
                     </div>
                 </section>
