@@ -4,6 +4,8 @@ namespace PressGang;
 
 require_once __DIR__ . '/../classes/custom-post-type.php';
 require_once __DIR__ . '/../classes/metabox.php';
+require_once __DIR__ . '/../inc/slick.php';
+require_once __DIR__ . '/../inc/carousel.php';
 
 /**
  * Class Slider
@@ -44,18 +46,10 @@ class Slider extends CustomPostType {
 
         parent::__construct($post_type, $args);
 
-        // register shortcode to render the slider carousel
-        add_shortcode('slider', array('PressGang\Slider', 'render'));
-
-        // load pressgang which inits the focus point
-        Scripts::$scripts['pressgang'] = array(
-            'src' => get_template_directory_uri() . '/js/custom/pressgang.js',
-            'deps' => array('bootstrap'),
-            'ver' => '0.1',
-            'in_footer' => true
-        );
-
         self::add_link_metabox();
+
+        // register shortcode to render the slider carousel
+        add_shortcode('slider', array('PressGang\Slider', 'do_shortcode'));
     }
 
     /**
@@ -82,32 +76,9 @@ class Slider extends CustomPostType {
      * Render the carousel template
      *
      */
-    public static function render($atts) {
+    public static function do_shortcode() {
 
-        $atts = shortcode_atts(
-            array(
-                'height' => 500,
-                'width' => 1140,
-            ), $atts);
-
-        // uniquely identify each slider on the page
-        static $slider_id = 0;
-        $slider_id ++;
-
-        $slides = array();
-        foreach(parent::get_posts() as $slide) {
-            $slide = new \TimberPost($slide);
-            $slide->height = $atts['height'];
-            $slide->width = $atts['width'];
-            $slides[] = $slide;
-        }
-
-        $carousel['id'] = sprintf("%s-carousel-%s", self::$post_type, $slider_id);
-        $carousel['slides'] = $slides;
-
-        if (count($slides)) {
-            return \Timber::compile('carousel.twig', $carousel);
-        }
+        return Carousel::render();
     }
 }
 
