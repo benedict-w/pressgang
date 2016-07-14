@@ -55,7 +55,7 @@ class Scripts {
             if (isset($args['src']) && $args['src']) {
 
                 // register scripts
-                add_action($args['hook'], function () use ($args) {
+                add_action('wp_loaded', function () use ($args) {
                     wp_register_script($args['handle'], $args['src'], $args['deps'], $args['ver'], $args['in_footer']);
                 });
 
