@@ -12,110 +12,95 @@ class InfinitePagination {
 
     public static $posts_per_page = 4;
 
+    const AJAX_ACTION = 'infinite_pagination';
+
     /**
      * init
      *
      */
     public static function init() {
-        add_action('wp_ajax_infinite_scroll', array('PressGang\Paginator', 'infinte_pagination')); // user logged in
-        add_action('wp_ajax_nopriv_infinite_scroll', array('PressGang\Paginator', 'infinte_pagination')); // not logged in
 
-        add_action('wp_footer', array('PressGang\Paginator', 'infinite_script'));
-        add_action('pre_get_posts', array('PressGang\Paginator', 'set_query_offset'));
+        add_action(sprintf("wp_ajax_%s", self::AJAX_ACTION), array('PressGang\InfinitePagination', self::AJAX_ACTION)); // user logged in
+        add_action(sprintf("wp_ajax_nopriv_%s", self::AJAX_ACTION), array('PressGang\InfinitePagination', self::AJAX_ACTION)); // not logged in
+
+        add_action('wp_enqueue_scripts', array('PressGang\InfinitePagination', 'enqueue_scripts'));
+        add_action('pre_get_posts', array('PressGang\InfinitePagination', 'set_query_offset'));
+
+        // https://github.com/Foliotek/AjaxQ
+        Scripts::$scripts['ajaxq'] = array(
+            'src' => get_template_directory_uri() . '/js/src/vendor/ajaxq/ajaxq.js',
+            'deps' => array('jquery'),
+            'ver' => '1.0',
+            'hook' => 'add_infinite_pagination',
+        );
+
+        Scripts::$scripts['infinite-pagination'] = array(
+            'src' => get_template_directory_uri() . '/js/src/custom/infinite-pagination.js',
+            'deps' => array('ajaxq'),
+            'ver' => '0.1',
+            'hook' => 'add_infinite_pagination',
+        );
     }
 
     /**
      * infinte_pagination
      *
-     * Filter the query with 'infinite_paginator_query'.
-     * Hook Template with action 'infinte_pagination'.
+     * Filter the query with 'infinite_pagination_query'.
+     * Hook Template with action 'infinite_pagination_template'.
      *
      * @return void
      */
-    public static function infinte_pagination()
+    public static function infinite_pagination()
     {
+        check_ajax_referer(self::AJAX_ACTION);
+
         $post_type = filter_input(INPUT_POST, 'post_type', FILTER_SANITIZE_STRING);
+        $template = filter_input(INPUT_POST, 'template', FILTER_SANITIZE_STRING);
         $paged = filter_input(INPUT_POST, 'page_no', FILTER_SANITIZE_NUMBER_INT);
 
         $query = array(
             'paged' => $paged,
             'posts_per_page' => self::$posts_per_page,
             'post_type' => $post_type,
+            'post_status' => 'publish',
         );
 
-        apply_filters('infinte_pagination', $query);
+        // TODO search terms?
+
+        apply_filters('infinite_pagination_query', $query);
+
+        $template = apply_filters('infinite_pagination_template', $template);
 
         // load the posts
         query_posts($query);
 
-        do_action('infinte_pagination');
+        get_template_part($template);
 
         exit;
     }
 
     /**
-     * infinite_script
+     * enqueue_scripts
      *
      * @return void
      */
-    public static function infinite_script() {
-        if(!is_single() && !is_page()) : ?>
-        <!-- infinite pagination -->
-        <script type="text/javascript">
-            jQuery(document).ready(function($) {
+    public static function enqueue_scripts() {
 
-                $('.page-numbers').remove();
+        if(is_archive()) {
 
-                var page = 2;
-                var fetched_all = false;
+            global $template;
 
-                var $spinner = $('<div id="infinite-pagination-spinner" class="spinner"></div>');
+            wp_localize_script('infinite-pagination', 'infinite_pagination', array(
+                'post_type' => get_query_var('post_type'),
+                '_ajax_nonce' => wp_create_nonce(self::AJAX_ACTION),
+                'template' => basename($template, '.php'),
+                'action' => self::AJAX_ACTION,
+            ));
 
-                $('body > .container > .row:last').after($spinner);
+            // call the hook to enqueue the infinite-pagination scripts
+            do_action('add_infinite_pagination');
 
-                $(window).scroll(function() {
-
-                    $spinner = $('#infinite-pagination-spinner');
-
-                    if  ($(window).scrollTop() == $(document).height() - $(window).height()) {
-
-                        if (!fetched_all) {
-
-                            $spinner.fadeIn(250);
-
-                            var search = window.location.search.replace('?', '').split('&');
-                            var query = {};
-
-                            for(var i in search){
-                                query[search[i].split('=')[0]] = search[i].split('=')[1];
-                            }
-
-                            query['action'] = 'infinite_scroll';
-                            query['page_no'] = page;
-                            query['post_type'] = $('#searchform input[name=post_type]').val();
-
-                            $.ajax({
-                                url: "<?php bloginfo('wpurl') ?>/wp-admin/admin-ajax.php",
-                                type: 'POST',
-                                data: $.param(query),
-                                success: function (html) {
-
-                                    var $html = $(html).filter('.row').addClass('fadeIn')
-                                    $spinner.hide();
-
-                                    fetched_all = !$html.length;
-
-                                    $('body > .container > .row:last').before($html);
-                                }
-                            });
-
-                            page++;
-                        }
-                    }
-                });
-            });
-        </script><?php
-        endif;
+        }
     }
 
     /**
@@ -126,7 +111,7 @@ class InfinitePagination {
      * @param $query
      */
     public static function set_query_offset(&$query) {
-        if (!is_admin() && $query->is_paged && $query->query_vars['paged'] > 1) {
+        if ($query->is_paged && $query->query_vars['paged'] > 1) {
             $offset = get_option('posts_per_page');
             $page_offset = $offset + (($query->query_vars['paged'] - 2) * self::$posts_per_page);
             $query->set('offset', $page_offset);
