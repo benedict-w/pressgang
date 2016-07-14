@@ -4,6 +4,7 @@
 
 @social-color: #fff;
 
+@email-color: @social-color;
 @facebook-color: #3b5998;
 @twitter-color: #4099ff;
 @instagram-color: #3f729b;
@@ -19,7 +20,9 @@
 @github-color: #333;
 @stackoverflow-color: #fe7a15;
 @behance-color: #1769ff;
+@medium-color: #02b875;
 
+@email-icon: @fa-var-envelope;
 @facebook-icon: @fa-var-facebook;
 @twitter-icon: @fa-var-twitter;
 @instagram-icon: @fa-var-instagram;
@@ -35,6 +38,7 @@
 @github-icon: @fa-var-github;
 @stackoverflow-icon: @fa-var-stack-overflow;
 @behance-icon: @fa-var-behance;
+@medium-icon: @fa-var-medium;
 
 // To display a background circle provide the @circle argument with a color value
 
@@ -58,7 +62,9 @@
         margin-right: 2000px;
       }
     }
-
+    &.email a {
+      .icon(@email-icon);
+    }
     &.facebook a {
       .icon(@facebook-icon);
     }
@@ -105,6 +111,10 @@
       .icon(@behance-icon);
       width: floor(@size * 1.2);
     }
+    &.medium a {
+      .icon(@medium-icon);
+      width: floor(@size * 1.2);
+    }
 
     // when circle use brand as background color
     & when not (@circle = '') {
@@ -115,6 +125,9 @@
         & when not (@diameter = '') {
           .circle-icon(@diameter);
         }
+      }
+      &.email a {
+        .icon-a(@color, @social-color, @circle, @email-color);
       }
       &.facebook a {
         .icon-a(@color, @social-color, @circle, @facebook-color);
@@ -161,11 +174,17 @@
       &.behance a {
         .icon-a(@color, @social-color, @circle, @behance-color);
       }
+      &.medium a {
+        .icon-a(@color, @social-color, @circle, @medium-color);
+      }
     }
 
     // no circle
 
     & when (@circle = '') {
+      &.email a {
+        .icon-a(@color, @email-color);
+      }
       &.facebook a {
         .icon-a(@color, @facebook-color);
       }
@@ -210,6 +229,9 @@
       }
       &.behance a {
         .icon-a(@color, @behance-color);
+      }
+      &.medium a {
+        .icon-a(@color, @medium-color);
       }
     }
   }
