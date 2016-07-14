@@ -1,8 +1,8 @@
 <article>
     <header>
         <h1 class="post-title">{{ post.title }}</h1>
-        {% block after-post-header %}
-        {% do action('after_post_header') %}
+        {% block after_post_header %}
+            {% do action('after_post_header') %}
         {% endblock %}
     </header>
     <div class="post-body">
@@ -14,9 +14,9 @@
         <div class="post-content">
             {{ post.content }}
         </div>
-        {% block after-post-content %}
-        {% include('post-meta.twig') %}
-        {% include('post-tags.twig') %}
+        {% block after_post_content %}
+            {% include('post-meta.twig') %}
+            {% include('post-tags.twig') %}
         {% endblock %}
     </div>
 </article>
