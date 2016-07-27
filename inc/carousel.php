@@ -35,7 +35,7 @@ class Carousel {
      * Render the carousel template
      *
      */
-    public static function render($query = array(), $height = 500, $width = 1140, $slick = array()) {
+    public static function render($template = 'carousel.twig', $query = array(), $width = 1140, $height = 500, $slick = array()) {
 
         if (!isset($query['post_type'])) {
             $query['post_type'] = 'slide';
@@ -59,14 +59,10 @@ class Carousel {
 
         if (count($slides)) {
             if ($slick) {
-
                 $carousel['options'] = $slick;
-
-                return \Timber::compile('slick.twig', $carousel);
-
             }
 
-            return \Timber::compile('carousel.twig', $carousel);
+            return \Timber::compile($template, $carousel);
         }
 
     }

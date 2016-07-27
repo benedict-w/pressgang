@@ -16,7 +16,7 @@
             <a href="{{ slide.slide_url|e('html_attr') }}" title="{{ slide.post_title|e('html_attr') }}">
             {% endif %}
             {% set thumbnail = function('is_a', slide, 'TimberImage') ? slide : slide.thumbnail %}
-            <img src="{{ thumbnail.src(slide.width, slide.height)|relative|e('html_attr') }}" alt="{{ slide.post_title|e('html_attr') }}">
+            <img src="{{ thumbnail.src(slide.width, slide.height)|relative }}" alt="{{ slide.post_title|e('html_attr') }}">
             {% if slide.slide_url %}
             </a>
             {% endif %}

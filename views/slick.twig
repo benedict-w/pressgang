@@ -1,12 +1,12 @@
+<!-- slick -->
 <div id="{{ id|e('html_attr') }}" data-slick="{{ options|json_encode()|e('html_attr') }}">
-    <!-- slick -->
     {% for slide in slides %}
         <div>
             {% if slide.slide_url %}
             <a href="{{ slide.slide_url|e('html_attr') }}" title="{{ slide.post_title|e('html_attr') }}">
                 {% endif %}
                 {% set thumbnail = function('is_a', slide, 'TimberImage') ? slide : slide.thumbnail %}
-                <img src="{{ thumbnail.src|resize(slide.width)|relative|e('html_attr') }}" alt="{{ slide.post_title|e('html_attr') }}" class="img-responsive">
+                <img src="{{ (slide.width ? thumbnail.src|resize(slide.width, slide.height) : thumbnail.src)|relative|e('html_attr') }}" alt="{{ slide.post_title|e('html_attr') }}" class="img-responsive">
                 {% if slide.slide_url %}
             </a>
             {% endif %}
