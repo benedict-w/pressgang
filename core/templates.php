@@ -37,7 +37,7 @@ class Templates {
         add_filter('page_attributes_dropdown_pages_args', array($this, 'register_templates'));
 
         // on save post to inject template into the page cache
-        add_filter('wp_insert_post_data', array($this, 'register_templates'));
+         add_filter('wp_insert_post_data', array($this, 'register_templates'));
 
         // assign template paths
         add_filter('template_include', array($this, 'view_template'));
