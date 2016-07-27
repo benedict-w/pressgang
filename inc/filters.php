@@ -59,16 +59,16 @@ class Filters {
      */
     public static function single_page_permalink($permalink, $id)
     {
-        if ($parent_id = get_post(wp_get_post_parent_id($id))) {
-
-            if (preg_match('/single-page.php$/', get_page_template_slug($parent_id))) {
-                $post = get_post($id);
-
-                if (is_array($permalink)) {
-                    // this is for the admin sample permalink
-                    $permalink = str_replace('/%pagename%','#%pagename%', $permalink);
-                } else {
-                    $permalink = preg_replace('/\/' . preg_quote($post->post_name, '/') . '\/$/', "#{$post->post_name}", $permalink);
+        if ($parent_id = wp_get_post_parent_id($id)) {
+            if ($parent = get_post($parent_id)) {
+                if (preg_match('/single-page.php$/', get_page_template_slug($parent_id))) {
+                    $post = get_post($id);
+                    if (is_array($permalink)) {
+                        // this is for the admin sample permalink
+                        $permalink = str_replace('/%pagename%','#%pagename%', $permalink);
+                    } else {
+                        $permalink = preg_replace('/\/' . preg_quote($post->post_name, '/') . '\/$/', "#{$post->post_name}", $permalink);
+                    }
                 }
             }
         }

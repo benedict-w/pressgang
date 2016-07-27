@@ -8,20 +8,9 @@
  * @subpackage Pressgang
  */
 
-$context = \Timber::get_context();
-$post = \Timber::get_post();
-$args = array(
-    'post_parent' => $post->ID,
-    'post_type'   => 'page',
-    'numberposts' => -1,
-    'post_status' => 'publish',
-    'order' => 'ASC',
-);
+require_once __DIR__ . "/../controllers/single-page-controller.php";
 
-$pages = array($post);
+// TODO filters for singe page permalinks are in pressgang/inc/filters.php and probably should be moved!
 
-foreach(get_children($args) as $child) {
-    $pages[] = new TimberPost($child);
-}
-$context['pages'] = $pages;
-\Timber::render('single-page.twig', $context);
+$controller = new Pressgang\SinglePageControllert('single-page.twig');
+$controller->render();
