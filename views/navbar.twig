@@ -1,6 +1,6 @@
 {% block navbar %}
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="navbar-inner">
+<nav class="navbar navbar-default">
+    <div class="container">
         <!-- mobile menu -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
@@ -13,6 +13,9 @@
         </div>
         <!-- collapsible nav -->
         <div id="navbar-collapse" class="collapse navbar-collapse">
+            {% if function('function_exists', 'icl_get_languages') %}
+                {% include 'navbar-language-selector.twig' with { languages: function('icl_get_languages') } %}
+            {% endif %}
             {% include 'menu.twig' with { 'menu': menu_primary, 'class': 'nav navbar-nav primary' } %}
         </div>
     </div>

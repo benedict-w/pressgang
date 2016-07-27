@@ -1,5 +1,5 @@
 <!-- menu -->
-<ul class="menu {{ class }}">
+<ul class="menu {{ class|e('html_attr') }}">
     {% for item in menu.get_items %}
         <li class="{{ item.classes|join(' ')|e('html_attr') }}{% if item.current %} active{% endif %}{% if item.get_children %} dropdown{% endif %}">
             <a href="{{ item.get_link|e('html_attr') }}" target="{{ item.is_external ? '_blank' : '_self' }}" {% if item.get_children %} class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" {% endif %}>{{ item.title|e }}
