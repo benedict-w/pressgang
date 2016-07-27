@@ -48,18 +48,20 @@ class MailchimpSignupWidget extends \WP_Widget {
         ?>
 
         <?php echo $before_widget; ?>
-        <?php if ($title) : ?>
-            <?php echo $before_title . $title . $after_title; ?>
-        <?php endif; ?>
-        <form id="mailchimp-signup">
-            <div class="form-group">
-                <label for="mailchimp-email" class="sr-only"><?php echo __("E-Mail", THEMENAME); ?></label>
-                <input id="mailchimp-email" name="email" type="email" class="form-control" placeholder="<?php echo __("Newsletter Signup", THEMENAME); ?>" required>
-                <button type="submit" class="btn"><?php echo __("Signup", THEMENAME); ?></button>
-            </div>
-            <p class="alert alert-success" style="display: none;"><?php echo __("Thanks! You are now subscribed to the newsletter.", THEMENAME); ?></p>
-            <p class="alert alert-danger" style="display: none;"><?php echo __("Sorry! There was a problem subscribing.", THEMENAME); ?></p>
-        </form>
+        <div id="mailchimp">
+            <?php if ($title) : ?>
+                <h4><?php echo $before_title . $title . $after_title; ?></h4>
+            <?php endif; ?>
+            <form id="mailchimp-signup">
+                <div class="form-group">
+                    <label for="mailchimp-email" class="sr-only"><?php echo __("E-Mail", THEMENAME); ?></label>
+                    <input id="mailchimp-email" name="email" type="email" class="form-control" placeholder="<?php echo __("Newsletter Signup", THEMENAME); ?>" required>
+                    <button type="submit" class="btn"><?php echo __("Signup", THEMENAME); ?></button>
+                </div>
+                <p class="alert alert-success" style="display: none;"><?php echo __("Thanks! You are now subscribed to the newsletter.", THEMENAME); ?></p>
+                <p class="alert alert-danger" style="display: none;"><?php echo __("Sorry! There was a problem subscribing.", THEMENAME); ?></p>
+            </form>
+        </div>
         <?php echo $after_widget;
     }
 
