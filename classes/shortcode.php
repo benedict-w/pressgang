@@ -11,6 +11,7 @@ class Shortcode {
 
     protected $template = null;
     protected $context = array();
+    protected $defaults = array();
 
     /**
      * Initialize
@@ -34,7 +35,10 @@ class Shortcode {
      *
      * @return string
      */
-    public function do_shortcode() {
+    public function do_shortcode($atts, $content = null) {
+
+        $args = shortcode_atts($this->defaults, $atts);
+
         return \Timber::compile($this->template, $this->context);
     }
 
