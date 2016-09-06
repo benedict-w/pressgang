@@ -16,11 +16,9 @@ class Gallery {
             'in_footer' => true
         );
 
-        // TODO do this in one place?
-
         // load pressgang.js which inits the magnific popup
         Scripts::$scripts['pressgang-magnific'] = array(
-            'src' => get_template_directory_uri() . '/js/src/custom/magnific.js',
+            'src' => get_template_directory_uri() . '/js/src/custom/gallery.js',
             'deps' => array('magnific-popup'),
             'ver' => '0.1',
             'in_footer' => true

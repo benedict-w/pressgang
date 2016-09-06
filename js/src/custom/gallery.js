@@ -14,11 +14,14 @@
         }
     });
 
-
     // set magnific on images that are the only children of a an anchor (e.g. in posts)
-    // TODO could be more specific!?
-    $('a>img:only-child').magnificPopup({
-        type: 'image'
+    $('a>img:only-child').each(function() {
+        $img = $(this);
+        if ($img.attr('src') === $img.parent('a').attr('href')) { // TODO also match absolute and relative?
+            $(this).magnificPopup({
+                type: 'image'
+            });
+        }
     });
 
 })(jQuery);
