@@ -13,11 +13,11 @@
 
         var page = 2;
         var fetched_all = false;
-        var selector = 'main .row';
+        var selector = '.infinite-container';
 
         var $spinner = $('<div id="infinite-pagination-spinner" class="spinner"></div>');
 
-        $('main .row:first-of-type').after($spinner);
+        $('.infinite-container:last-of-type').after($spinner);
 
         $(window).scroll(function() {
 
@@ -56,16 +56,20 @@
                         data: $.param(data),
                         success: function (html) {
 
-                            $html = $(selector, $.parseHTML(html));
                             $spinner.hide();
 
-                            fetched_all = !$html.length;
+                            fetched_all = !html;
 
-                            if(fetched_all) {
+                            if (!fetched_all) {
+
+                                $html = $(selector, $.parseHTML(html));
+                                $(selector + ':last').after($html);
+
+                            } else {
+
                                 $.ajaxq.abort('infinite-pagination-queue');
-                            }
 
-                            $(selector + ':last').after($html);
+                            }
                         }
                     });
 

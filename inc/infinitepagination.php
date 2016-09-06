@@ -74,7 +74,11 @@ class InfinitePagination {
         // load the posts
         query_posts($query);
 
-        get_template_part($template);
+        global $wp_query;
+
+        if ($wp_query->post_count) {
+            get_template_part($template);
+        }
 
         exit;
     }
@@ -99,7 +103,6 @@ class InfinitePagination {
 
             // call the hook to enqueue the infinite-pagination scripts
             do_action('add_infinite_pagination');
-
         }
     }
 
