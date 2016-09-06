@@ -3,7 +3,6 @@
 namespace PressGang;
 
 require_once('loader.php');
-require_once('site.php');
 
 /**
  * Class Site
