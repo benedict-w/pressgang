@@ -63,7 +63,7 @@ return array (
     */
     'scripts' => array(
         'bootstrap' => array(
-            'src' => get_template_directory_uri() . '/js/build/bootstrap.min.js',
+            'src' => get_template_directory_uri() . '/js/min/bootstrap.min.js',
             'deps' => array('jquery'),
             'version' => '3.2.0',
             'in_footer' => true
