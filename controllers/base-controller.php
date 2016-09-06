@@ -42,6 +42,14 @@ abstract class BaseController {
      *
      */
     public function render() {
-        \Timber::render($this->template, $this->get_context());
+
+        $this->context = $this->get_context();
+
+        $class = new \ReflectionClass(get_called_class());
+        $class = Helper::camel_to_underscored($class->getShortName());
+
+        $this->context = apply_filters("{$class}_context", $this->context);
+
+        \Timber::render($this->template, $this->context);
     }
 }
