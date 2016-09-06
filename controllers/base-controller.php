@@ -42,6 +42,6 @@ abstract class BaseController {
      *
      */
     public function render() {
-        \Timber::render($this->template, $this->context);
+        \Timber::render($this->template, $this->get_context());
     }
 }
