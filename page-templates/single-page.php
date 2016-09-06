@@ -12,5 +12,5 @@ require_once __DIR__ . "/../controllers/single-page-controller.php";
 
 // TODO filters for singe page permalinks are in pressgang/inc/filters.php and probably should be moved!
 
-$controller = new Pressgang\SinglePageControllert('single-page.twig');
+$controller = new Pressgang\SinglePageController('single-page.twig');
 $controller->render();
