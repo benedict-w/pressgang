@@ -7,7 +7,7 @@
     <div class="post-body">
         {% if post.thumbnail %}
         <a href="{{ post.link }}" rel="bookmark" class="post-thumbnail">
-            {% include 'img.twig' with { 'src': post.thumbnail.src|relative, 'alt': post.title } %}
+            {% include 'img.twig' with { 'src': post.thumbnail.src('thumbnail')|relative, 'alt': post.title } %}
         </a>
         {% endif %}
         <div class="post-excerpt">
