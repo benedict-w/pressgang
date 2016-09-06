@@ -41,7 +41,7 @@ class SinglePageController extends PageController {
      * get_children
      *
      */
-    protected function get_children() {
+    protected function get_pages() {
 
         if (empty($this->pages)) {
 
