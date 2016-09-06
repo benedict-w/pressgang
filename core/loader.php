@@ -45,7 +45,11 @@ class Loader {
 
             $folders = ['classes', 'controllers'];
 
-            $class = substr($class, strrpos($class, '\\') + 1); // strip namespace
+            // strip namespace
+            if (preg_match('@\\\\([\w]+)$@', $class, $matches)) {
+                $class = $matches[1];
+            }
+
             $file = Helper::camel_to_hyphenated($class);
 
             foreach ($folders as &$folder) {
