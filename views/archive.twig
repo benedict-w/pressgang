@@ -13,7 +13,7 @@
         {% if posts|length %}
         {% for post in posts %}
             {% if loop.index0 is even %}
-            <div class="row">
+            <div class="row infinite-container">
             {% endif %}
                 {%  block post_preview %}
                 <div class="col-md-6">
