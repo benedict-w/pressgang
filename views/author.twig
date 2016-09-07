@@ -1,0 +1,11 @@
+<div class="author">
+    <a href="{{ author.link|relative }}" rel="author">
+        <h3 class="author-name">{{ author.name }}</h3>
+        <img src="{{ author.thumbnail.src }}" alt="{{ author.name }}">
+    </a>
+    {% if(author.description) %}
+    <div class="author-description">
+        {{ author.description }}
+    </div>
+    {% endif %}
+</div>

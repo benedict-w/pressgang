@@ -11,6 +11,7 @@ require_once 'page-controller.php';
  */
 class PostController extends PageController {
 
+    protected $author;
     protected $tags;
     protected $categories;
     protected $related_posts;
@@ -37,6 +38,7 @@ class PostController extends PageController {
         $this->context['tags'] = $this->get_tags();
         $this->context['categories'] = $this->get_categories();
         $this->context['related_posts'] = $this->get_related_posts();
+        $this->context['author'] = $this->get_author();
 
         return $this->context;
     }
@@ -91,4 +93,20 @@ class PostController extends PageController {
 
         return $this->related_posts;
     }
+
+    /**
+     * get_author
+     *
+     * @return TimberUser
+     */
+    protected function get_author() {
+
+        if (empty($this->author)) {
+            $this->author = $this->get_post()->get_author();
+            $this->author->thumbnail = new \TimberImage(get_avatar_url($this->author->id));
+        }
+
+        return $this->author;
+    }
+
 }
