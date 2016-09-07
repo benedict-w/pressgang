@@ -5,13 +5,13 @@ namespace PressGang;
 class Disqus {
 
     /**
-     * init
+     * __construct
      *
      * @return void
      */
-    public static function init() {
-        add_action('customize_register', array('PressGang\Disqus', 'customizer'));
-        add_filter('comments_template', array('PressGang\Disqus', 'render'));
+    public function __construct() {
+        add_action('customize_register', array($this, 'customizer'));
+        add_filter('comments_template', array($this, 'render'));
     }
 
     /**
@@ -19,7 +19,7 @@ class Disqus {
      *
      * @param $wp_customize
      */
-    public static function customizer($wp_customize) {
+    public function customizer($wp_customize) {
 
         $wp_customize->add_section( 'disqus' , array(
             'title' => __("Disqus", THEMENAME),
@@ -45,9 +45,9 @@ class Disqus {
      * Render disqus.twig
      *
      */
-    public static function render() {
+    public function render() {
         \Timber::render('disqus.twig',  array('disqus_shortname' => get_theme_mod('disqus-shortname'),));
     }
 }
 
-Disqus::init();
+new Disqus();
