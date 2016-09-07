@@ -53,13 +53,30 @@ class Loader {
             $file = Helper::camel_to_hyphenated($class);
 
             foreach ($folders as &$folder) {
-                $path = sprintf("%s/%s/%s.php", get_template_directory(), $folder,  $file);
-                if (file_exists($path)) {
-                    require_once($path);
-                }
+                // try pressgang folders
+                $this->require_theme_file(get_template_directory(), $folder, $file);
+                // and search child them
+                $this->require_theme_file(get_stylesheet_directory(), $folder, $file);
             }
 
         });
+    }
+
+    /**
+     * require_theme_file
+     *
+     * @param $theme_dir
+     * @param $folder
+     * @param $file
+     * @return bool|mixed
+     */
+    private function require_theme_file($theme_dir, $folder, $file) {
+        $path = sprintf("%s/%s/%s.php", $theme_dir, $folder,  $file);
+        if (file_exists($path)) {
+            return require_once($path);
+        }
+
+        return false;
     }
 }
 
