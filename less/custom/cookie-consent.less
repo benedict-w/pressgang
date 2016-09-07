@@ -1,0 +1,28 @@
+@cookie-consent-bg: #000;
+@cookie-consent-color: #fff;
+@cookie-consent-opacity: 0.8;
+@cookie-consent-font-size: 12px;
+
+.cookie-consent {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: @grid-gutter-width / 3;
+  color: @cookie-consent-color;
+  .alpha-bg(@cookie-consent-bg, @cookie-consent-opacity);
+  font-size: @cookie-consent-font-size;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  p {
+    .pull-left;
+    margin: 0;
+    padding: 0;
+  }
+  .btn-cookie {
+    .pull-right;
+    .btn-sm;
+  }
+}
