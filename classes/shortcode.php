@@ -5,7 +5,7 @@ namespace Pressgang;
 /**
  * Class Clients
  *
- * @package Relevantive
+ * @package Pressgang
  */
 class Shortcode {
 
