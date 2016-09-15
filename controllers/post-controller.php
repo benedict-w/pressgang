@@ -11,10 +11,12 @@ require_once 'page-controller.php';
  */
 class PostController extends PageController {
 
+    protected $post_type;
     protected $author;
     protected $tags;
     protected $categories;
     protected $related_posts;
+    protected $custom_taxonomy_terms;
 
     /**
      * __construct
@@ -23,24 +25,16 @@ class PostController extends PageController {
      *
      * @param string $template
      */
-    public function __construct($template = 'single.twig') {
+    public function __construct($template = null, $post_type = null) {
+
+        $this->post_type = $post_type ? $post_type : get_post_type();
+
+        if(!$template) {
+            // try to guess the view for custom post types
+            $template = sprintf("single%s.twig", $this->post_type === 'post' ? '' : "-{$this->post_type}") ;
+        }
+
         parent::__construct($template);
-    }
-
-    /**
-     * get_context
-     *
-     * @return mixed
-     */
-    protected function get_context()
-    {
-        $this->context['post'] = $this->get_post();
-        $this->context['tags'] = $this->get_tags();
-        $this->context['categories'] = $this->get_categories();
-        $this->context['related_posts'] = $this->get_related_posts();
-        $this->context['author'] = $this->get_author();
-
-        return $this->context;
     }
 
     /**
@@ -70,6 +64,33 @@ class PostController extends PageController {
         }
 
         return $this->categories;
+    }
+
+    /**
+     * get_custom_taxonomies
+     *
+     */
+    protected function get_custom_taxonomy_terms() {
+
+        if(empty($this->custom_taxonomy_terms)) {
+
+            $taxonomies = get_object_taxonomies($this->post_type, 'objects');
+
+            foreach ($taxonomies as $slug => &$taxonomy) {
+
+                $terms = get_the_terms($this->get_post()->ID, $slug);
+
+                foreach ($terms as &$term) {
+                    $term = new \TimberTerm($term);
+                }
+
+                $name = Pluralizer::pluralize($slug);
+                $this->custom_taxonomy_terms[$name] = $terms;
+            }
+
+        }
+
+        return $this->custom_taxonomy_terms;
     }
 
     /**
@@ -107,6 +128,26 @@ class PostController extends PageController {
         }
 
         return $this->author;
+    }
+
+    /**
+     * get_context
+     *
+     * @return mixed
+     */
+    protected function get_context()
+    {
+        $this->context[$this->post_type] = $this->get_post();
+        $this->context['tags'] = $this->get_tags();
+        $this->context['categories'] = $this->get_categories();
+        $this->context['related_posts'] = $this->get_related_posts();
+        $this->context['author'] = $this->get_author();
+
+        foreach($this->get_custom_taxonomy_terms() as $name => &$terms) {
+            $this->context[$name] = $terms;
+        }
+
+        return $this->context;
     }
 
 }
