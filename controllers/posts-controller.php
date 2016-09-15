@@ -23,9 +23,9 @@ class PostsController extends BaseController {
      *
      * @param string $template
      */
-    public function __construct($template = 'archive.twig', $post_type = 'post') {
+    public function __construct($template = 'archive.twig', $post_type = null) {
 
-        $this->post_type = $post_type;
+        $this->post_type = $post_type ? $post_type : get_post_type();
 
         parent::__construct($template);
     }
@@ -42,6 +42,7 @@ class PostsController extends BaseController {
             'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
             'cat' => get_query_var('cat'),
             'tag_id' => get_query_var('tag_id'),
+            's' => get_query_var('s'),
         );
 
         if (empty($this->posts)) {
