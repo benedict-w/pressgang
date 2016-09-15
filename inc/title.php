@@ -77,7 +77,7 @@ class Title {
         }
 
         // add a page number if necessary
-        if ($paged >= 2 || $page >= 2) {
+        if (is_numeric($paged) && $paged >= 2 || is_numeric($page) && $page >= 2) {
             $title .= $separator . sprintf('%s', max($paged, $page));
         }
 
