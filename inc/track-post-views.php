@@ -89,7 +89,8 @@ class TrackPostViews {
             'posts_per_page' => $number ? $number : get_option('posts_per_page'),
             'meta_key' => self::COUNT_KEY,
             'orderby' => 'meta_value_num',
-            'order' => 'DESC'
+            'order' => 'DESC',
+
         ));
     }
 
