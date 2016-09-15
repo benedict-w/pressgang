@@ -3,126 +3,53 @@
 namespace PressGang;
 
 /**
- * Plugin Name: Mailchimp Embed
+ * Plugin Name: Pressgang Mailchimp Widget
  * Description: A simple widget that embeds a Mailchimp Signup form
  * Version: 0.1
  * Author: Ben Wallis
  * Author URI: http://www.benedict-wallis.com
  *
  */
-class MailchimpSignupWidget extends \WP_Widget {
+class MailchimpSignup extends \Pressgang\Widget {
+
+    protected $fields = array(
+        'title' => array(
+            'view' => 'admin.text.twig',
+            'class' => 'widefat',
+            'label' => "Title",
+        ),
+        'api_key' => array(
+            'view' => 'admin.text.twig',
+            'class' => 'widefat',
+            'label' => "API Key",
+        ),
+        'list_id' => array(
+            'view' => 'admin.text.twig',
+            'class' => 'widefat',
+            'label' => "List ID",
+        ),
+    );
+
 
     /**
+     * __construct
+     *
      * Constructor
      *
      */
     public function __construct() {
 
-        $widget_ops = array(
-            'classname' => 'mailchimp-signup-widget',
-            'description' => __('A simple widget that embeds a Mailchimp signup form', THEMENAME)
-        );
+        $this->description = __("A simple widget that embeds a Mailchimp signup form", THEMENAME);
 
-        $control_ops = array(
-            'id_base' => 'mailchimp-signup-widget'
-        );
+        add_action('wp_ajax_mailchimp_signup', array($this, 'signup'));
+        add_action('wp_ajax_nopriv_mailchimp_signup', array($this, 'signup'));
 
-        add_action('wp_ajax_mailchimp_signup', array('Enpact\MailchimpSignupWidget', 'signup'));
+        $this->fields['api_key'] = null;
+        $this->fields['list_id'] = null;
 
-        parent::__construct('mailchimp-signup-widget', __("Mailchimp Signup", THEMENAME), $widget_ops, $control_ops);
+        parent::__construct();
     }
 
-    /**
-     * widget
-     *
-     * @param array $args
-     * @param array $instance
-     */
-    function widget($args, $instance) {
-
-        extract( $args );
-
-        // widget heading
-        $title = apply_filters('widget_title', $instance['title'] );
-
-        ?>
-
-        <?php echo $before_widget; ?>
-        <div id="mailchimp">
-            <?php if ($title) : ?>
-                <h4><?php echo $before_title . $title . $after_title; ?></h4>
-            <?php endif; ?>
-            <form id="mailchimp-signup">
-                <div class="form-group">
-                    <label for="mailchimp-email" class="sr-only"><?php echo __("E-Mail", THEMENAME); ?></label>
-                    <input id="mailchimp-email" name="email" type="email" class="form-control" placeholder="<?php echo __("Newsletter Signup", THEMENAME); ?>" required>
-                    <button type="submit" class="btn"><?php echo __("Signup", THEMENAME); ?></button>
-                </div>
-                <p class="alert alert-success" style="display: none;"><?php echo __("Thanks! You are now subscribed to the newsletter.", THEMENAME); ?></p>
-                <p class="alert alert-danger" style="display: none;"><?php echo __("Sorry! There was a problem subscribing.", THEMENAME); ?></p>
-            </form>
-        </div>
-        <?php echo $after_widget;
-    }
-
-    /**
-     * Update Widget
-     *
-     * Saves the widget settings
-     *
-     * @param array $new_instance
-     * @param array $old_instance
-     * @return array
-     */
-    function update($new_instance, $old_instance) {
-
-        $instance = $old_instance;
-
-        // strip tags from title and name to remove HTML
-        $instance['title'] = strip_tags($new_instance['title']);
-        $instance['api_key'] = strip_tags($new_instance['api_key']);
-        $instance['list_id'] = strip_tags($new_instance['list_id']);
-
-        return $instance;
-    }
-
-    /**
-     * Form
-     *
-     * @param array $instance
-     * @return string|void
-     */
-    function form( $instance ) {
-
-        // default widget settings
-        $defaults = array(
-            'title' => __("Newsletter", THEMENAME),
-            'api_key' => '',
-            'list_id' => '',
-        );
-
-        $instance = wp_parse_args((array)$instance, $defaults); ?>
-
-        <!-- Widget Title -->
-        <p>
-            <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', THEMENAME); ?></label>
-            <input id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" value="<?php echo $instance['title']; ?>" style="width:100%;" />
-        </p>
-
-        <!-- API Key -->
-        <p>
-            <label for="<?php echo $this->get_field_id('api_key'); ?>"><?php _e('API Key:', THEMENAME); ?></label>
-            <input id="<?php echo $this->get_field_id('api_key'); ?>" name="<?php echo $this->get_field_name('api_key'); ?>" value="<?php echo $instance['api_key']; ?>" style="width:100%;" />
-        </p>
-
-        <!-- List ID -->
-        <p>
-            <label for="<?php echo $this->get_field_id('list_id'); ?>"><?php _e('List ID:', THEMENAME); ?></label>
-            <input id="<?php echo $this->get_field_id('list_id'); ?>" name="<?php echo $this->get_field_name('list_id'); ?>" value="<?php echo $instance['list_id']; ?>" style="width:100%;" />
-        </p>
-
-    <?php
-    }
 
     /**
      * Signup
@@ -247,4 +174,4 @@ class MailChimp
     }
 }
 
-register_widget('PressGang\MailchimpSignupWidget');
+register_widget('PressGang\MailchimpSignup');

@@ -13,7 +13,16 @@ class Widget extends \WP_Widget
     protected $description;
     protected $view;
     protected $title;
-    protected $fields = array('title');
+    protected $fields = array(
+        'title' => array(
+            'view' => 'admin.text.twig',
+            'class' => 'widefat',
+            'label' => "Title",
+        ),
+    );
+    protected $defaults = array(
+        'title' => "Title",
+    );
 
     /**
      * __construct
@@ -89,31 +98,17 @@ class Widget extends \WP_Widget
      */
     public function form($instance)
     {
-        $this->form_title($instance);
-    }
+        $instance = wp_parse_args((array)$instance, $this->defaults);
 
-    /**
-     * form_title
-     *
-     * @param $instance
-     */
-    protected function form_title($instance)
-    {
-        // TODO could setup config?
+        foreach($this->fields as $field => &$config) {
+            \Timber::render($config['view'], array(
+                'label' => __($config['label'], THEMENAME),
+                'id' => $this->get_field_id($field),
+                'name' => $this->get_field_name($field),
+                'value' => esc_attr($instance[$field]),
+                'class' => $config['class'],
+            ));
 
-
-        $defaults = array(
-            'title' => $this->title
-        );
-
-        $instance = wp_parse_args((array)$instance, $defaults);
-
-        \Timber::render('admin.text.twig', array(
-            'label' => __("Title", THEMENAME),
-            'id' => $this->get_field_id('title'),
-            'name' => $this->get_field_name('title'),
-            'value' => esc_attr($instance['title']),
-            'class' => 'widefat',
-        ));
+        }
     }
 }
