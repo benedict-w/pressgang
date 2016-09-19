@@ -54,8 +54,8 @@ class Sidebars
      */
     public function parse_args($args) {
         $defaults = array(
-            'before_sidebar' => '',
-            'after_sidebar' => '',
+            'before_widget' => '',
+            'after_widget' => '',
             'before_title' => '',
             'after_title' => '',
         );
