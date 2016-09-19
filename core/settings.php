@@ -34,7 +34,7 @@ return array (
      *
      * @var array
      */
-    'widgets' => array(),
+    'sidebars' => array(),
 
     /*
      * actions

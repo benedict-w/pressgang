@@ -39,6 +39,8 @@ class Shortcode {
 
         $args = shortcode_atts($this->defaults, $atts);
 
+        $this->context = $args;
+
         return \Timber::compile($this->template, $this->context);
     }
 

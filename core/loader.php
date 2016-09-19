@@ -29,10 +29,14 @@ class Loader {
             locate_template("core/{$key}.php", true, true);
         }
 
-        // load inc files
-        foreach (Config::get('inc') as $key=>&$file) {
-            $inc = preg_match('/.php/', $file) ? "inc/{$file}" : "inc/{$file}.php";
-            locate_template($inc, true, true);
+        // load inc, shortcodes, widgets files
+        foreach (['inc', 'shortcodes', 'widgets'] as &$folder) {
+            if ($config = Config::get($folder)) {
+                foreach ($config as &$file) {
+                    $inc = preg_match('/.php/', $file) ? "{$folder}/{$file}" : "{$folder}/{$file}.php";
+                    locate_template($inc, true, true);
+                }
+            }
         }
     }
 
