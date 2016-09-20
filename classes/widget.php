@@ -45,6 +45,10 @@ class Widget extends \WP_Widget
             $this->title = __(ucwords(preg_replace('/-/', ' ', $classname)), THEMENAME);
         }
 
+        if (!$this->description) {
+            $this->description = sprintf("%s Widget",  $this->title );
+        }
+
         $widget_ops = array(
             'classname' => $this->classname,
             'description' => $this->description,
@@ -63,11 +67,13 @@ class Widget extends \WP_Widget
     {
         extract($args);
 
-        \Timber::render($this->view, array(
+        $instance = array_merge($instance, array(
             'before_widget' => $before_widget,
             'after_widget' => $after_widget,
             'title' => "{$before_title}{$instance['title']}{$after_title}",
         ));
+
+        \Timber::render($this->view, $instance);
     }
 
     /**
@@ -81,7 +87,7 @@ class Widget extends \WP_Widget
     {
         $instance = $old_instance;
 
-        foreach($this->fields as &$field) {
+        foreach($this->fields as $field => &$config) {
             $instance[$field] = filter_var($new_instance[$field], FILTER_SANITIZE_STRING);
         }
 
