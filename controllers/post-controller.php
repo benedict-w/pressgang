@@ -2,6 +2,8 @@
 
 namespace PressGang;
 
+define ('POST_NO_RELATED_POSTS', 5);
+
 require_once 'page-controller.php';
 
 /**
@@ -16,7 +18,7 @@ class PostController extends PageController {
     protected $tags;
     protected $categories;
     protected $related_posts;
-    protected $custom_taxonomy_terms;
+    protected $custom_taxonomy_terms = array();
 
     /**
      * __construct
@@ -34,7 +36,7 @@ class PostController extends PageController {
             $template = sprintf("single%s.twig", $this->post_type === 'post' ? '' : "-{$this->post_type}") ;
         }
 
-        parent::__construct($template);
+        parent::__construct(array($template, 'single.twig'));
     }
 
     /**
@@ -78,14 +80,15 @@ class PostController extends PageController {
 
             foreach ($taxonomies as $slug => &$taxonomy) {
 
-                $terms = get_the_terms($this->get_post()->ID, $slug);
+                if ($terms = get_the_terms($this->get_post()->ID, $slug)) {
 
-                foreach ($terms as &$term) {
-                    $term = new \TimberTerm($term);
+                    foreach ($terms as &$term) {
+                        $term = new \TimberTerm($term);
+                    }
+
+                    $name = Pluralizer::pluralize($slug);
+                    $this->custom_taxonomy_terms[$name] = $terms;
                 }
-
-                $name = Pluralizer::pluralize($slug);
-                $this->custom_taxonomy_terms[$name] = $terms;
             }
 
         }
@@ -100,12 +103,13 @@ class PostController extends PageController {
      * @param $tags
      * @return array
      */
-    protected function get_related_posts($number = 5) {
+    protected function get_related_posts() {
 
         if(empty($this->related_posts)) {
-            $this->related_posts = get_posts(array(
+            $this->related_posts = \Timber::get_posts(array(
+                'post_type' => $this->post_type,
                 'category__in' => wp_get_post_categories($this->get_post()->ID),
-                'numberposts' => $number,
+                'numberposts' => POST_NO_RELATED_POSTS,
                 'post__not_in' => array($this->get_post()->ID),
                 'tag__in' => $this->get_tags(),
                 'ignore_sticky_posts' => true,
