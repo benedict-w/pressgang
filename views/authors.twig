@@ -1,0 +1,10 @@
+<div class="authors">
+    {% if title  %}
+    {{ before_title }}{{ title }}{{ after_title }}
+    {% endif %}
+    <ul>
+        {% for author in authors %}
+        <li><a href="{{ author.link }}">{{ author.name }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
