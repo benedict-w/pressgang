@@ -23,11 +23,22 @@ class PostsController extends BaseController {
      *
      * @param string $template
      */
-    public function __construct($template = 'archive.twig', $post_type = null) {
+    public function __construct($template = null, $post_type = null) {
 
         $this->post_type = $post_type ? $post_type : get_post_type();
 
-        parent::__construct($template);
+        if(!$template) {
+            // try to guess the view for custom post types
+
+            if (is_category()) {
+                $template = 'category.twig';
+            } else {
+                $template = sprintf("archive%s.twig", $this->post_type === 'post' ? '' : "-{$this->post_type}") ;
+            }
+
+        }
+
+        parent::__construct(array($template, 'archive.twig'));
     }
 
     /**
