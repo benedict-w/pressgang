@@ -82,15 +82,18 @@ class TrackPostViews {
      * @param int $number
      * @return \WP_Query
      */
-    public static function get_most_popular($post_type = 'post', $number = 0) {
+    public static function get_most_popular($post_type = 'post', $number = 0, $paged = 0) {
+
+        $paged = $paged ? $paged : 0;
+        $number = $number ? $number : get_option('posts_per_page');
 
         return \Timber::get_posts(array(
             'post_type' => $post_type,
-            'posts_per_page' => $number ? $number : get_option('posts_per_page'),
+            'posts_per_page' => $number,
             'meta_key' => self::COUNT_KEY,
             'orderby' => 'meta_value_num',
             'order' => 'DESC',
-
+            'paged' => $paged,
         ));
     }
 
