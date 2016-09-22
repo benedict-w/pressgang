@@ -19,8 +19,8 @@ class Authors extends \Pressgang\Widget {
 
         $authors = get_users(array(
             'orderby' => 'post_count',
-            'order'   => 'DESC',
-            'who'     => 'authors',
+            'order' => 'DESC',
+            'who' => 'authors',
         ));
 
         foreach ($authors as $i => &$author) {
