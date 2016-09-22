@@ -30,7 +30,6 @@ class MailchimpSignup extends \Pressgang\Widget {
         ),
     );
 
-
     /**
      * __construct
      *
@@ -43,9 +42,6 @@ class MailchimpSignup extends \Pressgang\Widget {
 
         add_action('wp_ajax_mailchimp_signup', array($this, 'signup'));
         add_action('wp_ajax_nopriv_mailchimp_signup', array($this, 'signup'));
-
-        $this->fields['api_key'] = null;
-        $this->fields['list_id'] = null;
 
         parent::__construct();
     }
