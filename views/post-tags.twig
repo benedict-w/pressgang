@@ -1,6 +1,6 @@
-{% if post.terms('tags').length %}
+{% if post.terms('tags') %}
 <nav class="tag-list">
-    <span>{{ __("Tags") }}</span>
+    <h5 class="tags-title">{{ __("Tags", THEMENAME) }}</h5>
     <ul class="fa-ul">
         {% for term in post.terms('tags') %}
         <li><i class="fa-li fa fa-tag"></i><a href="{{ term.link|e('html_attr') }}">{{ term.name|e }}</a></li>
