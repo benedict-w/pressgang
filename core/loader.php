@@ -30,7 +30,7 @@ class Loader {
         }
 
         // load inc, shortcodes, widgets files
-        foreach (['inc', 'shortcodes', 'widgets'] as &$folder) {
+        foreach (array('inc', 'shortcodes', 'widgets') as &$folder) {
             if ($config = Config::get($folder)) {
                 foreach ($config as &$file) {
                     $inc = preg_match('/.php/', $file) ? "{$folder}/{$file}" : "{$folder}/{$file}.php";
