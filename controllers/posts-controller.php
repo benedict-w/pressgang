@@ -56,6 +56,10 @@ class PostsController extends BaseController {
             's' => get_query_var('s'),
         );
 
+        if (is_author()) {
+            $args['author'] = get_queried_object_id();
+        }
+
         if (empty($this->posts)) {
             $this->posts = \Timber::get_posts($args);
         }
@@ -85,15 +89,7 @@ class PostsController extends BaseController {
     protected function get_page_title() {
 
         if (empty($this->page_title)) {
-            $this->page_title = post_type_archive_title('', false);
-
-            if (is_category()) {
-                $this->page_title = single_cat_title('', false);
-            } else if (is_tax()) {
-                $this->page_title = single_term_title('', false);
-            } else if (is_search()) {
-                $this->page_title = sprintf(__("Search results for '%s'", THEMENAME), get_search_query());
-            }
+            $this->page_title = get_the_archive_title();
         }
 
         return $this->page_title;
