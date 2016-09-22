@@ -111,7 +111,7 @@ class Widget extends \WP_Widget
                 'label' => __($config['label'], THEMENAME),
                 'id' => $this->get_field_id($field),
                 'name' => $this->get_field_name($field),
-                'value' => esc_attr($instance[$field]),
+                'value' => isset($instance[$field]) ? esc_attr($instance[$field]) : '',
                 'class' => $config['class'],
             ));
 
