@@ -9,7 +9,7 @@ class Gallery {
         add_filter('post_gallery', array('PressGang\Gallery', 'setup'), 10, 2);
 
         // add scripts to loader queue
-        Scripts::$scripts['magnific-popup'] = array(
+        Scripts::$scripts['magnific'] = array(
             'src' => get_template_directory_uri() . '/js/src/vendor/magnific-popup/jquery.magnific-popup.js',
             'deps' => array('jquery'),
             'ver' => '1.0.1',
@@ -17,7 +17,7 @@ class Gallery {
         );
 
         // load pressgang.js which inits the magnific popup
-        Scripts::$scripts['pressgang-magnific'] = array(
+        Scripts::$scripts['magnific-gallery'] = array(
             'src' => get_template_directory_uri() . '/js/src/custom/gallery.js',
             'deps' => array('magnific-popup'),
             'ver' => '0.1',
