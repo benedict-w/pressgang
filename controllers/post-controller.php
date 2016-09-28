@@ -80,7 +80,9 @@ class PostController extends PageController {
 
             foreach ($taxonomies as $slug => &$taxonomy) {
 
-                if ($terms = get_the_terms($this->get_post()->ID, $slug)) {
+                $terms = get_the_terms($this->get_post()->ID, $slug);
+
+                if (is_array($terms) && count($terms)) {
 
                     foreach ($terms as &$term) {
                         $term = new \TimberTerm($term);
