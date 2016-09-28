@@ -1,11 +1,13 @@
 (function($) {
 
-    /**
-     * Setup image popups
-     *
-     */
-    $('.image-popup').magnificPopup({
-        type: 'image'
+    $(function() {
+        /**
+         * Setup image popups
+         *
+         */
+        $('a.image-popup').magnificPopup({
+            type: 'image'
+        });
     });
 
 })(jQuery);
