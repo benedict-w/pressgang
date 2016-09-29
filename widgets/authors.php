@@ -1,6 +1,6 @@
 <?php
 
-namespace Pressgang;
+namespace Pressgang\Widget;
 
 /**
  * Class Authors
@@ -38,4 +38,4 @@ class Authors extends \Pressgang\Widget {
     }
 }
 
-register_widget('PressGang\Authors');
+register_widget('PressGang\Widget\Authors');
