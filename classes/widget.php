@@ -71,7 +71,12 @@ class Widget extends \WP_Widget
             'before_widget' => $before_widget,
             'after_widget' => $after_widget,
             'title' => "{$before_title}{$instance['title']}{$after_title}",
-        ));
+        ), $this->get_acf_fields($widget_id));
+
+        $class = new \ReflectionClass(get_called_class());
+        $name = Helper::camel_to_underscored($class->getShortName());
+
+        do_action("render_widget_{$name}");
 
         \Timber::render($this->view, $instance);
     }
@@ -116,5 +121,20 @@ class Widget extends \WP_Widget
             ));
 
         }
+    }
+
+    /**
+     * get_acf_fields
+     *
+     */
+    protected function get_acf_fields($widget_id) {
+
+        if(function_exists('get_fields')) {
+            if ($fields = get_fields("widget_{$widget_id}")) {
+                return $fields;
+            }
+        }
+
+        return array();
     }
 }
