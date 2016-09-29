@@ -46,6 +46,7 @@
   .list-inline;
   margin-bottom: 0;
   li {
+    margin-bottom: @grid-gutter-width;
     a {
       text-align: center;
       text-decoration: none;
@@ -233,6 +234,13 @@
       &.medium a {
         .icon-a(@color, @medium-color);
       }
+    }
+  }
+
+  /* medium devices (desktops, 992px and up) */
+  @media (min-width: @screen-md-min) {
+    li {
+      margin-bottom: 0;
     }
   }
 }
