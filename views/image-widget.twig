@@ -1,0 +1,8 @@
+{% set image = TimberImage(image) %}
+<div class="image-widget">
+    {% if title  %}<h4>{{ before_title }}{{ title }}{{ after_title }}</h4>{% endif %}
+    {% if link %}<a href="{{ link }}"{% if new %} target="_blank"{% endif %}>{% endif %}
+        <img src="{{ image.src|relative }}" alt="{{ caption|default(title)|default(image.caption) }}">
+        {% if caption %}<span>{{ caption }}</span>{% endif %}
+    {% if link %}</a>{% endif %}
+</div>
