@@ -1,6 +1,6 @@
 <?php
 
-namespace PressGang;
+namespace PressGang\Widget;
 
 /**
  * Plugin Name: Pressgang Mailchimp Widget
@@ -37,6 +37,13 @@ class MailchimpSignup extends \Pressgang\Widget {
      *
      */
     public function __construct() {
+
+        \Pressgang\Scripts::$scripts['mailchimp'] = array(
+            'src' => get_template_directory_uri() . '/js/src/custom/mailchimp.js',
+            'deps' => array('jquery'),
+            'ver' => '1.0',
+            'hook' => 'render_widget_mailchimp_signup',
+        );
 
         $this->description = __("A simple widget that embeds a Mailchimp signup form", THEMENAME);
 
@@ -78,6 +85,12 @@ class MailchimpSignup extends \Pressgang\Widget {
             $success = true;
         } else {
             $message = $response['error'];
+        }
+
+        if (!$success && empty($message)) {
+
+            $message = __("Sorry! There was an error in the newsletter configuration, contact the website admin", THEMENAME);
+
         }
 
         echo json_encode(array('success' => $success, 'message' => $message));
@@ -170,4 +183,4 @@ class MailChimp
     }
 }
 
-register_widget('PressGang\MailchimpSignup');
+register_widget('PressGang\Widget\MailchimpSignup');
