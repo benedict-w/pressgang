@@ -50,6 +50,7 @@ class AuthorController extends BaseController {
     protected function get_posts()
     {
         $args = array(
+            'author' => $this->get_author()->id,
             'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
         );
 
@@ -68,7 +69,7 @@ class AuthorController extends BaseController {
     protected function get_context()
     {
         $this->context['author'] = $this->get_author();
-        $this->context['posts'] = $this->get_author();
+        $this->context['posts'] = $this->get_posts();
 
         return $this->context;
     }

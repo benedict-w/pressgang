@@ -15,5 +15,18 @@
             {% endif %}
         </div>
     </div>
+    {% for post in posts %}
+        {% if loop.index0 is even %}
+            <div class="row">
+        {% endif %}
+        {%  block post_preview %}
+            <div class="col-md-6">
+                {% include 'post-preview.twig' %}
+            </div>
+        {% endblock %}
+        {% if loop.index0 is odd or loop.last %}
+            </div>
+        {% endif %}
+    {% endfor %}
 </div>
 {% endblock %}
