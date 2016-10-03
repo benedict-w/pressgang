@@ -27,7 +27,7 @@ class PostController extends PageController {
      *
      * @param string $template
      */
-    public function __construct($template = null, $post_type = null) {
+    public function __construct($post_type = null, $template = null) {
 
         $this->post_type = $post_type ? $post_type : get_post_type();
 
@@ -143,7 +143,7 @@ class PostController extends PageController {
      */
     protected function get_context()
     {
-        $this->context[$this->post_type] = $this->get_post();
+        $this->context['post'] = $this->context[$this->post_type] = $this->get_post();
         $this->context['tags'] = $this->get_tags();
         $this->context['categories'] = $this->get_categories();
         $this->context['related_posts'] = $this->get_related_posts();

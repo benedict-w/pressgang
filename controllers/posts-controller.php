@@ -23,7 +23,7 @@ class PostsController extends BaseController {
      *
      * @param string $template
      */
-    public function __construct($template = null, $post_type = null) {
+    public function __construct($post_type = null, $template = null) {
 
         $this->post_type = $post_type ? $post_type : get_post_type();
 
@@ -53,8 +53,11 @@ class PostsController extends BaseController {
             'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
             'cat' => get_query_var('cat'),
             'tag_id' => get_query_var('tag_id'),
-            's' => get_query_var('s'),
         );
+
+        if (is_search()) {
+            $args['s'] = get_query_var('s');
+        }
 
         if (is_author()) {
             $args['author'] = get_queried_object_id();
@@ -75,7 +78,8 @@ class PostsController extends BaseController {
     protected function get_context()
     {
         $this->context['page_title'] = $this->get_page_title();
-        $this->context['posts'] = $this->get_posts();
+        // TODO get from config
+        $this->context[Pluralizer::pluralize($this->post_type)] = $this->context['posts'] = $this->get_posts();
         $this->context['pagination'] = $this->get_pagination();
 
         return $this->context;
