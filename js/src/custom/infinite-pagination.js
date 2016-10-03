@@ -9,15 +9,15 @@
 
     $(document).ready(function($) {
 
+        var $spinner = $('<div id="infinite-pagination-spinner" class="spinner"></div>');
+
         $('.page-numbers').remove(); // remove the standard page links
 
         var page = 2;
         var fetched_all = false;
         var selector = '.infinite-container';
 
-        var $spinner = $('<div id="infinite-pagination-spinner" class="spinner"></div>');
-
-        $('.infinite-container:last-of-type').after($spinner);
+        $('.infinite-container:last').after($spinner);
 
         $(window).scroll(function() {
 

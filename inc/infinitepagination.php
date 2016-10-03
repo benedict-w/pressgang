@@ -90,7 +90,7 @@ class InfinitePagination {
      */
     public static function enqueue_scripts() {
 
-        if(is_archive()) {
+        if(is_home() || is_archive()) {
 
             global $template;
 
