@@ -51,7 +51,7 @@ class Filters {
      * single_page_layout_permalink
      *
      * Because the site uses a "single-page-layout", if a page has a parent with the template
-     * 'single_page.php', then we want to hashbang the child page links, instead of placing them in sub-folders.
+     * 'single_page.php', then we want to #hash the child page links, instead of placing them in sub-folders.
      *
      * @param $permalink
      * @param $id
