@@ -2,7 +2,9 @@
 <ul class="nav navbar-nav navbar-right languages-menu">
     {% if languages.length < 3 %}
         {% for language in languages if not language.active %}
-            <img src="{{ language.country_flag_url|e('html_attr') }}" title="{{ language.translated_name|e('html_attr') }}">&nbsp;{{ language.native_name|e }}
+            <a href="{{ language.url|e('html_attr') }}">
+                <img src="{{ language.country_flag_url|e('html_attr') }}" title="{{ language.translated_name|e('html_attr') }}">&nbsp;{{ language.native_name|e }}
+            </a>
         {% endfor %}
     {% else %}
         <li class="dropdown">
