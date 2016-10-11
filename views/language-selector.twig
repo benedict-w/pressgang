@@ -1,13 +1,26 @@
-<a id="language-selector" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-    {% for language in languages if language.active %}
-        <img src="{{ language.country_flag_url }}" title="{{ language.translated_name }}">&nbsp;{{ language.native_name }}
+{% if languages.length <= 2 %}
+    {% for language in languages if not language.active %}
+    <a id="language-selector" href="{{ language.url }}">
+        <img src="{{ language.country_flag_url }}" title="{{ language.translated_name }}">
+        <span>{{ language.native_name }}</span>
+    </a>
     {% endfor %}
-    <span class="caret"></span>
-</a>
-<ul class="dropdown-menu" aria-labelledby="language-switcher">
-    {% for language in languages %}
-        <li>
-            <a href="{{ language.url }}"><img src="{{ language.country_flag_url }}" title="{{ language.translated_name }}">&nbsp;{{ language.native_name }}</a>
-        </li>
-    {% endfor %}
-</ul>
+{% else %}
+    <a id="language-selector" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        {% for language in languages if language.active %}
+            <img src="{{ language.country_flag_url }}" title="{{ language.translated_name }}">
+            <span>{{ language.native_name }}</span>
+        {% endfor %}
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="language-switcher">
+        {% for language in languages %}
+            <li>
+                <a href="{{ language.url }}">
+                    <img src="{{ language.country_flag_url }}" title="{{ language.translated_name }}">
+                    <span>{{ language.native_name }}</span>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
