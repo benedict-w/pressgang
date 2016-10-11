@@ -1,24 +1,23 @@
 {% block navbar %}
-    <nav class="navbar navbar-default">
-        <div id="js-bootstrap-offcanvas" class="navbar-offcanvas navbar-offcanvas-touch">
-            <div class="container">
-                <!-- mobile menu -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle offcanvas-toggle" data-toggle="offcanvas" data-target="#js-bootstrap-offcanvas">
-                        <span class="sr-only">{{ __("Toggle Navigation", THEMENAME) }}</span>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <!-- mobile menu -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle offcanvas-toggle" data-toggle="offcanvas" data-target="#navbar-collapse">
+                    <span class="sr-only">{{ __("Toggle Navigation", THEMENAME) }}</span>
+                    <span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
-                    </button>
-                    {% include('brand.twig') %}
-                </div>
-                <!-- collapsible nav -->
-                <div id="navbar-collapse" class="collapse navbar-collapse">
-                    {% if function('function_exists', 'icl_get_languages') %}
-                        {% include 'navbar-language-selector.twig' with { languages: function('icl_get_languages') } %}
-                    {% endif %}
-                    {% include 'menu.twig' with { 'menu': menu_primary, 'class': 'nav navbar-nav primary' } %}
-                </div>
+                    </span>
+                </button>
+            </div>
+            <!-- collapsible nav -->
+            <div id="navbar-collapse" class="collapse navbar-collapse">
+                {% if function('function_exists', 'icl_get_languages') %}
+                    {% include 'navbar-language-selector.twig' with { languages: function('icl_get_languages') } %}
+                {% endif %}
+                {% include 'menu.twig' with { 'menu': menu_primary, 'class': 'nav navbar-nav primary' } %}
             </div>
         </div>
     </nav>
