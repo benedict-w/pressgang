@@ -125,7 +125,7 @@ class Avatar {
     private function get_avatar($id_or_email) {
         $user = get_user_by(is_numeric($id_or_email) ? 'id' : 'email', $id_or_email);
 
-        if (function_exists('get_field')) {
+        if (function_exists('get_field') && $user) {
             if ($avatar = get_field('avatar', "user_{$user->ID}")) {
                 return $avatar;
             }
