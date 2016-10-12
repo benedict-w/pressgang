@@ -67,7 +67,14 @@ class Filters {
                         // this is for the admin sample permalink
                         $permalink = str_replace('/%pagename%','#%pagename%', $permalink);
                     } else {
-                        $permalink = preg_replace('/\/' . preg_quote($post->post_name, '/') . '\/$/', "#{$post->post_name}", $permalink);
+                        $current_page = get_post();
+                        if ($current_page && _get_page_link($parent) === _get_page_link($current_page)) {
+                            // relative
+                            $permalink = "#{$post->post_name}";
+                        } else {
+                            // absolute
+                            $permalink = preg_replace('/\/' . preg_quote($post->post_name, '/') . '\/$/', "#{$post->post_name}", $permalink);
+                        }
                     }
                 }
             }
