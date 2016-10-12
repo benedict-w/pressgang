@@ -10,7 +10,7 @@
             if ($target.length) {
 
                 $('html, body').stop().animate({
-                    'scrollTop': $target.offset().top
+                    'scrollTop': $target.offset().top - $('.navbar-fixed-top').parent('header').outerHeight() - $('#wpadminbar').outerHeight()
                 }, 900, 'swing', function () {
                     window.location.hash = target;
                 });
