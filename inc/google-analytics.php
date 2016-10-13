@@ -5,13 +5,13 @@ namespace PressGang;
 class GoogleAnalytics {
 
     /**
-     * init
+     * __construct
      *
      * @return void
      */
-    public static function init() {
-        add_action('customize_register', array('PressGang\GoogleAnalytics', 'customizer'));
-        add_action('wp_head', array('PressGang\GoogleAnalytics', 'script'));
+    public function __construct() {
+        add_action('customize_register', array($this, 'customizer'));
+        add_action('wp_head', array($this, 'script'));
     }
 
     /**
@@ -19,11 +19,15 @@ class GoogleAnalytics {
      *
      * @param $wp_customize
      */
-    public static function customizer($wp_customize) {
+    public function customizer($wp_customize) {
 
-        $wp_customize->add_section( 'google' , array(
-            'title' => __("Google", THEMENAME),
-        ) );
+        if (!isset($wp_customize->sections['google'])) {
+            $wp_customize->add_section('google', array(
+                'title' => __("Google", THEMENAME),
+            ));
+        }
+
+        // analytics id
 
         $wp_customize->add_setting(
             'google-analytics-id',
@@ -33,10 +37,26 @@ class GoogleAnalytics {
             )
         );
 
-        $wp_customize->add_control( new \WP_Customize_Control( $wp_customize, 'google-analytics-id', array(
+        $wp_customize->add_control(new \WP_Customize_Control($wp_customize, 'google-analytics-id', array(
             'label' => __("Google Analytics ID", THEMENAME),
             'section'  => 'google',
-        ) ) );
+            'type' => 'text',
+        )));
+
+        // track logged in users?
+
+        $wp_customize->add_setting(
+            'track-logged-in',
+            array (
+                'default' => 0
+            )
+        );
+
+        $wp_customize->add_control(new \WP_Customize_Control($wp_customize, 'track-logged-in', array(
+            'label' => __("Track Logged In Users?", THEMENAME),
+            'section'  => 'google',
+            'type' => 'checkbox',
+        )));
     }
 
     /**
@@ -44,13 +64,18 @@ class GoogleAnalytics {
      *
      * @return void
      */
-    public static function script () {
-        if ($google_analytics_id = urlencode(get_theme_mod('google-analytics-id'))) {
-            \Timber::render('google-analytics.twig', array(
-                'google_analytics_id' => $google_analytics_id,
-            ));
+    public function script () {
+        $track_logged_in = get_theme_mod('track-logged-in');
+
+        if ($track_logged_in || (!$track_logged_in && !is_user_logged_in()) ) {
+
+            if ($google_analytics_id = urlencode(get_theme_mod('google-analytics-id'))) {
+                \Timber::render('google-analytics.twig', array(
+                    'google_analytics_id' => $google_analytics_id,
+                ));
+            }
         }
     }
 }
 
-GoogleAnalytics::init();
+new GoogleAnalytics();

@@ -53,26 +53,6 @@ class Customizer {
             'section'  => 'logo',
         ) ) );
 
-        // google
-
-        $wp_customize->add_section( 'google' , array(
-            'title' => __("Google", THEMENAME),
-            'priority' => 50,
-        ) );
-
-        $wp_customize->add_setting(
-            'google_verification_code',
-            array(
-                'default'   => '',
-                'sanitize_callback' => 'sanitize_text_field',
-            )
-        );
-
-        $wp_customize->add_control( new \WP_Customize_Control( $wp_customize, 'google_verification_code', array(
-            'label' => __("Google Webmaster Verification Code", THEMENAME),
-            'description' => sprintf(__("See %s"), 'https://goo.gl/kXrMha'),
-            'section'  => 'google',
-        ) ) );
     }
 
     /**
