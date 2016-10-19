@@ -38,6 +38,19 @@ class AddThis {
             'label' => __("AddThis ID", THEMENAME),
             'section'  => 'addthis',
         ) ) );
+
+        $wp_customize->add_setting(
+            'addthis-class',
+            array(
+                'default' => 'addthis_native_toolbox',
+                'sanitize_callback' => 'sanitize_text_field',
+            )
+        );
+
+        $wp_customize->add_control( new \WP_Customize_Control( $wp_customize, 'addthis-class', array(
+            'label' => __("AddThis Toolbox Class", THEMENAME),
+            'section'  => 'addthis',
+        ) ) );
     }
 
     /**
@@ -63,7 +76,7 @@ class AddThis {
     public static function button() {
         if ($addthis_id = get_theme_mod('addthis-id')) {
             wp_enqueue_script('addthis');
-            \Timber::render('addthis.twig');
+            \Timber::render('addthis.twig', array('addthis_class' => get_theme_mod('addthis-class')));
         }
     }
 }
