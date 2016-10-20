@@ -2,7 +2,7 @@
 -------------------------------------------------- */
 
 body {
-  padding-top: @collapse-header-height + @grid-gutter-width;
+  padding-top: @collapse-header-height;
   &.admin-bar {
     .navbar-fixed-top {
       margin-top: @collapse-wp-admin-bar-height;
@@ -28,10 +28,7 @@ body {
 }
 
 @media (min-width: @grid-float-breakpoint) {
-  body {
-    padding-top: @header-height + @grid-gutter-width;;
-  }
-  header {
+  #header {
     min-height: @header-height;
     .navbar {
       min-height: @header-height !important;
