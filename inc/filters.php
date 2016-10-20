@@ -67,8 +67,7 @@ class Filters {
                         // this is for the admin sample permalink
                         $permalink = str_replace('/%pagename%','#%pagename%', $permalink);
                     } else {
-                        $current_page = get_post();
-                        if ($current_page && _get_page_link($parent) === _get_page_link($current_page)) {
+                        if (!is_admin() && get_permalink($parent) === get_permalink()) {
                             // relative
                             $permalink = "#{$post->post_name}";
                         } else {
