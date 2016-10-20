@@ -10,7 +10,7 @@ namespace PressGang;
  */
 class InfinitePagination {
 
-    public static $posts_per_page = 4;
+    public $posts_per_page;
 
     const AJAX_ACTION = 'infinite_pagination';
 
@@ -18,13 +18,15 @@ class InfinitePagination {
      * init
      *
      */
-    public static function init() {
+    public function __construct() {
 
-        add_action(sprintf("wp_ajax_%s", self::AJAX_ACTION), array('PressGang\InfinitePagination', self::AJAX_ACTION)); // user logged in
-        add_action(sprintf("wp_ajax_nopriv_%s", self::AJAX_ACTION), array('PressGang\InfinitePagination', self::AJAX_ACTION)); // not logged in
+        $this->posts_per_page = get_option('posts_per_page');
 
-        add_action('wp_enqueue_scripts', array('PressGang\InfinitePagination', 'enqueue_scripts'));
-        add_action('pre_get_posts', array('PressGang\InfinitePagination', 'set_query_offset'));
+        add_action(sprintf("wp_ajax_%s", self::AJAX_ACTION), array($this, self::AJAX_ACTION)); // user logged in
+        add_action(sprintf("wp_ajax_nopriv_%s", self::AJAX_ACTION), array($this, self::AJAX_ACTION)); // not logged in
+
+        add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
+        add_action('pre_get_posts', array($this, 'set_query_offset'));
 
         // https://github.com/Foliotek/AjaxQ
         Scripts::$scripts['ajaxq'] = array(
@@ -50,7 +52,7 @@ class InfinitePagination {
      *
      * @return void
      */
-    public static function infinite_pagination()
+    public function infinite_pagination()
     {
         check_ajax_referer(self::AJAX_ACTION);
 
@@ -60,7 +62,7 @@ class InfinitePagination {
 
         $query = array(
             'paged' => $paged,
-            'posts_per_page' => self::$posts_per_page,
+            'posts_per_page' => $this->posts_per_page,
             'post_type' => $post_type,
             'post_status' => 'publish',
         );
@@ -88,7 +90,7 @@ class InfinitePagination {
      *
      * @return void
      */
-    public static function enqueue_scripts() {
+    public function enqueue_scripts() {
 
         if(is_home() || is_archive()) {
 
@@ -113,13 +115,13 @@ class InfinitePagination {
      *
      * @param $query
      */
-    public static function set_query_offset(&$query) {
+    public function set_query_offset(&$query) {
         if ($query->is_paged && $query->query_vars['paged'] > 1) {
             $offset = get_option('posts_per_page');
-            $page_offset = $offset + (($query->query_vars['paged'] - 2) * self::$posts_per_page);
-            $query->set('offset', $page_offset);
+            $page_offset = $offset + (($query->query_vars['paged'] - 2) * $this->posts_per_page);
+            // $query->set('offset', $page_offset + 1);
         }
     }
 }
 
-InfinitePagination::init();
+new InfinitePagination();
