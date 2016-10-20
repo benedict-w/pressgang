@@ -25,7 +25,17 @@ class PostsController extends BaseController {
      */
     public function __construct($post_type = null, $template = null) {
 
-        $this->post_type = $post_type ? $post_type : get_post_type();
+        global $wp_query;
+
+        if (!$post_type && isset($wp_query->query['post_type'])) {
+            $post_type = $wp_query->query['post_type'];
+        }
+
+        if (!$post_type && $temp = get_post_type()) {
+            $post_type = $temp;
+        }
+
+        $this->post_type = $post_type;
 
         if(!$template) {
             // try to guess the view for custom post types
