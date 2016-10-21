@@ -14,9 +14,9 @@ class Sitemap
      * __construct
      *
      */
-   public function __construct($change_frequency = 'daily', $priority = '0.5')
-   {
-       // set the default change frequency
+    public function __construct($change_frequency = 'daily', $priority = '0.5')
+    {
+        // set the default change frequency
         if(in_array($change_frequency, $this->frequencies)) {
             $this->change_frequency = $change_frequency;
         }
@@ -25,17 +25,17 @@ class Sitemap
         $this->priority = number_format($priority, 1);
 
         // update sitemap.xml when a post is saved
-        add_action("save_post", array($this, 'create_sitemap'), 10, 3);
+        add_action('save_post', array($this, 'create_sitemap'), 10, 3);
 
         // add a sitemap shortcode
         add_shortcode('sitemap', array($this, 'html_sitemap'));
 
-       // we need to redirect requests to individual sitemaps files on multisite installs
-       if (is_multisite()) {
-           // TODO - not working! add redirect manually
-           // add_action('init', array($this, 'add_rewrite'));
-       }
-   }
+        // we need to redirect requests to individual sitemaps files on multisite installs
+        if (is_multisite()) {
+            // TODO - not working! add redirect manually
+            // add_action('init', array($this, 'add_rewrite'));
+        }
+    }
 
     /**
      * Function to create sitemap.xml file in root directory
@@ -45,86 +45,62 @@ class Sitemap
     {
         // only create a site map if the post is new or no file exists
         if (wp_is_post_revision($post_id) || is_file($this->path())) {
-            return false;
+            // return false;
         }
 
-        $post_types = array('page', 'post');
+        $post_types = get_post_types(array(
+            'public' => true,
+            'publicly_queryable' => true,
 
-        $custom_post_types = Config::get('custom-post-types');
+        ));
 
-        // add custom post types that have pages
-        foreach ($custom_post_types as $post_type => $params) {
-            if ((!isset($params['query_var']) || $params['query_var'] == true) || (isset($params['query_var']) && $params['query_var'] == true)) {
-                $post_types[] = $post_type;
-            }
-        }
+        $nodes = array();
 
         $posts = \Timber::get_posts(array(
             'numberposts' => -1,
-            'orderby' => 'modified',
+            'orderby' => array('type', 'modified'),
             'post_type' => $post_types,
             'order' => 'DESC',
             'post_status' => 'publish',
         ));
 
-        foreach($posts as &$post) {
+        foreach ($posts as &$post) {
 
-            // see if a custom field has been set for the post change frequency
-            $change_frequency = $post->get_field('change_frequency');
+            $nodes[] = array(
+                'loc' => $post->link,
+                'lastmod' => get_post_modified_time('c', false, $post),
+                'changefreq' => $this->get_post_change_frequency($post),
+                'priority' => $this->get_priority($post),
+            );
+        }
 
-            if (!in_array($change_frequency, $this->frequencies)) {
+        $taxonomies = get_taxonomies(array(
+            'public' => true,
+            'publicly_queryable' => true,
+        ));
 
-                // otherwise determine a value for the change frequency based on the last modified param
-                $interval = date_diff(new \DateTime($post->post_modified), new \DateTime("now"));
+        $terms = \Timber::get_terms(array(
+            'taxonomy' => $taxonomies,
+            'hide_empty' => false, // do not hide empty terms
+        ));
 
-                $change_frequency = 'never';
+        foreach ($terms as &$term) {
 
-                if ($interval->y > 0) {
-                    $change_frequency = 'yearly';
-                } else if ($interval->m > 0) {
-                    $change_frequency = 'monthly';
-                } else if ($interval->d > 6) {
-                    $change_frequency = 'weekly';
-                } else if ($interval->d > 0) {
-                    $change_frequency = 'daily';
-                } else if ($interval->h > 0) {
-                    $change_frequency = 'hourly';
-                } else if ($interval->i > 0) {
-                    $change_frequency = 'always';
-                }
-            }
+            $lastest_post = $term->get_post(array(
+                'numberposts' => 1,
+            ));
 
-            $val = apply_filters('sitemap_post_change_frequency', $change_frequency, $post);
+            $nodes[] = array(
+                'loc' => get_term_link($term),
+                'lastmod' => get_post_modified_time('c', false, $lastest_post),
+                'changefreq' => $this->change_frequency, // TODO compare recent posts instead for terms
+                'priority' => $this->get_priority($term),
+            );
 
-            if (in_array($val, $this->frequencies)) {
-                $change_frequency = $val;
-            }
-
-            $index = array_search($change_frequency, $this->frequencies);
-
-            // set the most recent change_frequency
-            if ($index > array_search($this->change_frequency, $this->frequencies)) {
-                $this->change_frequency = $change_frequency;
-            }
-
-            $post->change_frequency = $change_frequency;
-
-            // see if a custom field has been set for the post change frequency
-            $priority = $post->get_field('priority');
-
-            if (!$priority) {
-                // otherwise set it to default
-                $priority = $this->priority;
-            }
-
-            $post->priority = number_format(apply_filters('sitemap_post_priority', $priority, $post), 1);
         }
 
         $data = array(
-            'home_url' => home_url('/'),
-            'change_frequency' => $this->change_frequency,
-            'priority' => $this->priority,
-            'posts' => $posts,
+            'nodes' => $nodes,
         );
 
         $sitemap = \Timber::compile('sitemap-xml.twig', $data);
@@ -136,6 +112,78 @@ class Sitemap
             fclose($fp);
         }
     }
+
+    /**
+     * get_post_change_frequency
+     *
+     * @param $post
+     * @return string
+     */
+    private function get_post_change_frequency ($post) {
+
+        // see if a custom field has been set for the post change frequency
+        $change_frequency = $post->get_field('change_frequency');
+
+        if (!in_array($change_frequency, $this->frequencies)) {
+
+            // otherwise determine a value for the change frequency based on the last modified param
+            $interval = date_diff(new \DateTime($post->post_modified), new \DateTime("now"));
+
+            $change_frequency = 'never';
+
+            if ($interval->y > 0) {
+                $change_frequency = 'yearly';
+            } else if ($interval->m > 0) {
+                $change_frequency = 'monthly';
+            } else if ($interval->d > 6) {
+                $change_frequency = 'weekly';
+            } else if ($interval->d > 0) {
+                $change_frequency = 'daily';
+            } else if ($interval->h > 0) {
+                $change_frequency = 'hourly';
+            } else if ($interval->i > 0) {
+                $change_frequency = 'always';
+            }
+        }
+
+        $val = apply_filters('sitemap_post_change_frequency', $change_frequency, $post);
+
+        if (in_array($val, $this->frequencies)) {
+            $change_frequency = $val;
+        }
+
+        $index = array_search($change_frequency, $this->frequencies);
+
+        // set the most recent change_frequency
+        if ($index > array_search($this->change_frequency, $this->frequencies)) {
+            $this->change_frequency = $change_frequency;
+        }
+
+        return $change_frequency;
+    }
+
+    /**
+     * get_priority
+     *
+     * Check the $object (WP_Post or WP_Term) for a custom priority (check ACF)
+     *
+     * @param $object
+     */
+    private function get_priority($object) {
+
+        // see if a custom field has been set for the post change frequency
+        $priority = $object->get_field('priority');
+
+        if (!$priority) {
+            // otherwise set it to default
+            $priority = $this->priority;
+        }
+
+        $priority = number_format(apply_filters('sitemap_post_priority', $priority, $object), 1);
+
+        return $priority;
+    }
+
 
     /**
      * html_sitemap
