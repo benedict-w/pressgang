@@ -58,23 +58,8 @@ class PostsController extends BaseController {
      */
     protected function get_posts()
     {
-        $args = array(
-            'post_type' => $this->post_type,
-            'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
-            'cat' => get_query_var('cat'),
-            'tag_id' => get_query_var('tag_id'),
-        );
-
-        if (is_search()) {
-            $args['s'] = get_query_var('s');
-        }
-
-        if (is_author()) {
-            $args['author'] = get_queried_object_id();
-        }
-
         if (empty($this->posts)) {
-            $this->posts = \Timber::get_posts($args);
+            $this->posts = \Timber::get_posts();
         }
 
         return $this->posts;
