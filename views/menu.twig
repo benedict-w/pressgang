@@ -1,14 +1,15 @@
 <!-- menu -->
+{% set dropdown = dropdown|default(true) %}
 <ul class="menu {{ class|e('html_attr') }}">
     {% for item in menu.get_items %}
         <li class="{{ item.classes|join(' ')|e('html_attr') }}{% if item.current %} active{% endif %}{% if item.get_children %} dropdown{% endif %}">
             <a href="{{ item.get_link|e('html_attr') }}" target="{{ item.is_external ? '_blank' : '_self' }}" {% if item.get_children %} class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" {% endif %}>{{ item.title|e }}
-                {% if item.get_children %}
+                {% if item.get_children and has_dropdown %}
                     <span class="caret"></span>
                 {% endif %}
             </a>
             {% if item.get_children %}
-                <ul class="sub-menu{% if 'nav' in class %} dropdown-menu{% endif %}">
+                <ul class="sub-menu{% if 'nav' in class and dropdown %} dropdown-menu{% endif %}">
                     {% for child in item.get_children %}
                         <li class="{{ item.classes | join(' ') }}">
                             <a href="{{ child.get_link|e('html_attr') }}" target="{{ item.is_external ? '_blank' : '_self' }}">{{ child.title|e }}</a>
