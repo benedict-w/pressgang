@@ -39,7 +39,10 @@ class Site extends \TimberSite
         }
 
         // google webmaster site verification code
-        $this->google_site_verification = get_theme_mod('google_verification_code');
+        $this->google_verification_code = get_theme_mod('google_verification_code');
+
+        // bing webmaster site verification code
+        $this->bing_verification_code = get_theme_mod('bing_verification_code');
 
         add_filter('timber_context', array($this, 'add_to_context'));
         add_filter('get_twig', array($this, 'add_to_twig'));
