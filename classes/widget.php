@@ -65,13 +65,7 @@ class Widget extends \WP_Widget
      */
     public function widget($args, $instance)
     {
-        extract($args);
-
-        $instance = array_merge($instance, array(
-            'before_widget' => $before_widget,
-            'after_widget' => $after_widget,
-            'title' => "{$before_title}{$instance['title']}{$after_title}",
-        ), $this->get_acf_fields($widget_id));
+        $instance = $this->get_instance($args, $instance);
 
         $class = new \ReflectionClass(get_called_class());
         $name = Helper::camel_to_underscored($class->getShortName());
@@ -79,6 +73,27 @@ class Widget extends \WP_Widget
         do_action("render_widget_{$name}");
 
         \Timber::render($this->view, $instance);
+    }
+
+    /**
+     * get_instance
+     *
+     * @param $args
+     * @param $instance
+     * @return array
+     */
+    protected function get_instance($args, $instance) {
+
+        extract($args);
+
+        $instance = array_merge($instance, array(
+            'before_widget' => $before_widget,
+            'after_widget' => $after_widget,
+            'before_title' => $before_title,
+            'after_title' => $after_title,
+        ), $this->get_acf_fields($widget_id));
+
+        return $instance;
     }
 
     /**
