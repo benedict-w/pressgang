@@ -12,6 +12,9 @@
     {% if site.google_site_verification %}
     <meta name="google-site-verification" content="{{ site.google_site_verification|e('html_attr') }}" />
     {% endif %}
+    {% if site.bing_site_verification %}
+    <meta name="msvalidate.01" content="{{ site.bing_site_verification|e('html_attr') }}" />
+    {% endif %}
     <link rel="pingback" href="{{ site.pingback_url|e('html_attr') }}" />
     <!-- wp head -->
     {{ wp_head }}
