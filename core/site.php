@@ -93,6 +93,17 @@ class Site extends \TimberSite
         // check for custom field
         $description = wptexturize($post->get_field('meta_description'));
 
+        if (is_tax()) {
+            if ($temp = term_description(get_queried_object(), get_query_var('taxonomy'))) {
+                $description = $temp;
+            }
+        }
+        elseif(is_post_type_archive()) {
+            if ($temp = get_the_archive_description()) {
+                $description = $temp;
+            }
+        }
+
         // else use preview
         if (empty($description)) {
             $description = str_replace('', "'", $post->get_preview(40, true, false, true));
@@ -103,7 +114,7 @@ class Site extends \TimberSite
             $description = get_bloginfo('description', 'raw');
         }
 
-        $description = esc_attr($description);
+        $description = esc_attr(wp_strip_all_tags($description));
 
         // limit to SEO recommended length
         if (strlen($description) > 155) {
