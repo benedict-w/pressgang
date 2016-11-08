@@ -38,7 +38,7 @@ class CustomTaxonomies
         foreach(static::$custom_taxonomies as $key=>&$options) {
 
             // TODO DRY - also in custom-post-types.php
-            $name = __(ucfirst($key), THEMENAME);
+            $name = __(ucwords(str_replace('_', ' ', $key)), THEMENAME);
             $plural = Pluralizer::pluralize($name);
 
             $defaults = array(
