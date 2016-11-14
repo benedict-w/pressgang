@@ -50,6 +50,8 @@ abstract class BaseController {
 
         $this->context = apply_filters("{$class}_context", $this->context);
 
+        do_action("render_{$class}");
+
         \Timber::render($this->template, $this->context);
     }
 }
