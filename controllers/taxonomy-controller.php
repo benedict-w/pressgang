@@ -2,8 +2,6 @@
 
 namespace PressGang;
 
-require_once 'base-controller.php';
-
 /**
  * Class TaxonomyController
  *
@@ -25,7 +23,7 @@ class TaxonomyController extends PostsController {
     }
 
     /**
-     * get_post
+     * get_taxonomy
      *
      * @return mixed
      */
