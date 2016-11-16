@@ -49,6 +49,8 @@ class Site extends \TimberSite
 
         add_filter('meta_description', array('PressGang\Site', 'meta_description'));
 
+        add_filter('wp_headers', array($this, 'add_ie_header'));
+
         parent::__construct($site_name_or_id);
     }
 
@@ -123,6 +125,17 @@ class Site extends \TimberSite
         }
 
         return $description;
+    }
+
+    /**
+     * force_ie_headers
+     *
+     * see - http://stackoverflow.com/questions/14198594/bad-value-x-ua-compatible-for-attribute-http-equiv-on-element-meta
+     */
+    public function add_ie_header() {
+        if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)) {
+            header('X-UA-Compatible: IE=edge,chrome=1');
+        }
     }
 }
 
