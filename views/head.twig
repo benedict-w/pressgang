@@ -14,6 +14,9 @@
     <meta name="msvalidate.01" content="{{ site.bing_verification_code|e('html_attr') }}" />
     {% endif %}
     <link rel="pingback" href="{{ site.pingback_url|e('html_attr') }}" />
+    {% if WEB_AUTHOR %}
+    <meta name="web_author" content="{{ WEB_AUTHOR }}" />
+    {% endif %}
     <!-- wp head -->
     {{ wp_head }}
 </head>
