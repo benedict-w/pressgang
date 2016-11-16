@@ -1,12 +1,11 @@
 <head {{ site.language_attributes }}>
-    <meta charset="{{ site.charset|e('html_attr') }}" />
     <title>{{ function('wp_title', '|', false, 'right') }}</title>
     <meta name="description" content="{{ meta_description() }}" />
     {% if site.keywords %}
     <meta name="keywords" content="{{ site.keywords|e('html_attr') }}" />
     {% endif %}
     <link rel="stylesheet" href="{{ theme.link|e('html_attr') }}/css/{{ site.stylesheet|e('html_attr') }}" media="screen" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset={{ site.charset|e('html_attr') }}" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% if site.google_verification_code %}
