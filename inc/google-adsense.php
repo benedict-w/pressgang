@@ -12,7 +12,6 @@ class Adsense {
     public function __construct() {
         add_action('customize_register', array($this, 'customizer'));
         add_action('wp_head', array($this, 'script'), 500);
-        add_action('wp_head', array($this, 'add_page_level_ads'), 500);
     }
 
     /**
