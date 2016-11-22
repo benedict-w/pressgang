@@ -4,7 +4,7 @@
     {% if site.keywords %}
     <meta name="keywords" content="{{ site.keywords|e('html_attr') }}" />
     {% endif %}
-    <link rel="stylesheet" href="{{ theme.link|e('html_attr') }}/css/{{ site.stylesheet|e('html_attr') }}" media="screen" />
+    <link rel="stylesheet" href="{{ site.stylesheet|e('html_attr') }}" media="all" />
     <meta http-equiv="Content-Type" content="text/html; charset={{ site.charset|e('html_attr') }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% if site.google_verification_code %}

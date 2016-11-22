@@ -23,7 +23,8 @@ class Site extends \TimberSite
      */
     function __construct($site_name_or_id = null)
     {
-        $this->stylesheet = get_theme_mod('stylesheet', 'styles.css');
+        $stylesheet = get_theme_mod('stylesheet', 'styles.css');
+        $this->stylesheet = sprintf("%s/css/%s?v=%s", get_stylesheet_directory_uri(), $stylesheet, filemtime(get_stylesheet_directory() . "/css/{$stylesheet}"));
 
         // add custom params
         $this->keywords = apply_filters('site_keywords', implode(', ', array_map(function ($tag) {
