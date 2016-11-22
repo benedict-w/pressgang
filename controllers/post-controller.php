@@ -3,7 +3,7 @@
 namespace PressGang;
 
 if (!defined('POST_NO_RELATED_POSTS')) {
-    define('POST_NO_RELATED_POSTS', 5);
+    define('POST_NO_RELATED_POSTS', 4);
 }
 
 require_once 'page-controller.php';
@@ -113,33 +113,31 @@ class PostController extends PageController {
 
             $id = $this->get_post()->ID;
 
-            // TODO incorporate custom taxonomies
-
-            $terms = wp_get_object_terms($id, 'category', array('fields' => 'ids'));
-
             $args = array(
                 'post_type' => $this->post_type,
-                'tax_query' => array(
-                    'relation' => 'AND',
-                    array(
-                        'taxonomy' => 'category',
-                        'field' => 'term_id',
-                        'terms' => count($terms) ? $terms[0] : array(),
-                        'operator' => 'IN',
-                        'include_children' => false,
-                    ),
-                    array(
-                        'taxonomy' => 'tag',
-                        'field' => 'term_id',
-                        'terms' => wp_get_object_terms($id, 'tag', array('fields' => 'ids')),
-                        'operator' => 'IN',
-                    )
-                ),
                 'orderby' => 'rand',
                 'numberposts' => POST_NO_RELATED_POSTS,
                 'post__not_in' => array($id),
                 'ignore_sticky_posts' => true,
+                'tax_query' => array(
+                    'relation' => 'AND',
+                ),
             );
+
+            $taxonomies = get_object_taxonomies($this->post_type, 'objects');
+
+            foreach($taxonomies as &$taxonomy) {
+
+                $terms = wp_get_object_terms($id, $taxonomy->name, array('fields' => 'ids'));
+
+                $args['tax_query'][] = array(
+                    'taxonomy' => $taxonomy->name,
+                    'field' => 'term_id',
+                    'terms' => $terms,
+                    'operator' => 'IN',
+                    'include_children' => false,
+                );
+            }
 
             $this->related_posts = \Timber::get_posts($args);
 
