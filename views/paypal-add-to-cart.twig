@@ -1,0 +1,15 @@
+<form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post" >
+    <input type="hidden" name="cmd" value="_cart">
+    <input type="hidden" name="business" value="{{ paypal_account.email|e('html_attr') }}">
+    <input type="hidden" name="lc" value="{{ paypal_account.location|default('GB')|e('html_attr') }}">
+    <input type="hidden" name="item_name" value="{{ paypal_item.title|e('html_attr') }}">
+    <input type="hidden" name="item_number" value="{{ paypal_item.id|e('html_attr') }}">
+    <input type="hidden" name="amount" value="{{ paypal_item.get_field('paypal_item_amount')|e('html_attr') }}">
+    <input type="hidden" name="currency_code" value="{{ paypal_account.currency|e('html_attr') }}">
+    <input type="hidden" name="button_subtype" value="products">
+    <input type="hidden" name="no_note" value="0">
+    <input type="hidden" name="add" value="1">
+    <input type="hidden" name="bn" value="PP-ShopCartBF:btn_cart_LG.gif:NonHostedGuest">
+    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_cart_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+    <img alt="Paypal" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>

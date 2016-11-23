@@ -1,0 +1,18 @@
+<div class="paypal-item" itemscope itemtype="http://schema.org/Product">
+    {% if paypal_item.thumbnail %}
+        <a href="{{ paypal_item.thumbnail.src }}" class="image-popup">
+            <img itemprop="image" src="{{ paypal_item.thumbnail.src|resize(260)|relative }}" class="paypal-item-thumbnail" alt="{{ paypal_item.title|e('html_attr') }}">
+        </a>
+    {% endif %}
+    <div class="paypal-item-caption">
+        <h3 itemprop="name" class="paypal-item-title">{{ paypal_item.title }}</h3>
+        <div itemprop="description" class="paypal-item-description">
+            {{ paypal_item.content }}
+        </div>
+    </div>
+    <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <span itemprop="price" class="paypal-item-amount">{{ paypal_item.get_field('paypal_item_amount')|number_format(2, '.', ',') }}</span> {{ paypal_account.currency }}
+        <meta itemprop="priceCurrency" content="{{ paypal_account.currency }}" />
+    </span>
+    {% include 'paypal-add-to-cart.twig' %}
+</div>
