@@ -16,14 +16,14 @@ class CustomTaxonomies
      *
      * @var array
      */
-    public static $custom_taxonomies = array();
+    public $custom_taxonomies = array();
 
     /**
      * __construct
      *
      */
     public function __construct() {
-        add_action('init', array('PressGang\CustomTaxonomies', 'init'));
+        add_action('init', array($this, 'init'), 5);
     }
 
     /**
@@ -32,10 +32,10 @@ class CustomTaxonomies
      * Register theme widgets, filter with 'widget_{$key}'
      *
      */
-    public static function init() {
-        self::$custom_taxonomies = Config::get('custom-taxonomies');
+    public function init() {
+        $this->custom_taxonomies = Config::get('custom-taxonomies');
 
-        foreach(static::$custom_taxonomies as $key=>&$options) {
+        foreach($this->custom_taxonomies as $key=>&$options) {
 
             // TODO DRY - also in custom-post-types.php
             $name = __(ucwords(str_replace('_', ' ', $key)), THEMENAME);
