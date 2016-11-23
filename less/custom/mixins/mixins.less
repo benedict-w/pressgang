@@ -252,6 +252,14 @@
   .hyphens();
 }
 
+.vertical-center(@position: relative) {
+  position: @position;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
 /* Responsive Embed (e.g. for Vimeo, Youtube, etc.)
 -------------------------------------------------- */
 .embed-container() {
