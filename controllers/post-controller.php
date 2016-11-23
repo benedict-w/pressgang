@@ -29,7 +29,7 @@ class PostController extends PageController {
      *
      * @param string $template
      */
-    public function __construct($post_type = null, $template = null) {
+    public function __construct($template = null, $post_type = null) {
 
         $this->post_type = $post_type ? $post_type : get_post_type();
 

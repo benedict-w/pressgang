@@ -23,7 +23,7 @@ class PostsController extends BaseController {
      *
      * @param string $template
      */
-    public function __construct($post_type = null, $template = null) {
+    public function __construct($template = null, $post_type = null) {
 
         global $wp_query;
 
