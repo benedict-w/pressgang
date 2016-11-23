@@ -1,7 +1,17 @@
+{% set author = (author is null) ? true : author %}
+{% set time = (time is null) ? true : time %}
+{% set category = (category is null) ? true : category %}
+
 <nav class="post-meta">
     <ul class="fa-ul">
+        {% if author %}
         <li class="post-author"><i class="fa fa-li fa-user"></i> {{ __("By", THEMENAME) }} <a href="{{ post.author.path|relative|e('html_attr') }}">{{ post.author.name|e }}</a></li>
+        {% endif %}
+        {% if time %}
         <li class="post-time"><i class="fa fa-li fa-clock-o"></i> {{ __("On", THEMENAME) }} <time datetime="{{ post.post_date|date('c') }}">{{ post.post_date|date }}</time></li>
-        <li class="post-category"><i class="fa fa-li fa-tag"></i> {{ __("In", THEMENAME) }} {{ function('the_category')|e }}</li>
+        {% endif %}
+        {% if category %}
+        <li class="post-category"><i class="fa fa-li fa-tag"></i> {{ __("In", THEMENAME) }}&nbsp;{{ function('the_category')|e }}</li>
+        {% endif %}
     </ul>
 </nav>

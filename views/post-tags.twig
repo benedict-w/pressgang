@@ -1,8 +1,11 @@
-{% if post.terms('tags') %}
+{% set taxonomy = taxonomy ?: 'tag' %}
+{% set title = title ?: 'Tags' %}
+
+{% if post.terms(taxonomy) %}
 <nav class="tag-list">
-    <h5 class="tags-title">{{ __("Tags", THEMENAME) }}</h5>
+    <h5 class="tags-title">{{ __(title, THEMENAME) }}</h5>
     <ul class="fa-ul">
-        {% for term in post.terms('tags') %}
+        {% for term in post.terms(taxonomy) %}
         <li><i class="fa-li fa fa-tag"></i><a href="{{ term.link|e('html_attr') }}">{{ term.name|e }}</a></li>
         {% endfor %}
     </ul>

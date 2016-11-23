@@ -22,7 +22,7 @@
                 </h2>
                 {% if slide.content %}
                     <div class="slick-content">
-                        {{ slide.content }}
+                        {{ slide.get_preview() }}
                     </div>
                 {% endif %}
             </div>
