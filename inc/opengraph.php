@@ -33,26 +33,19 @@ class OpenGraph {
 
         $type = is_author() ? 'profile' : (is_single() ? 'article' : 'website');
 
-        $description = get_bloginfo('description', 'display');
+        $description = Site::meta_description();
 
         if (is_tax()) {
             $url = get_term_link(get_query_var('term'), get_query_var('taxonomy'));
             $title = single_term_title('', false);
-            if ($temp = term_description(get_queried_object(), get_query_var('taxonomy'))) {
-                $description = $temp;
-            }
         }
         elseif(is_post_type_archive()) {
             $url = get_post_type_archive_link(get_query_var('post_type'));
             $title = get_the_archive_title();
-            if ($temp = get_the_archive_description()) {
-                $description = $temp;
-            }
         }
         else {
             $url = get_permalink();
             $title = get_the_title();
-            $description = $post->get_preview(60, true, false, true);
         }
 
         $url = rtrim(esc_url(apply_filters('og_url', $url)));
