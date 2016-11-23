@@ -1,4 +1,4 @@
-{% if languages.length <= 2 %}
+{% if languages|length <= 2 %}
     {% for language in languages if not language.active %}
     <a id="language-selector" href="{{ language.url }}">
         <img src="{{ language.country_flag_url }}" title="{{ language.translated_name }}">
