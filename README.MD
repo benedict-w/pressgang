@@ -17,3 +17,7 @@ Pressgang is designed as a Wordpress _parent theme_ that acts as a library for y
 The best way to get up and running quickly is using the [pressgang-child](https://github.com/benedict-w/pressgang-child) repository which has a [grunt-init template](http://gruntjs.com/project-scaffolding) for creating a Pressgang ready child theme.
 
 Otherwise clone this repo `git clone https://github.com/benedict-w/pressgang.git` and create your own child theme, or use the composer package: https://packagist.org/packages/benedict-w/pressgang
+
+For more documentation see the Wiki:
+
+https://github.com/benedict-w/pressgang/wiki
