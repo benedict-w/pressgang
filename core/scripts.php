@@ -9,7 +9,10 @@ class Scripts {
      *
      * @var array|mixed
      */
-    public static $scripts;
+    public static $scripts = array();
+
+    public static $async = array();
+    public static $defer = array();
 
     /**
      * __construct
@@ -22,6 +25,7 @@ class Scripts {
     public function __construct() {
         static::$scripts = Config::get('scripts');
         add_action('init', array('PressGang\Scripts', 'register_scripts'));
+        add_filter('script_loader_tag', array('PressGang\Scripts', 'add_script_attrs'), 10, 3);
     }
 
     /**
@@ -40,6 +44,8 @@ class Scripts {
                 'ver' => false,
                 'in_footer' => false,
                 'hook' => 'wp_enqueue_scripts',
+                'defer' => false,
+                'async' => false,
             );
 
             if (is_string($args)) {
@@ -64,7 +70,36 @@ class Scripts {
                     wp_enqueue_script($args['handle']);
                 });
             }
+
+            if ($args['defer']) {
+                static::$defer[] = $key;
+            }
+
+            if ($args['async']) {
+                static::$async[] = $key;
+            }
+
         }
+    }
+
+    /**
+     * add_defer
+     *
+     * @param $tag
+     * @param $handle
+     * @return mixed
+     */
+    public static function add_script_attrs($tag, $handle)
+    {
+        if (in_array($handle, Scripts::$defer)) {
+            $tag = str_replace(' src', ' defer="defer" src', $tag);
+        }
+
+        if (in_array($handle, Scripts::$async)) {
+            $tag = str_replace(' src', ' async="async" src', $tag);
+        }
+
+        return $tag;
     }
 
 }
