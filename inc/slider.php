@@ -42,6 +42,7 @@ class Slider extends CustomPostType {
             'rewrite'              => false,
             'query_var'            => false,
             'can_export'           => true,
+            'menu_icon'            => 'dashicons-images-alt2',
         );
 
         parent::__construct($post_type, $args);
