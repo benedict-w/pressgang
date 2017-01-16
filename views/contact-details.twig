@@ -1,28 +1,31 @@
-<ul class="fa-ul">
-    {% if name %}
-    <li><span class="fa-li fa fa-globe"></span><h4>{{ name }}</h4></li>
-    {% endif %}
-    {% if address %}
-    <li><span class="fa-li fa fa-map-icon"></span>
-        <address>
-            {% for line in address %}
-                {{ line.line }}{% if not loop.last %}<br>{% endif %}
-            {% endfor %}
-        </address>
-    </li>
-    {% endif %}
-    {% for contact_number in contact_numbers %}
-    <li><span class="fa-li fa {% if contact_number.type == 'fax' %}fa-fax{% else %}fa-phone{% endif %}"></span>
-        {% if contact_number.callto %}
-        <a href="callto:{{ contact_number.callto }}">
+<div class="contact-details">
+    {{ before_title }}{{ __(title, THEMENAME) }}{{ after_title }}
+    <ul class="fa-ul">
+        {% if name %}
+        <li><span class="fa-li fa fa-globe"></span><h4>{{ name }}</h4></li>
         {% endif %}
-            {{ contact_number.number }}
-        {% if contact_number.callto %}
-        </a>
+        {% if address %}
+        <li><span class="fa-li fa fa-map-icon"></span>
+            <address>
+                {% for line in address %}
+                    {{ line.line }}{% if not loop.last %}<br>{% endif %}
+                {% endfor %}
+            </address>
+        </li>
         {% endif %}
-    </li>
-    {% endfor %}
-    {% for email in email_addresses %}
-    <li><span class="fa-li fa fa-envelope-o"></span><a href="mailto:{{ email.email }}">{{ email.email }}</a></li>
-    {% endfor %}
-</ul>
+        {% for contact_number in contact_numbers %}
+        <li><span class="fa-li fa {% if contact_number.type == 'fax' %}fa-fax{% else %}fa-phone{% endif %}"></span>
+            {% if contact_number.callto %}
+            <a href="callto:{{ contact_number.callto }}">
+            {% endif %}
+                {{ contact_number.number }}
+            {% if contact_number.callto %}
+            </a>
+            {% endif %}
+        </li>
+        {% endfor %}
+        {% for email in email_addresses %}
+        <li><span class="fa-li fa fa-envelope-o"></span><a href="mailto:{{ email.email }}">{{ email.email }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
