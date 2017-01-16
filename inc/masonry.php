@@ -28,7 +28,6 @@ class Masonry
             'in_footer' => true
         );
 
-
     }
 }
 
