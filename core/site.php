@@ -63,6 +63,7 @@ class Site extends \TimberSite
      */
     public function add_to_context( $context ) {
         $context['site'] = $this;
+        $context = \apply_filters("site_context", $context);
         return $context;
     }
 
