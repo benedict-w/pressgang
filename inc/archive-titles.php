@@ -189,7 +189,7 @@ class ArchiveTitles {
         } else if (is_day()) {
             $title = sprintf(__(get_theme_mod('single_day_title'), THEMENAME ), get_the_date(_x('F j, Y', 'daily archives date format')));
         } elseif(is_post_type_archive()) {
-            $title = sprintf(__(get_theme_mod('post_type_archive_title'), THEMENAME ), post_type_archive_title( '', false ) );;
+            $title = sprintf(__(get_theme_mod('post_type_archive_title'), THEMENAME ), post_type_archive_title( '', false ) );
         } else if (is_search()) {
             $title = sprintf(__(get_theme_mod('search_results_title')), get_search_query());
         } else if ($title === 'Archives') {
