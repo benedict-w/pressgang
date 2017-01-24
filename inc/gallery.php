@@ -19,7 +19,7 @@ class Gallery {
         // load pressgang.js which inits the magnific popup
         Scripts::$scripts['magnific-gallery'] = array(
             'src' => get_template_directory_uri() . '/js/src/custom/gallery.js',
-            'deps' => array('magnific-popup'),
+            'deps' => array('magnific'),
             'ver' => '0.1',
             'in_footer' => true
         );
