@@ -2,7 +2,7 @@
 <h1 title="{{ site.name|e('html_attr') }}" class="brand">
     <a href="/" title="{{ site.name|e('html_attr') }}" rel="home">
         {% if site.logo %}
-            <img src="{{ site.logo|e('html_attr') }}" alt="{{ site.name|e('html_attr') }}" class="logo">
+            <img src="{{ site.logo|relative|e('html_attr') }}" alt="{{ site.name|e('html_attr') }}" class="logo">
         {% else %}
             {{ site.name|e }}
         {% endif %}
