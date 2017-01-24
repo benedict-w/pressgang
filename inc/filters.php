@@ -9,15 +9,18 @@ namespace PressGang;
  *
  * @package Filters
  */
-class Filters {
+class Filters
+{
 
     /**
      * add
      *
      */
-    public static function add() {
+    public static function add()
+    {
+        add_filter('nav_menu_css_class', array('PressGang\Filters', 'add_custom_link_menu_item_classes'), 10, 2);
         add_filter('upload_mimes', array('PressGang\Filters', 'mime_types'));
-        add_filter('gallery_style' , array('PressGang\Filters', 'gallery_style'));
+        add_filter('gallery_style', array('PressGang\Filters', 'gallery_style'));
         if (in_array('single-page.php', Config::get('templates'))) {
             add_filter('_get_page_link', array('PressGang\Filters', 'single_page_permalink'), 10, 2);
             add_filter('the_permalink', array('PressGang\Filters', 'single_page_permalink'), 10, 2);
@@ -31,7 +34,8 @@ class Filters {
      * @param $mimes
      * @return mixed
      */
-    public static function mime_types($mimes) {
+    public static function mime_types($mimes)
+    {
         $mimes['svg'] = 'image/svg+xml';
         return $mimes;
     }
@@ -43,7 +47,8 @@ class Filters {
      *
      * @param $existing_code
      */
-    public static function gallery_style($existing_code) {
+    public static function gallery_style($existing_code)
+    {
         return;
     }
 
@@ -65,7 +70,7 @@ class Filters {
                     $post = get_post($id);
                     if (is_array($permalink)) {
                         // this is for the admin sample permalink
-                        $permalink = str_replace('/%pagename%','#%pagename%', $permalink);
+                        $permalink = str_replace('/%pagename%', '#%pagename%', $permalink);
                     } else {
                         if (!is_admin() && get_permalink($parent) === get_permalink()) {
                             // relative
@@ -81,7 +86,24 @@ class Filters {
         return $permalink;
     }
 
+    /**
+     * add_custom_link_menu_item_classes
+     *
+     * @param $classes
+     * @param $item
+     * @param array $args
+     * @param int $depth
+     * @return array
+     */
+    public static function add_custom_link_menu_item_classes($classes, $item)
+    {
+        if ($item->url === \Timber\URLHelper::get_current_url()) {
+            $classes[] = 'active';
+            $classes[] = 'current-menu-item';
+        }
 
+        return $classes;
+    }
 }
 
 Filters::add();
