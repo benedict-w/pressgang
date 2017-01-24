@@ -79,6 +79,9 @@ class Site extends \TimberSite
 
         $twig->addFunction('meta_description', new \Twig_SimpleFunction('meta_description', array('PressGang\Site', 'meta_description')));
 
+        $twig->addFunction('get_option', new \Twig_SimpleFunction('get_option', 'get_option'));
+        $twig->addFunction('get_theme_mod', new \Twig_SimpleFunction('get_theme_mod', 'get_theme_mod'));
+
         // add text-domain to global
         $twig->addGlobal('THEMENAME', THEMENAME);
         return $twig;
