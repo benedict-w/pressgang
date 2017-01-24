@@ -43,6 +43,13 @@ class Sitemap
      */
     public function create_sitemap($post_id, $post, $update)
     {
+        // TODO make chron task
+
+        // only create a new sitemap once every 24 hours
+        if (time()-filemtime($this->path()) < 24 * 60 * 60 ) {
+            // return false;
+        }
+
         // only create a site map if the post is new or no file exists
         if (wp_is_post_revision($post_id) || is_file($this->path())) {
             // return false;
@@ -50,7 +57,7 @@ class Sitemap
 
         $post_types = get_post_types(array(
             'public' => true,
-            'publicly_queryable' => true,
+            // 'publicly_queryable' => true, TODO this seems to prevent 'page' post types returning?
 
         ));
 
