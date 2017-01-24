@@ -24,7 +24,7 @@ class ContactForm extends \Pressgang\Shortcode {
      */
     protected function get_defaults ()
     {
-        $this->defaults['email'] = get_option('admin_email');
+        $this->defaults['to'] = get_option('admin_email');
         $this->defaults['subject'] = __("New Contact Message", THEMENAME);
         $this->defaults['success'] = __("Your message has been sent.", THEMENAME);
 
@@ -38,22 +38,51 @@ class ContactForm extends \Pressgang\Shortcode {
      *
      * @return string
      */
-    public function do_shortcode($atts, $content = null) {
+    public function do_shortcode($atts, $content = null)
+    {
 
         $args = shortcode_atts($this->get_defaults(), $atts);
 
-        $args['email'] = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-        $args['message'] = filter_input(INPUT_POST, 'message', FILTER_SANITIZE_STRING);
-        $args['name'] = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
         $args['success'] = false;
 
-        if ($args['email'] && $args['name'] && $args['message']) {
+        // filter post inputs if available
+        if (isset($_POST['contact'])) {
 
-            add_action('wp_mail_from', function() use ($atts) { return $atts['email']; });
-            add_action('wp_mail_from_name', function() use ($atts) { return $atts['name']; });
+            $message = '';
 
-            if (wp_mail($atts['to'], $this->defaults['subject'], $atts['message'])) {
-                $args['success'] = $this->defaults['success'];
+            foreach ($_POST['contact'] as $key => &$val) {
+                switch ($key) {
+                    case 'email' :
+                        $args[$key] = filter_var($val, FILTER_SANITIZE_EMAIL);
+                        break;
+
+                    case 'name':
+                    case 'message':
+                        $args[$key] = filter_var($val, FILTER_SANITIZE_STRING);
+                        $message .= sprintf("%s: %s\n", ucwords($key), $val);
+                        break;
+
+                    default :
+                        $args[$key] = filter_var($val, FILTER_SANITIZE_STRING);
+                }
+            }
+
+            // send email
+            if (!empty($args['email']) && !empty($args['name']) && !empty($args['message'])) {
+
+                $message .= $args['message'];
+
+                foreach($args as $key => &$val) {
+                    $message = sprintf("%s: %s\n%s", ucwords($key), $val, $message);
+                }
+
+                add_action('wp_mail_from', function() use ($args) { return $args['email']; });
+                add_action('wp_mail_from_name', function() use ($args) { return $args['name']; });
+
+                if (wp_mail($args['to'], $this->defaults['subject'], $message)) {
+                    // if sent set the success message text
+                    $args['success'] = $this->defaults['success'];
+                }
             }
         }
 
