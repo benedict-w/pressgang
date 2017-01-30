@@ -31,6 +31,7 @@ class ContactForm extends \Pressgang\Shortcode {
         return $this->defaults;
     }
 
+
     /**
      * do_shortcode
      *
@@ -83,6 +84,8 @@ class ContactForm extends \Pressgang\Shortcode {
                     // if sent set the success message text
                     $args['success'] = $this->defaults['success'];
                 }
+            } else {
+                $args['error'] = __("Please complete all required form fields", THEMENAME);
             }
         }
 
