@@ -9,10 +9,11 @@ class AddThis {
      *
      * @return void
      */
-    public static function init() {
-        add_action('customize_register', array('PressGang\AddThis', 'customizer'));
-        add_action('wp_enqueue_scripts', array('PressGang\AddThis', 'register_script'));
-        add_shortcode('addthis', array('PressGang\AddThis', array('PressGang\AddThis', 'button')));
+    public function __construct() {
+        add_action('customize_register', array($this, 'customizer'));
+        add_action('wp_enqueue_scripts', array($this, 'register_script'));
+        add_shortcode('addthis', array($this, array('PressGang\AddThis', 'button')));
+        add_filter('get_twig', array($this, 'add_to_twig'));
     }
 
     /**
@@ -20,7 +21,7 @@ class AddThis {
      *
      * @param $wp_customize
      */
-    public static function customizer($wp_customize) {
+    public function customizer($wp_customize) {
 
         $wp_customize->add_section( 'addthis' , array(
             'title' => __("AddThis", THEMENAME),
@@ -60,11 +61,24 @@ class AddThis {
      *
      * @return void
      */
-    public static function register_script () {
+    public function register_script () {
         if ($addthis_id = urlencode(get_theme_mod('addthis-id'))) {
             wp_register_script('addthis', "//s7.addthis.com/js/300/addthis_widget.js#pubid={$addthis_id}", array(), false, true);
             wp_enqueue_script('addthis');
         }
+    }
+
+    /**
+     * add_to_twig
+     *
+     * Add a 'breadcrumb' function to the Twig scope
+     *
+     * @param $twig
+     * @return mixed
+     */
+    public function add_to_twig($twig) {
+        $twig->addFunction(new \Twig_SimpleFunction('addthis', array($this, 'button')));
+        return $twig;
     }
 
     /**
@@ -73,7 +87,7 @@ class AddThis {
      * Displays the addthis sharing button configured on the addthis.com dashboard page
      *
      */
-    public static function button() {
+    public function button() {
         if ($addthis_id = get_theme_mod('addthis-id')) {
             wp_enqueue_script('addthis');
             \Timber::render('addthis.twig', array('addthis_class' => get_theme_mod('addthis-class')));
@@ -81,4 +95,4 @@ class AddThis {
     }
 }
 
-AddThis::init();
+new AddThis();
