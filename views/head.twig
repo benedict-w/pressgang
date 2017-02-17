@@ -1,23 +1,35 @@
 <head>
     <title>{{ function('wp_title', '|', false, 'right') }}</title>
-    <meta name="description" content="{{ meta_description() }}" />
+    <meta name="description" content="{{ meta_description() }}">
     {% if site.keywords %}
-    <meta name="keywords" content="{{ site.keywords|e('html_attr') }}" />
+    <meta name="keywords" content="{{ site.keywords|e('html_attr') }}">
     {% endif %}
-    <link rel="stylesheet" href="{{ site.stylesheet }}" media="all" />
-    <meta http-equiv="Content-Type" content="text/html; charset={{ site.charset }}" />
+    <link rel="stylesheet" href="{{ site.stylesheet }}" media="all">
+    <meta http-equiv="Content-Type" content="text/html; charset={{ site.charset }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% if site.google_verification_code %}
-    <meta name="google-site-verification" content="{{ site.google_verification_code|e('html_attr') }}" />
+    <meta name="google-site-verification" content="{{ site.google_verification_code|e('html_attr') }}">
     {% endif %}
     {% if site.bing_verification_code %}
-    <meta name="msvalidate.01" content="{{ site.bing_verification_code|e('html_attr') }}" />
+    <meta name="msvalidate.01" content="{{ site.bing_verification_code|e('html_attr') }}">
     {% endif %}
-    <link rel="pingback" href="{{ site.pingback_url }}" />
+    <link rel="pingback" href="{{ site.pingback_url }}">
     {% if WEB_AUTHOR %}
-    <meta name="web_author" content="{{ WEB_AUTHOR|e('html_attr') }}" />
+    <meta name="web_author" content="{{ WEB_AUTHOR|e('html_attr') }}">
     {% endif %}
     <!-- wp head -->
     {{ wp_head }}
-
+    {% block after_wp_head %}
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "Organization",
+            "url": "{{ site.url }}",
+            "logo": "{{ site.logo }}",
+            "email": "{{ site.email }}",
+            "name": "{{ site.title }}",
+            "description": "{{ fn('get_bloginfo', 'description') }}"
+        }
+    </script>
+    {% endblock %}
 </head>

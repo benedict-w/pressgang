@@ -31,6 +31,7 @@ class Site extends \TimberSite
             return $tag->name;
         }, get_tags(array('orderby' => 'count', 'order' => 'DESC', 'number' => 20)))));
 
+        $this->email = get_option('admin_email');
         $this->logo = apply_filters('site_logo', get_theme_mod('logo'));
         $this->copyright = apply_filters('site_copyright', get_theme_mod('copyright'));
 
@@ -113,7 +114,7 @@ class Site extends \TimberSite
 
         // else use preview
         if (empty($description)) {
-            $description = str_replace('', "'", $post->get_preview(40, true, false, true));
+            $description = $post->post_content;
         }
 
         // finally use the blog description
