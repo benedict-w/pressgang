@@ -1,9 +1,13 @@
 /* Fixed Navbar
 -------------------------------------------------- */
 
+@wp-admin-collapse: 782px;
+
 body {
   padding-top: @collapse-header-height;
   &.admin-bar {
+    padding-top: @collapse-header-height + @collapse-wp-admin-bar-height;
+    #header,
     .navbar-fixed-top {
       margin-top: @collapse-wp-admin-bar-height;
     }
@@ -11,14 +15,14 @@ body {
 }
 
 #header {
-  min-height: @collapse-header-height;
+  height: @collapse-header-height;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1030;
   width: 100%;
-  .navbar {
-    min-height: @collapse-header-height;
+  .navbar-fixed-top {
+    height: @collapse-header-height;
   }
 }
 
@@ -28,16 +32,24 @@ body {
 }
 
 @media (min-width: @grid-float-breakpoint) {
+  body {
+    padding-top: @header-height;
+    &.admin-bar {
+      padding-top: @header-height; // + @collapse-wp-admin-bar-height;
+    }
+  }
   #header {
-    min-height: @header-height;
-    .navbar {
-      min-height: @header-height !important;
+    height: @header-height;
+    .navbar-fixed-top {
+      height: @header-height;
     }
   }
 }
 
-@media (min-width: 782px) {
+@media (min-width: @wp-admin-collapse) {
   body.admin-bar {
+    // padding-top: @header-height + @wp-admin-bar-height;
+    #header,
     .navbar-fixed-top {
       margin-top: @wp-admin-bar-height;
     }

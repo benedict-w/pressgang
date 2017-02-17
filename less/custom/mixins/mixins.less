@@ -252,6 +252,14 @@
   .hyphens();
 }
 
+.brightness(@value: 1) {
+  -webkit-filter: brightness(@value);
+  -moz-filter: brightness(@value);
+  -o-filter: brightness(@value);
+  -ms-filter: brightness(@value);
+  filter: brightness(@value);
+}
+
 .vertical-center(@position: relative) {
   position: @position;
   top: 50%;
