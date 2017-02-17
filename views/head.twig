@@ -1,4 +1,4 @@
-<head {{ site.language_attributes }}>
+<head>
     <title>{{ function('wp_title', '|', false, 'right') }}</title>
     <meta name="description" content="{{ meta_description() }}" />
     {% if site.keywords %}
@@ -19,4 +19,5 @@
     {% endif %}
     <!-- wp head -->
     {{ wp_head }}
+
 </head>
