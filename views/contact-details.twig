@@ -1,31 +1,32 @@
-<div class="contact-details">
-    {{ before_title }}{{ __(title, THEMENAME) }}{{ after_title }}
-    <ul class="fa-ul">
-        {% if name %}
-        <li><span class="fa-li fa fa-globe"></span><h4>{{ name }}</h4></li>
-        {% endif %}
+<div class="contact-details" itemscope itemtype="schema.org/Organization">
+    <meta itemprop="name" content="{{ fn('get_bloginfo', 'name')|e('html_attr') }}">
+    <meta itemprop="sameAs" content="{{ fn('get_bloginfo', 'url') }}">
+    {% if title %}{{ before_title }}{{ __(title, THEMENAME) }}{{ after_title }}{% endif %}
+    <dl>
         {% if address %}
-        <li><span class="fa-li fa fa-map-icon"></span>
-            <address>
+        <dt class="address">{{ __("Address", THEMENAME) }}</dt>
+        <dd>
+            {% if name %}<h4 itemprop="legalName" class="name">{{ name }}</h4>{% endif %}
+            <address itemprop="address">
                 {% for line in address %}
                     {{ line.line }}{% if not loop.last %}<br>{% endif %}
                 {% endfor %}
             </address>
-        </li>
+        </dd>
         {% endif %}
         {% for contact_number in contact_numbers %}
-        <li><span class="fa-li fa {% if contact_number.type == 'fax' %}fa-fax{% else %}fa-phone{% endif %}"></span>
-            {% if contact_number.callto %}
-            <a href="callto:{{ contact_number.callto }}">
+            {% if contact_number.type|lower == 'fax' %}
+                <dt class="fax">{{ __("Fax", THEMENAME) }}</dt>
+                <dd>{% if contact_number.callto %}<a href="fax:{{ contact_number.callto }}" itemprop="faxNumber" title="{{ __("Fax", THEMENAME) }}">{% endif %}{{ contact_number.number }}{% if contact_number.callto %}</a>{% endif %}</dd>
             {% endif %}
-                {{ contact_number.number }}
-            {% if contact_number.callto %}
-            </a>
+            {% if contact_number.type|lower == 'phone' %}
+                <dt class="phone">{{ __("Phone", THEMENAME) }}</dt>
+                <dd>{% if contact_number.callto %}<a href="tel:{{ contact_number.callto }}" itemprop="telephone" title="{{ __("Telephone", THEMENAME) }}">{% endif %}{{ contact_number.number }}{% if contact_number.callto %}</a>{% endif %}</dd>
             {% endif %}
-        </li>
         {% endfor %}
         {% for email in email_addresses %}
-        <li><span class="fa-li fa fa-envelope-o"></span><a href="mailto:{{ email.email }}">{{ email.email }}</a></li>
+            <dt class="email">{{ __("E-mail", THEMENAME) }}</dt>
+            <dd><a href="mailto:{{ email.email }}" itemprop="email" title="{{ __("E-mail", THEMENAME) }}">{{ email.email }}</a></dd>
         {% endfor %}
-    </ul>
+    </dl>
 </div>
