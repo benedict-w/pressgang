@@ -57,9 +57,11 @@ class Sitemap
 
         $post_types = get_post_types(array(
             'public' => true,
-            // 'publicly_queryable' => true, TODO this seems to prevent 'page' post types returning?
+            'publicly_queryable' => true, // TODO this seems to prevent 'page' post types returning?
 
         ));
+
+        $post_types[] = 'page';
 
         $nodes = array();
 
