@@ -1,4 +1,4 @@
-<div class="contact-details" itemscope itemtype="schema.org/Organization">
+<div class="contact-details" itemscope itemtype="http://schema.org/Organization">
     <meta itemprop="name" content="{{ fn('get_bloginfo', 'name')|e('html_attr') }}">
     <meta itemprop="sameAs" content="{{ fn('get_bloginfo', 'url') }}">
     {% if title %}{{ before_title }}{{ __(title, THEMENAME) }}{{ after_title }}{% endif %}
