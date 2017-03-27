@@ -1,0 +1,6 @@
+<span itemscope itemtype="http://schema.org/Organization">
+  <link itemprop="url" href="{{ site.url }}">
+  {% for item in menu_social %}
+    <link itemprop="url" href="{{ item.get_link }}">
+  {% endfor %}
+</span>

@@ -1,0 +1,12 @@
+<script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "url": "{{ site.url }}",
+        "logo": "{{ site.logo }}",
+        "email": "{{ site.email }}",
+        "name": "{{ site.title }}",
+        "description": "{{ fn('get_bloginfo', 'description') }}",
+        "sameAs": [{% for item in menu_social.get_items %}"{{ item.get_link }}"{% if not loop.last %},{% endif %}{% endfor %}]
+    }
+</script>
