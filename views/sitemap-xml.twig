@@ -3,7 +3,9 @@
 {% for node in nodes %}
     <url>
         <loc>{{ node['loc']|e }}</loc>
+        {% if node['lastmod'] %}
         <lastmod>{{ node['lastmod'] }}</lastmod>
+        {% endif %}
         <changefreq>{{ node['changefreq'] }}</changefreq>
         <priority>{{ node['priority'] }}</priority>
     </url>

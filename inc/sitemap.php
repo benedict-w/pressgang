@@ -58,7 +58,6 @@ class Sitemap
         $post_types = get_post_types(array(
             'public' => true,
             'publicly_queryable' => true, // TODO this seems to prevent 'page' post types returning?
-
         ));
 
         $post_types[] = 'page';
@@ -71,6 +70,7 @@ class Sitemap
             'post_type' => $post_types,
             'order' => 'DESC',
             'post_status' => 'publish',
+            'suppress_filters' => true, // all translations
         ));
 
         foreach ($posts as &$post) {
@@ -90,7 +90,8 @@ class Sitemap
 
         $terms = \Timber::get_terms(array(
             'taxonomy' => $taxonomies,
-            'hide_empty' => false, // do not hide empty terms
+            'hide_empty' => true, // hide empty terms
+            'suppress_filters' => true, // all translations
         ));
 
         foreach ($terms as &$term) {
