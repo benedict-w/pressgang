@@ -53,6 +53,10 @@ class Site extends \TimberSite
 
         add_filter('wp_headers', array($this, 'add_ie_header'));
 
+        if (class_exists('WooCommerce')) {
+            add_filter('timber_context', array($this, 'add_woocommerce_to_context'));
+        }
+
         parent::__construct($site_name_or_id);
     }
 
@@ -62,9 +66,30 @@ class Site extends \TimberSite
      * @param $context
      * @return mixed
      */
-    public function add_to_context( $context ) {
+    public function add_to_context($context) {
         $context['site'] = $this;
         $context = \apply_filters("site_context", $context);
+        return $context;
+    }
+
+    /**
+     * add_woocommerce_to_context
+     *
+     * @param $context
+     * @return mixed
+     */
+    public function add_woocommerce_to_context($context) {
+
+        global $woocommerce;
+
+        $account_page_id = get_option('woocommerce_myaccount_page_id');
+
+        $context['my_account_link'] = get_permalink($account_page_id);
+        $context['logout_link'] = wp_logout_url(get_permalink($account_page_id));
+        $context['cart_link'] = $woocommerce->cart->get_cart_url();
+        $context['checkout_link'] = $woocommerce->cart->get_checkout_url();
+        $context['cart_contents'] = $woocommerce->cart->cart_contents;
+
         return $context;
     }
 
@@ -82,6 +107,10 @@ class Site extends \TimberSite
 
         $twig->addFunction('get_option', new \Twig_SimpleFunction('get_option', 'get_option'));
         $twig->addFunction('get_theme_mod', new \Twig_SimpleFunction('get_theme_mod', 'get_theme_mod'));
+
+        if (class_exists('WooCommerce')) {
+            $twig->addFunction('timber_set_product', new \Twig_SimpleFunction('timber_set_product', array('PressGang\Site', 'timber_set_product')));
+        }
 
         // add text-domain to global
         $twig->addGlobal('THEMENAME', THEMENAME);
@@ -141,6 +170,18 @@ class Site extends \TimberSite
     public function add_ie_header() {
         if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)) {
             header('X-UA-Compatible: IE=edge,chrome=1');
+        }
+    }
+
+    /**
+     * timber_set_product
+     *
+     * Set the timber post context for WooCommerce teaser-product.twig
+     */
+    public static function timber_set_product($post) {
+        global $product;
+        if (is_woocommerce()) {
+            $product = get_product($post->ID);
         }
     }
 }
