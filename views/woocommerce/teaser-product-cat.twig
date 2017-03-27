@@ -1,0 +1,12 @@
+<article {{ fn('post_class', 'entry', category.ID) }}>
+    <div class="media">
+        <div class="media-content">
+            {% if category.thumbnail %}
+                <a href="{{ category.link }}">
+                    <img src="{{ category.thumbnail.src|resize('shop_thumbnail') }}" alt="{{ category.title }}">
+                </a>
+            {% endif %}
+            <h3 class="entry-title"><a href="{{ category.link }}">{{ category.name }}</a></h3>
+        </div>
+    </div>
+</article>

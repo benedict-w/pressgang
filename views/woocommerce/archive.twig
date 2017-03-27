@@ -6,9 +6,16 @@
         {% do action( 'woocommerce_before_shop_loop') %}
     </div>
     <div class="loop">
-        {% for post in products %}
-            {% include ["views/woocommerce/teaser-product.twig"] %}
-        {% endfor %}
+        {% if shop_page_display == 'subcategories' %}
+            {% for category in product_categories %}
+                {% include "views/woocommerce/teaser-product-cat.twig" %}
+            {% endfor %}
+        {% endif %}
+        {% if fn('is_product_category') or shop_page_display == 'products' %}
+            {% for post in products %}
+                {% include "views/woocommerce/teaser-product.twig" %}
+            {% endfor %}
+        {% endif %}
     </div>
     {% do action('woocommerce_after_shop_loop') %}
     {% do action('woocommerce_after_main_content') %}
