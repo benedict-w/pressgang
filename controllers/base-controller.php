@@ -48,6 +48,7 @@ abstract class BaseController {
         $class = new \ReflectionClass(get_called_class());
         $class = Helper::camel_to_underscored($class->getShortName());
 
+        $this->template = apply_filters("{$class}_template", $this->template);
         $this->context = apply_filters("{$class}_context", $this->context);
 
         do_action("render_{$class}");
