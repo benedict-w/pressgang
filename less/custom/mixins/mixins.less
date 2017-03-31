@@ -294,3 +294,19 @@
   filter: FlipH;
   -ms-filter: "FlipH";
 }
+
+.fa-hide-text(@icon-size: 16px, @color: @brand) {
+  width: @icon-size;
+  height: @icon-size;
+  line-height: @icon-size;
+  overflow: hidden;
+  display: block;
+  text-overflow: clip;
+  &:before {
+    font-family: 'FontAwesome';
+    font-size: @icon-size;
+    margin-right: 2000px;
+    color: @color;
+    display: inline-block;
+  }
+}
