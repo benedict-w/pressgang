@@ -25,7 +25,8 @@ class Masonry
         Scripts::$scripts['pressgang-masonry'] = array(
             'src' => get_template_directory_uri() . '/js/src/custom/masonry.js',
             'deps' => array('masonry-4.1.1'),
-            'in_footer' => true
+            'in_footer' => true,
+            'ver' => '1.0'
         );
 
     }

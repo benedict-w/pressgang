@@ -3,6 +3,8 @@
 
         var $grid = $('.grid');
 
+        $grid.masonry();
+
         // layout masonry after each image loads
         $grid.imagesLoaded()
             .always( function() {
