@@ -141,8 +141,15 @@ class PostController extends PageController {
 
             $this->related_posts = \Timber::get_posts($args);
 
+            // TODO - improve!!!
+
             if (empty($this->related_posts)) {
                 $args['tax_query']['relation'] = 'OR';
+                $this->related_posts = \Timber::get_posts($args);
+            }
+
+            if (empty($this->related_posts)) {
+                unset($args['tax_query']);
                 $this->related_posts = \Timber::get_posts($args);
             }
         }
@@ -158,8 +165,11 @@ class PostController extends PageController {
     protected function get_author() {
 
         if (empty($this->author)) {
-            $this->author = $this->get_post()->get_author();
-            $this->author->thumbnail = new \TimberImage(get_avatar_url($this->author->id));
+            $post = $this->get_post();
+            if ($post) {
+                $this->author = $post->get_author();
+                $this->author->thumbnail = new \TimberImage(get_avatar_url($this->author->id));
+            }
         }
 
         return $this->author;
