@@ -87,7 +87,7 @@ class AddThis {
      * Displays the addthis sharing button configured on the addthis.com dashboard page
      *
      */
-    public function button() {
+    public static function button() {
         if ($addthis_id = get_theme_mod('addthis-id')) {
             wp_enqueue_script('addthis');
             \Timber::render('addthis.twig', array('addthis_class' => get_theme_mod('addthis-class')));
