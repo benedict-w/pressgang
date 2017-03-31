@@ -34,7 +34,7 @@ class InternalLinks {
             return true;
         });
 
-        $pattern = array_map(function($term) { return sprintf("/\\b(%s)\\b(?=[^<>]*<)/ui", preg_quote($term->name, '/'));}, $terms );
+        $pattern = array_map(function($term) { return sprintf("/\\b(%s)\\b(?=[^<>]*<)(?!.*?\\<\\/a\\>)/ui", preg_quote($term->name, '/'));}, $terms );
 
         $replacement = array_map(function($term) { return sprintf("<a href=\"%s\" class=\"inbound\">$1</a>", esc_url(\get_term_link($term)), esc_html($term->name)); }, $terms);
 
