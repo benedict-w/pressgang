@@ -45,6 +45,7 @@ class Loader {
      *
      */
     public function auto_loader() {
+
         spl_autoload_register(function ($class) {
 
             $folders = ['classes', 'controllers'];
@@ -75,6 +76,7 @@ class Loader {
      * @return bool|mixed
      */
     private function require_theme_file($theme_dir, $folder, $file) {
+
         $path = sprintf("%s/%s/%s.php", $theme_dir, $folder,  $file);
         if (file_exists($path)) {
             return require_once($path);
