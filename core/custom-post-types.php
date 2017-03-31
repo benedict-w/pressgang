@@ -39,8 +39,13 @@ class CustomPostTypes
 
             // TODO DRY - also in custom-taxonomies.php
 
-            $name = __(ucwords(str_replace('_', ' ', $key)), THEMENAME);
+            $name = isset($args['name']) ? $args['name'] : $key;
+            $name = __(ucwords(str_replace('_', ' ', $name)), THEMENAME);
             $plural = Pluralizer::pluralize($name);
+
+            if  (!isset($args['name'])) {
+                $args['name'] = $name;
+            }
 
             $defaults = array(
                 'labels' =>  array(
