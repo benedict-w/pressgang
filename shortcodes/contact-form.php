@@ -80,9 +80,13 @@ class ContactForm extends \Pressgang\Shortcode {
                 add_action('wp_mail_from', function() use ($args) { return $args['email']; });
                 add_action('wp_mail_from_name', function() use ($args) { return $args['name']; });
 
+
                 if (wp_mail($args['to'], $this->defaults['subject'], $message)) {
                     // if sent set the success message text
                     $args['success'] = $this->defaults['success'];
+
+                    // register google analytics tracking
+                    add_action('wp_footer', array($this, 'send_ga_event'));
                 }
             } else {
                 $args['error'] = __("Please complete all required form fields", THEMENAME);
@@ -92,6 +96,17 @@ class ContactForm extends \Pressgang\Shortcode {
         $this->context = $args;
 
         return \Timber::compile($this->template, $this->context);
+    }
+
+    /**
+     * Track Google Analytics Event
+     *
+     */
+    public function send_ga_event() { ?>
+        <script>
+            ga('send', 'event', 'Contact Form', 'submit');
+        </script>
+        <?php
     }
 
 }
