@@ -1,12 +1,29 @@
 {
   "name": "pressgang",
-  "engines": {
-    "node": ">= 0.10.0"
+  "title": "PressGang",
+  "description": "A parent theme framework for WordPress.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/benedict-w/pressgang",
+  "reposityory": "https://github.com/benedict-w/pressgang",
+  "author": {
+    "name": "Benedict Wallis",
+    "email": "ben@benedict-wallis.com",
+    "url": "http://www.benedict-wallis.com"
   },
   "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-contrib-concat": "~0.4.0",
-    "grunt-contrib-uglify": "~0.5.0",
-    "grunt-contrib-watch": "~0.6.1"
-  }
+    "grunt": "~0.4.5",
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-contrib-compress": "~0.12.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-copy": "~0.7.0",
+    "grunt-contrib-cssmin": "~0.10.0",
+    "grunt-contrib-imagemin": "^1.0.0",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-less": "~0.11.2",
+    "grunt-contrib-nodeunit": "~0.4.1",
+    "grunt-contrib-uglify": "~0.6.0",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-pot": "^0.2.1"
+  },
+  "keywords": []
 }
