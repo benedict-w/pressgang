@@ -62,7 +62,9 @@ class Scripts {
 
                 // register scripts
                 add_action('wp_loaded', function () use ($args) {
-                    wp_register_script($args['handle'], $args['src'], $args['deps'], $args['ver'], $args['in_footer']);
+                    // TODO filemtime()
+                    $ver = isset($args['version']) ? $args['version'] : (isset($args['ver']) ? $args['ver'] : '1.0.0');
+                    wp_register_script($args['handle'], $args['src'], $args['deps'], $ver, $args['in_footer']);
                 });
 
                 // enqueue on given hook
