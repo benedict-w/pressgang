@@ -46,9 +46,11 @@ class Sitemap
         // TODO make chron task
 
         // only create a new sitemap once every 24 hours
+        /*
         if (time()-filemtime($this->path()) < 24 * 60 * 60 ) {
-            // return false;
+            return false;
         }
+        */
 
         // only create a site map if the post is new or no file exists
         if (wp_is_post_revision($post_id) || is_file($this->path())) {
