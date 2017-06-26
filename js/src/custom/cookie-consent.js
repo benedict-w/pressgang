@@ -4,19 +4,18 @@
 
         var $consent = $('.cookie-consent');
 
+        if (Cookies.get('cookie-consent')) {
+            $consent.hide();
+        }
+
         $consent.find('.btn').on('click', function() {
 
-            // set cookie for 4 weeks
-            var date = new Date();
-            date.setDate(date.getDate() + 28);
-
-            document.cookie = "cookie-consent=true; expires=" + date.toGMTString() + "; path=/";
+            Cookies.set('cookie-consent', 1, { expires : 28 });
 
             $consent.fadeOut();
 
             return false;
-
-        })
+        });
 
     });
 

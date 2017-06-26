@@ -22,9 +22,17 @@ class CookieConsent {
         $this->privacy_link_text = __("View privacy policy", THEMENAME);
         $this->privacy_url = "/privacy";
 
+        Scripts::$scripts['js-cookie'] = array(
+            'src' => get_template_directory_uri() . '/js/src/vendor/js-cookie/js.cookie.2.1.4.js',
+            'deps' => array(),
+            'ver' => '2.1.4',
+            'in_footer' => true,
+            'hook' => 'show_cookie_consent',
+        );
+
         Scripts::$scripts['cookie-consent'] = array(
             'src' => get_template_directory_uri() . '/js/src/custom/cookie-consent.js',
-            'deps' => array('jquery'),
+            'deps' => array('jquery', 'js-cookie'),
             'ver' => '0.1',
             'in_footer' => true,
             'hook' => 'show_cookie_consent'
