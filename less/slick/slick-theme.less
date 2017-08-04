@@ -51,6 +51,7 @@
   padding: 0;
   border: none;
   outline: none;
+  z-index: 1;
   &:hover, &:focus {
     outline: none;
     background: transparent;
@@ -155,7 +156,7 @@
         line-height: @slick-font-size;
         text-align: center;
         color: @slick-dot-color;
-        opacity: @slick-opacity-not-active;
+        .opacity(@slick-opacity-not-active);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
