@@ -44,54 +44,15 @@ class ContactForm extends \Pressgang\Shortcode {
 
         $args = shortcode_atts($this->get_defaults(), $atts);
 
-        $args['success'] = false;
+        $contact = new Contact();
 
-        // filter post inputs if available
-        if (isset($_POST['contact'])) {
-
-            $message = '';
-
-            foreach ($_POST['contact'] as $key => &$val) {
-                switch ($key) {
-                    case 'email' :
-                        $args[$key] = filter_var($val, FILTER_SANITIZE_EMAIL);
-                        break;
-
-                    case 'name':
-                    case 'message':
-                        $args[$key] = filter_var($val, FILTER_SANITIZE_STRING);
-                        $message .= sprintf("%s: %s\n", ucwords($key), $val);
-                        break;
-
-                    default :
-                        $args[$key] = filter_var($val, FILTER_SANITIZE_STRING);
-                }
-            }
-
-            // send email
-            if (!empty($args['email']) && !empty($args['name']) && !empty($args['message'])) {
-
-                $message .= $args['message'];
-
-                foreach($args as $key => &$val) {
-                    $message = sprintf("%s: %s\n%s", ucwords($key), $val, $message);
-                }
-
-                add_action('wp_mail_from', function() use ($args) { return $args['email']; });
-                add_action('wp_mail_from_name', function() use ($args) { return $args['name']; });
-
-
-                if (wp_mail($args['to'], $this->defaults['subject'], $message)) {
-                    // if sent set the success message text
-                    $args['success'] = $this->defaults['success'];
-
-                    // register google analytics tracking
-                    add_action('wp_footer', array($this, 'send_ga_event'));
-                }
-            } else {
-                $args['error'] = __("Please complete all required form fields", THEMENAME);
-            }
+        if ($contact->send_message($args)) {
+            // register google analytics tracking
+            add_action('wp_footer', array($this, 'send_ga_event'));
         }
+
+        $args['success'] = $contact->success;
+        $args['error'] = $contact->error;
 
         $this->context = $args;
 
