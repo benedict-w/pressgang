@@ -1,3 +1,4 @@
+{{ before_widget }}
 <div class="contact-details" itemscope itemtype="http://schema.org/Organization">
     <meta itemprop="name" content="{{ fn('get_bloginfo', 'name')|e('html_attr') }}">
     <meta itemprop="sameAs" content="{{ fn('get_bloginfo', 'url') }}">
@@ -16,11 +17,11 @@
         {% endif %}
         {% for contact_number in contact_numbers %}
             {% if contact_number.type|lower == 'fax' %}
-                <dt class="fax">{{ __("Fax", THEMENAME) }}</dt>
+                <dt class="fax">{{ contact_number.label }}</dt>
                 <dd>{% if contact_number.callto %}<a href="fax:{{ contact_number.callto }}" itemprop="faxNumber" title="{{ __("Fax", THEMENAME) }}">{% endif %}{{ contact_number.number }}{% if contact_number.callto %}</a>{% endif %}</dd>
             {% endif %}
             {% if contact_number.type|lower == 'phone' %}
-                <dt class="phone">{{ __("Phone", THEMENAME) }}</dt>
+                <dt class="phone">{{ contact_number.label }}</dt>
                 <dd>{% if contact_number.callto %}<a href="tel:{{ contact_number.callto }}" itemprop="telephone" title="{{ __("Telephone", THEMENAME) }}">{% endif %}{{ contact_number.number }}{% if contact_number.callto %}</a>{% endif %}</dd>
             {% endif %}
         {% endfor %}
@@ -30,3 +31,4 @@
         {% endfor %}
     </dl>
 </div>
+{{ after_widget }}
