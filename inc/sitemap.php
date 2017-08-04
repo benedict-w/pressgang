@@ -43,20 +43,6 @@ class Sitemap
      */
     public function create_sitemap($post_id, $post, $update)
     {
-        // TODO make chron task
-
-        // only create a new sitemap once every 24 hours
-        /*
-        if (time()-filemtime($this->path()) < 24 * 60 * 60 ) {
-            return false;
-        }
-        */
-
-        // only create a site map if the post is new or no file exists
-        if (wp_is_post_revision($post_id) || is_file($this->path())) {
-            // return false;
-        }
-
         $post_types = get_post_types(array(
             'public' => true,
             'publicly_queryable' => true, // TODO this seems to prevent 'page' post types returning?
@@ -66,23 +52,41 @@ class Sitemap
 
         $nodes = array();
 
-        $posts = \Timber::get_posts(array(
+        $posts = \get_posts(array(
             'numberposts' => -1,
-            'orderby' => array('type', 'modified'),
+            'orderby' => array('type' => 'ASC', 'menu_order' => 'ASC', 'modified' => 'DESC'),
             'post_type' => $post_types,
-            'order' => 'DESC',
             'post_status' => 'publish',
-            'suppress_filters' => true, // all translations
         ));
+
+        $langs = array();
 
         foreach ($posts as &$post) {
 
-            $nodes[] = array(
-                'loc' => $post->link,
+            $node = array(
+                'loc' => \get_permalink($post->ID),
                 'lastmod' => get_post_modified_time('c', false, $post),
                 'changefreq' => $this->get_post_change_frequency($post),
                 'priority' => $this->get_priority($post),
             );
+
+            // get translations if WPML
+            if (function_exists('wpml_get_active_languages_filter')) {
+                $langs = wpml_get_active_languages_filter(null, array('skip_missing' => true));
+
+                if (count($langs) > 1) {
+                    foreach ($langs as &$lang) {
+                        if ($icl_id = wpml_object_id_filter($post->ID, $post->post_type, false, $lang['code'])) {
+                            if ($link = get_permalink($icl_id)) {
+                                $node['lang'][$lang['tag']] = $link;
+                            }
+                        }
+                    }
+                }
+            }
+
+            $nodes[] = $node;
+
         }
 
         $taxonomies = get_taxonomies(array(
@@ -90,25 +94,51 @@ class Sitemap
             'publicly_queryable' => true,
         ));
 
-        $terms = \Timber::get_terms(array(
+        $terms = \get_terms(array(
             'taxonomy' => $taxonomies,
             'hide_empty' => true, // hide empty terms
-            'suppress_filters' => true, // all translations
         ));
 
         foreach ($terms as &$term) {
 
-            $lastest_post = $term->get_post(array(
+            $lastest_post = \get_posts(array(
                 'numberposts' => 1,
+                'orderby' => array('modified' => 'DESC'),
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => $term->taxonomy,
+                        'field' => 'id',
+                        'terms' => $term->ID,
+                        'include_children' => false
+                    )
+                )
             ));
 
-            $nodes[] = array(
-                'loc' => get_term_link($term),
-                'lastmod' => get_post_modified_time('c', false, $lastest_post),
-                'changefreq' => $this->change_frequency, // TODO compare recent posts instead for terms
-                'priority' => $this->get_priority($term),
-            );
+            // has posts
+            if ($lastest_post) {
 
+                $node = array(
+                    'loc' => get_term_link($term),
+                    'lastmod' => get_post_modified_time('c', false, $lastest_post),
+                    'changefreq' => $this->change_frequency, // TODO compare recent posts instead for terms
+                    'priority' => $this->get_priority($term),
+                );
+
+                // get translations if WPML
+                if (function_exists('wpml_get_active_languages_filter')) {
+                    if (count($langs) > 1) {
+                        foreach ($langs as &$lang) {
+                            if ($icl_id = wpml_object_id_filter($term->ID, $term->taxonomy, false, $lang['code'])) {
+                                if ($link = get_term_link($icl_id, $term->taxonomy)) {
+                                    $node['lang'][$lang['tag']] = $link;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                $nodes[] = $node;
+            }
         }
 
         $data = array(
@@ -134,7 +164,7 @@ class Sitemap
     private function get_post_change_frequency ($post) {
 
         // see if a custom field has been set for the post change frequency
-        $change_frequency = $post->get_field('change_frequency');
+        $change_frequency = function_exists('get_field') ? get_field('change_frequency', $post->ID) : null;
 
         if (!in_array($change_frequency, $this->frequencies)) {
 
@@ -184,7 +214,7 @@ class Sitemap
     private function get_priority($object) {
 
         // see if a custom field has been set for the post change frequency
-        $priority = $object->get_field('priority');
+        $priority = function_exists('get_field') ? get_field('priority', $object->ID) : null;
 
         if (!$priority) {
             // otherwise set it to default
@@ -212,6 +242,8 @@ class Sitemap
             'numberposts' => -1,
             'post_type' => $atts['post_type'],
             'post_status' => 'publish',
+            'orderby' => 'menu_order',
+            'order' => 'ASC',
         ));
 
         return \Timber::compile('sitemap-html.twig', $data);
