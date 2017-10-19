@@ -19,7 +19,7 @@
 .background-cover() {
   background-repeat: no-repeat;
   background-position: center center;
-  // background-attachment: fixed;
+  background-attachment: fixed; // BW readded for skistorage
 
   .background-size();
 }
@@ -316,11 +316,11 @@
     font-family: 'FontAwesome';
     font-size: @size;
     display: inline-block;
-    padding-right: @padding-right;
+    color: @color;
   }
 
   &::before when (@padding-right > 0) {
-    padding-left: @padding-right;
+    padding-right: @padding-right;
   }
 }
 
@@ -330,6 +330,7 @@
     font-family: 'FontAwesome';
     font-size: @size;
     display: inline-block;
+    color: @color;
   }
 
   &::after when (@padding-left > 0) {
