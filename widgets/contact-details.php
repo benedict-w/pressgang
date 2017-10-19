@@ -12,7 +12,6 @@ class ContactDetails extends \Pressgang\Widget {
     /**
      * __construct
      *
-     * Image Widget constructor.
      */
     public function __construct() {
         $this->add_acf_fields();
