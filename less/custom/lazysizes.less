@@ -1,0 +1,12 @@
+@blur-up-px: 10px;
+@blur-up-duration: 400ms;
+
+img {
+  &.blur-up {
+    .blur(10px);
+    .transition(filter 400ms);
+    &.lazyloaded {
+      .blur(0);
+    }
+  }
+}
