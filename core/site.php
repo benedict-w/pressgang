@@ -46,6 +46,8 @@ class Site extends \TimberSite
         // bing webmaster site verification code
         $this->bing_verification_code = get_theme_mod('bing_verification_code');
 
+        $this->theme_mods = get_theme_mods();
+
         add_filter('timber_context', array($this, 'add_to_context'));
         add_filter('get_twig', array($this, 'add_to_twig'));
 
@@ -111,6 +113,8 @@ class Site extends \TimberSite
         if (class_exists('WooCommerce')) {
             $twig->addFunction('timber_set_product', new \Twig_SimpleFunction('timber_set_product', array('PressGang\Site', 'timber_set_product')));
         }
+
+        $twig->addFilter('pluralize', new \Twig_SimpleFilter('pluralize', array('PressGang\Pluralizer', 'pluralize')));
 
         // add text-domain to global
         $twig->addGlobal('THEMENAME', THEMENAME);
