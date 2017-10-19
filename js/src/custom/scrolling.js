@@ -4,7 +4,7 @@
 
         var offset = $('.navbar-fixed-top').parent('header').outerHeight() + $('#wpadminbar').outerHeight();
 
-        $('a[href^="#"]').on('click', function () {
+        $('a[href^="#"]').on('click', function (e) {
 
             var target = this.hash;
             var $target = $(target);
@@ -17,6 +17,8 @@
                     window.location.hash = target;
                 });
             }
+
+            e.preventDefault();
 
             return false;
         });
