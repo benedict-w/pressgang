@@ -7,6 +7,7 @@
 {% include 'head.twig' %}
 {% endblock %}
 <body class="{{ body_class }}">
+{% block body %}
     <div id="wrap">
         <noscript>
             <strong>{{ __("Warning!", THEMENAME) }}</strong> {{ __("Your browser does not support JavaScript!", THEMENAME) }}
@@ -27,6 +28,7 @@
         {% include 'footer.twig' %}
     </footer>
     {% endblock %}
-    {{ wp_footer }}
+{% endblock %}
+{{ wp_footer }}
 </body>
 </html>
