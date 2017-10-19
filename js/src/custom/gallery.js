@@ -13,7 +13,7 @@
             type: 'image',
             image: {
                 titleSrc: function(item) {
-                    return item.el.find('img').attr('title');
+                    return item.el.find('img').attr('alt');
                 }
             },
             gallery: {
