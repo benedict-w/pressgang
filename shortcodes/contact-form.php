@@ -1,6 +1,6 @@
 <?php
 
-namespace PressGang\Contact;
+namespace PressGang;
 
 /**
  * Class Vimeo
