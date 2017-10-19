@@ -6,7 +6,7 @@
     {% endif %}
     <link rel="stylesheet" href="{{ site.stylesheet }}" media="all">
     <meta http-equiv="Content-Type" content="text/html; charset={{ site.charset }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% if site.google_verification_code %}
     <meta name="google-site-verification" content="{{ site.google_verification_code|e('html_attr') }}">
     {% endif %}
@@ -17,6 +17,11 @@
     {% if WEB_AUTHOR %}
     <meta name="web_author" content="{{ WEB_AUTHOR|e('html_attr') }}">
     {% endif %}
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
     <!-- wp head -->
     {{ wp_head }}
     {% block after_wp_head %}
