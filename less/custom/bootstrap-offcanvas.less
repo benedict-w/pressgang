@@ -23,6 +23,7 @@
     position: fixed;
     width: 100%;
     max-width: @offcanvas-width;
+    height: 100%;
     left: -@offcanvas-width;
     top: 0;
     padding-left: @navbar-padding-horizontal;
@@ -95,6 +96,14 @@
     }
     .icon-bar:nth-child(3) {
       transform: rotate(-45deg) translate(4px, -4px);
+    }
+  }
+}
+
+@media (max-width: @grid-float-breakpoint-max) {
+  body.admin-bar {
+    .navbar-offcanvas {
+      margin-top: @collapse-wp-admin-bar-height;
     }
   }
 }
