@@ -1,1 +1,5 @@
-<img src="{{ src }}" alt="{{ alt|e('html_attr') }}" class="{{ class|e('html_attr') }}">
+<img src="{{ image.src }}" alt="{{ alt|e('html_attr') }}" class="{{ class|e('html_attr') }}"
+     srcset="{{ image.src|retina(1)|relative }} 1x,
+        {{ image.src|retina(2)|relative }} 2x,
+        {{ image.src|retina(3)|relative }} 3x,
+        {{ image.src|retina(4)|relative }} 4x">
