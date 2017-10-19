@@ -3,7 +3,7 @@
 {{ before_widget }}
     {% if title  %}{{ before_title }}{{ title }}{{ after_title }}{% endif %}
     {% if link %}<a href="{{ link }}"{% if new %} target="_blank"{% endif %}>{% endif %}
-        <img src="{{ image.src|relative }}" alt="{{ caption|default(title)|default(image.caption) }}">
+        {% include 'img.twig' with { image: image, alt: caption|default(title)|default(image.title) } %}
         {% if caption %}<span>{{ caption }}</span>{% endif %}
     {% if link %}</a>{% endif %}
 {{ after_widget }}
