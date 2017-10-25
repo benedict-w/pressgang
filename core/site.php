@@ -142,12 +142,14 @@ class Site extends \TimberSite
         elseif(is_post_type_archive()) {
             if ($temp = get_the_archive_description()) {
                 $description = $temp;
+            } else {
+                $description = get_bloginfo('description', 'raw');
             }
         }
 
         // else use preview
         if (empty($description)) {
-            $description = $post->post_content;
+            $description = $post->get_preview(50, false, false, true);
         }
 
         // finally use the blog description
