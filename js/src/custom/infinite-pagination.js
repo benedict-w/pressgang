@@ -56,8 +56,6 @@
                         data: $.param(data),
                         success: function (html) {
 
-                            $spinner.hide();
-
                             fetched_all = !html;
 
                             if (!fetched_all) {
@@ -70,6 +68,9 @@
                                 $.ajaxq.abort('infinite-pagination-queue');
 
                             }
+                        },
+                        complete: function() {
+                            $spinner.hide();
                         }
                     });
 
