@@ -1,3 +1,4 @@
+{{ before_widget }}
 <div class="mailchimp-signup">
     {% if title  %}
     <h4>{{ before_title }}{{ title }}{{ after_title }}</h4>
@@ -12,3 +13,4 @@
         <p class="alert alert-danger" style="display: none;">{{ __("Sorry! There was a problem subscribing", THEMENAME) }}</p>
     </form>
 </div>
+{{ after_widget }}
