@@ -31,9 +31,7 @@ class ContactForm extends \Pressgang\Widget {
     {
         $contact = new \Pressgang\Contact();
 
-        if ($contact->send_message($args)) {
-
-        }
+        if ($contact->send_message($args));
 
         $instance['success'] = $contact->success;
         $instance['error'] = $contact->error;

@@ -67,8 +67,13 @@ class Contact {
                 add_action('wp_mail_from', function() use ($args) { return $args['email']; });
                 add_action('wp_mail_from_name', function() use ($args) { return $args['name']; });
 
-                if (wp_mail($this->to, $this->subject, $message)) {
+                $subject = $args['subject'] ? $args['subject'] : $this->subject;
+
+                if (wp_mail($this->to, $subject, $message)) {
                     $this->success = __("Thank you your message was sent.", THEMENAME);
+
+                    // register google analytics tracking
+                    add_action('wp_footer', array($this, 'send_ga_event'));
                 }
 
             } else {
@@ -77,6 +82,21 @@ class Contact {
         }
 
         return $this->success;
+    }
+
+    /**
+     * Track Google Analytics Event
+     *
+     */
+    public function send_ga_event() {
+
+        $track_logged_in = get_theme_mod('track-logged-in');
+
+        if ($track_logged_in || (!$track_logged_in && !is_user_logged_in()) ) : ?>
+            <script>
+                ga('send', 'event', 'Contact Form', 'submit');
+            </script>
+        <?php endif;
     }
 
 }

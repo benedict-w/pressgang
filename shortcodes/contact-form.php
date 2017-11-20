@@ -41,15 +41,11 @@ class ContactForm extends \Pressgang\Shortcode {
      */
     public function do_shortcode($atts, $content = null)
     {
-
         $args = shortcode_atts($this->get_defaults(), $atts);
 
         $contact = new Contact();
 
-        if ($contact->send_message($args)) {
-            // register google analytics tracking
-            add_action('wp_footer', array($this, 'send_ga_event'));
-        }
+        if ($contact->send_message($args));
 
         $args['success'] = $contact->success;
         $args['error'] = $contact->error;
@@ -59,16 +55,7 @@ class ContactForm extends \Pressgang\Shortcode {
         return \Timber::compile($this->template, $this->context);
     }
 
-    /**
-     * Track Google Analytics Event
-     *
-     */
-    public function send_ga_event() { ?>
-        <script>
-            ga('send', 'event', 'Contact Form', 'submit');
-        </script>
-        <?php
-    }
+
 
 }
 
