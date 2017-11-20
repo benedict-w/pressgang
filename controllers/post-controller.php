@@ -103,6 +103,8 @@ class PostController extends PageController {
     /**
      * get_related_posts
      *
+     * TODO this should be an inc
+     *
      * @param $post
      * @param $tags
      * @return array
