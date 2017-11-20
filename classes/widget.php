@@ -78,6 +78,8 @@ class Widget extends \WP_Widget
     /**
      * get_instance
      *
+     * override for context in descendant classes
+     *
      * @param $args
      * @param $instance
      * @return array
@@ -140,6 +142,8 @@ class Widget extends \WP_Widget
 
     /**
      * get_acf_fields
+     *
+     * NB - widget_id is available as $widget_id = $args['widget_id'];
      *
      */
     protected function get_acf_fields($widget_id) {
