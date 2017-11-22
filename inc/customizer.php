@@ -61,16 +61,10 @@ class Customizer {
      * @param $wp_customize
      */
     protected static function footer ($wp_customize) {
-        $wp_customize->add_panel( 'footer', array(
-            'title' => __("Footer", THEMENAME),
-            'description' => __("Customise elements of the theme footer", THEMENAME),
-            'priority' => 160,
-        ) );
 
         $wp_customize->add_section( 'footer' , array(
-            'title' => __("Copyright", THEMENAME),
-            'panel' => 'footer',
-            'priority' => 10,
+            'title' => __("Footer", THEMENAME),
+            'priority' => 100,
         ) );
 
         $wp_customize->add_setting(

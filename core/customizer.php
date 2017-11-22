@@ -25,7 +25,7 @@ class Customize
     public function __construct()
     {
         $this->customizer = Config::get('customizer');
-        add_action('customize_register', array($this, 'customizer'));
+        add_action('customize_register', array($this, 'customizer'), 100);
     }
 
     /**
@@ -62,7 +62,7 @@ class Customize
         foreach ($this->customizer as $section => &$section_options) {
 
             // add a new section if it does not exist
-            if (!isset($wp_customize->sections[$section])) {
+            if (!$wp_customize->get_section($section)) {
                 $wp_customize->add_section($section, array(
                     'title' => isset($section_options['title']) ? $section_options['title'] : ucwords(str_replace(array('-', '_'), ' ', $section)),
                 ));
@@ -74,7 +74,7 @@ class Customize
                 $setting = is_numeric($setting) ? $setting_options : $setting;
                 $setting_options = is_array($setting_options) ? $setting_options : array();
 
-                if (!isset($wp_customize->settings[$setting])) {
+                if (!$wp_customize->get_setting($setting)) {
 
                     $sanitize_callback = 'sanitize_text_field'; //default
 
@@ -106,7 +106,7 @@ class Customize
                         'label' => isset($setting_options['label']) ? $setting_options['label'] : ucwords(str_replace(array('-', '_'), ' ', $setting)),
                         'description' => isset($setting_options['description']) ? $setting_options['description'] : '',
                         'section' => $section,
-                        'priority' => isset($setting_options['priority']) ? $setting_options['priority'] : null,
+                        'priority' => isset($setting_options['priority']) ? $setting_options['priority'] : 10,
                         'type' =>  isset($setting_options['type']) ? $setting_options['type'] : null,
                     )));
                 }
