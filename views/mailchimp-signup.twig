@@ -1,8 +1,5 @@
 {{ before_widget }}
-<div class="mailchimp-signup">
-    {% if title  %}
-    <h4>{{ before_title }}{{ title }}{{ after_title }}</h4>
-    {% endif %}
+    {% if title  %}{{ before_title }}{{ title }}{{ after_title }}{% endif %}
     <form class="mailchimp-form">
         <div class="form-group">
             <label for="mailchimp-email" class="sr-only">{{ __("E-Mail", THEMENAME) }}</label>
@@ -12,5 +9,4 @@
         <p class="alert alert-success" style="display: none;">{{ __("Thanks! You are now subscribed to the newsletter", THEMENAME) }} </p>
         <p class="alert alert-danger" style="display: none;">{{ __("Sorry! There was a problem subscribing", THEMENAME) }}</p>
     </form>
-</div>
 {{ after_widget }}
