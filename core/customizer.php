@@ -55,6 +55,9 @@ class Customize
      *    }
      * }
      *
+     * Items can be loaded from theme_mods:
+     * {{ site.theme_mods.[setting] }}
+     *
      * @param $wp_customize
      */
     public function customizer($wp_customize) {
