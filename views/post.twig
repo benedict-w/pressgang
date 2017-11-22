@@ -9,7 +9,7 @@
     <div class="post-body">
         {% if post.thumbnail %}
         <div class="post-thumbnail">
-            {% include 'img.twig' with { 'src': post.thumbnail.src, 'alt': post.title } %}
+            {% include 'img.twig' with { 'image': post.thumbnail, 'alt': post.title } %}
         </div>
         {% endif %}
         <div class="post-content">
