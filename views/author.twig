@@ -6,7 +6,9 @@
         <div class="author">
             <a href="{{ author.link|relative }}" rel="author">
                 <h3 class="author-name">{{ author.name }}</h3>
+                {% if author.thumbnail %}
                 <img src="{{ author.thumbnail.src }}" alt="{{ author.name }}">
+                {% endif %}
             </a>
             {% if(author.description) %}
             <div class="author-description">
