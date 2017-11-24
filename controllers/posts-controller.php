@@ -42,6 +42,21 @@ class PostsController extends BaseController {
 
             if (is_category()) {
                 $template = 'category.twig';
+            }
+            else if(is_tax()) {
+
+                $obj = get_queried_object();
+                $template = sprintf("taxonomy-%s.twig", $obj->taxonomy);
+
+                // check template exits
+                $caller = \Timber\LocationManager::get_calling_script_dir(1);
+                $loader = new \Timber\Loader($caller);
+                $file = $loader->choose_template($template);
+
+                if (!$file) {
+                    $template = 'taxonomy.twig';
+                }
+
             } else {
                 $template = sprintf("archive%s.twig", $this->post_type === 'post' ? '' : "-{$this->post_type}") ;
             }
