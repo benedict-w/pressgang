@@ -49,12 +49,12 @@ class TrackPostViews {
     public static function set_post_views($post_id) {
 
         $count = intval(get_post_meta($post_id, self::COUNT_KEY, true));
+        $count++;
 
         if(!$count){
             delete_post_meta($post_id, self::COUNT_KEY);
             add_post_meta($post_id, self::COUNT_KEY, $count);
         } else {
-            $count++;
             update_post_meta($post_id, self::COUNT_KEY, $count);
         }
     }
