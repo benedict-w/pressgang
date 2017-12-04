@@ -67,13 +67,15 @@ class Breadcrumb {
             else if ( is_archive() && is_tax() && !is_category() && !is_tag() ) {
 
                 // if custom post type
-                $post_type = get_post_type();
-                if($post_type !== 'post') {
+                if ($post_type = get_post_type()) {
 
-                    $post_type_object = get_post_type_object($post_type);
-                    $post_type_archive = get_post_type_archive_link($post_type);
+                    if ($post_type !== 'post') {
 
-                    $this->append_link($post_type_object->labels->name, "breadcrumb-{$post_type}", $post_type_archive);
+                        $post_type_object = get_post_type_object($post_type);
+                        $post_type_archive = get_post_type_archive_link($post_type);
+
+                        $this->append_link($post_type_object->labels->name, "breadcrumb-{$post_type}", $post_type_archive);
+                    }
                 }
 
                 $this->append_link(get_queried_object()->name, 'breadcrumb-taxonomy breadcrumb-current');
