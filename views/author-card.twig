@@ -2,7 +2,7 @@
     {% if author.thumbnail %}
     <a href="{{ author.link|relative }}" rel="author">
         <h3 class="author-name">{{ author.name }}</h3>
-        <img src="{{ author.thumbnail.src('thumbnail')|relative }}" alt="{{ author.name }}" class="profile-picture">
+        <img src="{{ author.thumbnail.src('thumbnail') }}" alt="{{ author.name }}" class="profile-picture">
     </a>
     {% endif %}
     {% if author.description %}
