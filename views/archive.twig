@@ -11,19 +11,19 @@
 
     {% block archive %}
         {% if posts|length %}
-        {% for post in posts %}
-            {% if loop.index0 is even %}
-            <div class="row infinite-container">
-            {% endif %}
-                {%  block post_preview %}
-                <div class="col-md-6">
-                    {% include 'post-preview.twig' %}
-                </div>
-                {% endblock %}
-            {% if loop.index0 is odd or loop.last %}
+        <div class="infinite-container">
+            {% for row in posts|batch(2) %}
+            <div class="row">
+                {% for post in row %}
+                    {%  block post_preview %}
+                    <div class="col-md-6">
+                        {% include 'post-preview.twig' %}
+                    </div>
+                    {% endblock %}
+                {% endfor %}
             </div>
-            {% endif %}
-        {% endfor %}
+            {% endfor %}
+        </div>
         {% else %}
             <div class="row">
                 <div class="col-xs-12">
