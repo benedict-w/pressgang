@@ -11,6 +11,9 @@ class Avatar {
      */
     public function __construct() {
 
+        // hide the default
+        update_option( 'show_avatars', 0 );
+
         $this->add_acf_field_group();
         add_filter('get_avatar_data', array($this, 'get_avatar_data'), 10, 2);
         add_filter('get_avatar_url', array($this, 'get_avatar_url'), 10, 3);
