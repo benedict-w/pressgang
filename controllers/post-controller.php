@@ -19,7 +19,7 @@ class PostController extends PageController {
     protected $author;
     protected $tags;
     protected $categories;
-    protected $related_posts;
+    protected $related_posts = array();
     protected $custom_taxonomy_terms = array();
 
     /**
@@ -115,11 +115,13 @@ class PostController extends PageController {
 
             $id = $this->get_post()->ID;
 
+            $not_in = array($id);
+
             $args = array(
                 'post_type' => $this->post_type,
                 'orderby' => 'rand',
                 'numberposts' => POST_NO_RELATED_POSTS,
-                'post__not_in' => array($id),
+                'post__not_in' => $not_in,
                 'ignore_sticky_posts' => true,
                 'tax_query' => array(
                     'relation' => 'AND',
@@ -130,29 +132,50 @@ class PostController extends PageController {
 
             foreach($taxonomies as &$taxonomy) {
 
-                $terms = wp_get_object_terms($id, $taxonomy->name, array('fields' => 'ids'));
-
-                $args['tax_query'][] = array(
-                    'taxonomy' => $taxonomy->name,
-                    'field' => 'term_id',
-                    'terms' => $terms,
-                    'operator' => 'IN',
-                    'include_children' => false,
-                );
+                if ($terms = wp_get_object_terms($id, $taxonomy->name, array('fields' => 'ids'))) {
+                    $args['tax_query'][] = array(
+                        'taxonomy' => $taxonomy->name,
+                        'field' => 'term_id',
+                        'terms' => $terms,
+                        'operator' => 'IN',
+                        'include_children' => false,
+                    );
+                }
             }
 
-            $this->related_posts = \Timber::get_posts($args);
+            $posts = \Timber::get_posts($args);
 
-            // TODO - improve!!!
+            foreach ($posts as &$post) {
+                $this->related_posts[$post->ID] = $post;
+            }
 
-            if (empty($this->related_posts)) {
+            if (count($this->related_posts) < POST_NO_RELATED_POSTS) {
+
+                $not_in = array_merge($not_in, array_keys($this->related_posts));
+
                 $args['tax_query']['relation'] = 'OR';
-                $this->related_posts = \Timber::get_posts($args);
+                $args['post__not_in'] = $not_in;
+                $args['numberposts'] = POST_NO_RELATED_POSTS - count($this->related_posts);
+
+                $posts = \Timber::get_posts($args);
+
+                foreach ($posts as &$post) {
+                    $this->related_posts[$post->ID] = $post;
+                }
             }
 
-            if (empty($this->related_posts)) {
+            if (count($this->related_posts) < POST_NO_RELATED_POSTS) {
+                $not_in = array_merge($not_in, array_keys($this->related_posts));
+
                 unset($args['tax_query']);
-                $this->related_posts = \Timber::get_posts($args);
+                $args['numberposts'] = $not_in;
+                $args['numberposts'] = POST_NO_RELATED_POSTS - count($this->related_posts);
+
+                $posts = \Timber::get_posts($args);
+
+                foreach ($posts as &$post) {
+                    $this->related_posts[$post->ID] = $post;
+                }
             }
         }
 
