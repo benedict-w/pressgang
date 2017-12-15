@@ -72,10 +72,12 @@ class MailchimpSignup extends \Pressgang\Widget {
 
             $mailchimp = new MailChimp($opts['api_key']);
 
-            $response = $mailchimp->call('lists/subscribe', array(
+            $params = apply_filters('mailchimp_subscribe_params', array_merge(array(
                 'email' => array('email' => $email),
                 'id' => $opts['list_id'],
-            ));
+            ), $this->get_subscribe_params()));
+
+            $response = $mailchimp->call('lists/subscribe', $params);
 
         } catch(Exception $ex) {
             $message = __("Sorry! There was an error connecting to Mailchimp'", THEMENAME);
@@ -96,6 +98,34 @@ class MailchimpSignup extends \Pressgang\Widget {
         echo json_encode(array('success' => $success, 'message' => $message));
 
         die();
+    }
+
+    /**
+     * get_subscribe_params
+     *
+     * Override class to add custom params
+     */
+    protected function get_subscribe_params() {
+
+        $params = array ();
+
+        $firstname = filter_input(INPUT_POST, 'firstname',FILTER_VALIDATE_STRING);
+        $lastname = filter_input(INPUT_POST, 'lastname',FILTER_VALIDATE_STRING);
+
+        if ($firstname) {
+            $params['merge_vars'] = array('FNAME' => $firstname);
+        }
+
+        if ($lastname) {
+            if (isset($params['merge_vars'])) {
+                $params['merge_vars']['LNAME'] = $lastname;
+            }
+            else {
+                $params['merge_vars'] = array('LNAME' => $lastname);
+            }
+        }
+
+        return $params;
     }
 }
 
