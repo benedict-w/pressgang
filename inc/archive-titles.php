@@ -51,7 +51,7 @@ class ArchiveTitles {
         $wp_customize->add_setting(
             'single_cat_title',
             array(
-                'default' => "Category: %%s",
+                'default' => "Category: %s",
                 'sanitize_callback' => 'sanitize_text_field',
             )
         );
@@ -66,7 +66,7 @@ class ArchiveTitles {
         $wp_customize->add_setting(
             'single_tag_title',
             array(
-                'default' => 'Tag: %%s',
+                'default' => 'Tag: %s',
                 'sanitize_callback' => 'sanitize_text_field',
             )
         );
@@ -81,7 +81,7 @@ class ArchiveTitles {
         $wp_customize->add_setting(
             'single_author_title',
             array(
-                'default' => 'Author: %%s',
+                'default' => 'Author: %s',
                 'sanitize_callback' => 'sanitize_text_field',
             )
         );
@@ -96,7 +96,7 @@ class ArchiveTitles {
         $wp_customize->add_setting(
             'single_year_title',
             array(
-                'default' => 'Year: %%s',
+                'default' => 'Year: %s',
                 'sanitize_callback' => 'sanitize_text_field',
             )
         );
@@ -111,7 +111,7 @@ class ArchiveTitles {
         $wp_customize->add_setting(
             'single_month_title',
             array(
-                'default' => 'Month: %%s',
+                'default' => 'Month: %s',
                 'sanitize_callback' => 'sanitize_text_field',
             )
         );
@@ -126,7 +126,7 @@ class ArchiveTitles {
         $wp_customize->add_setting(
             'single_day_title',
             array(
-                'default' => 'Day: %%s',
+                'default' => 'Day: %s',
                 'sanitize_callback' => 'sanitize_text_field',
             )
         );
@@ -141,7 +141,7 @@ class ArchiveTitles {
         $wp_customize->add_setting(
             'post_type_archive_title',
             array(
-                'default' => 'Archives: %%s',
+                'default' => 'Archives: %s',
                 'sanitize_callback' => 'sanitize_text_field',
             )
         );
@@ -157,7 +157,7 @@ class ArchiveTitles {
         $wp_customize->add_setting(
             'search_results_title',
             array(
-                'default' => 'Search Results for &#8220;%%s&#8221;',
+                'default' => 'Search Results for &#8220;%s&#8221;',
                 'sanitize_callback' => 'sanitize_text_field',
             )
         );
@@ -180,7 +180,10 @@ class ArchiveTitles {
             $title = sprintf(__(get_theme_mod('single_cat_title'), THEMENAME), single_cat_title('', false));
         } else if (is_tag()) {
             $title = sprintf(__(get_theme_mod('single_tag_title'), THEMENAME), single_tag_title('', false));
-        } else if (is_author()) {
+        } if (is_tax()) {
+            $title = sprintf(__(get_theme_mod('single_cat_title'), THEMENAME), single_term_title('', false));
+        }
+        else if (is_author()) {
             $title = sprintf(__(get_theme_mod('single_author_title'), THEMENAME ), '<span class="vcard">' . get_the_author() . '</span>');
         } else if (is_year()) {
             $title = sprintf(__(get_theme_mod('single_year_title'), THEMENAME ), get_the_date(_x('Y', 'yearly archives date format')));
