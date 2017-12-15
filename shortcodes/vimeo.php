@@ -19,6 +19,8 @@ class Vimeo extends \Pressgang\Shortcode {
         'portrait' => 0,
         'autoplay' => 0,
         'autopause' => 1,
+        'height' => 360,
+        'width' => 640,
     );
 }
 
