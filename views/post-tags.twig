@@ -4,9 +4,9 @@
 {% if post.terms(taxonomy) %}
 <nav class="tag-list">
     <h5 class="tags-title">{{ __(title, THEMENAME) }}</h5>
-    <ul class="fa-ul">
+    <ul>
         {% for term in post.terms(taxonomy) %}
-        <li><i class="fa-li fa fa-tag"></i><a href="{{ term.link|e('html_attr') }}">{{ term.name|e }}</a></li>
+        <li><a href="{{ term.link|e('html_attr') }}">{{ term.name|e }}</a></li>
         {% endfor %}
     </ul>
 </nav>
