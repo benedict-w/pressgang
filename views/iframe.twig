@@ -1,0 +1,7 @@
+<div class="embed-responsive {% if aspect_ratio == '16by9' %}embed-responsive-16by9 {% else %}embed-responsive-4by3{% endif %}">
+    <iframe class="embed-responsive-item" src="{{ src }}"
+        {% if width %} width="{{ width }}"{% endif %}
+        {% if height %} height="{{ height }}"{% endif %}
+        {% if allowfullscreen %} allowfullscreen{% endif %}>
+    </iframe>
+</div>
