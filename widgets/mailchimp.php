@@ -109,8 +109,8 @@ class MailchimpSignup extends \Pressgang\Widget {
 
         $params = array ();
 
-        $firstname = filter_input(INPUT_POST, 'firstname',FILTER_VALIDATE_STRING);
-        $lastname = filter_input(INPUT_POST, 'lastname',FILTER_VALIDATE_STRING);
+        $firstname = filter_input(INPUT_POST, 'firstname',FILTER_SANITIZE_STRING);
+        $lastname = filter_input(INPUT_POST, 'lastname',FILTER_SANITIZE_STRING);
 
         if ($firstname) {
             $params['merge_vars'] = array('FNAME' => $firstname);
