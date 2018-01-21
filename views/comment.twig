@@ -1,0 +1,19 @@
+<article id="comment-{{ comment.ID }}" class="comment {{ comment.comment_type }}">
+    <h5 class="comment-author">{{ comment.author.name }}</h5>
+    <time class="comment-date-time" datetime="{{ fn('comment_date', 'd-m-Y', comment.ID) }} {{ comment.time }}">{{ comment.date }} {{ comment.time }}</time>
+    <div class="comment-content">{{ comment.comment_content|wpautop }}</div>
+    <div class="replies">
+        {% if comment.children %}
+            <h5 class="replies-heading">{{ __("Replies", THEMENAME) }}</h5>
+            <ol id="respond-{{ comment.ID }}" class="comments">
+                {% for child in comment.children %}
+                    <li>{% include "comment.twig" with { 'comment': child } %}</li>
+                {% endfor %}
+            </ol>
+        {% endif %}
+
+        {% if not comment.is_child %}
+        {{ comment.reply_link }}
+        {% endif %}
+    </div>
+</article>

@@ -1,0 +1,10 @@
+<section id="comments">
+    <ol>
+    {% for comment in post.comments %}
+        <li>{% include 'comment.twig' with { 'comments': comment } %}</li>
+    {% endfor %}
+    </ol>
+    <div id="respond">
+        {% include "comment-form.twig" %}
+    </div>
+</section>
