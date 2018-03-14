@@ -82,7 +82,10 @@ if ( class_exists( 'WP_Importer' ) ) {
          */
         public function greet() {
             $action = add_query_arg('step', 1);
-            \Timber::render('importer/greet.twig', array('action' => $action));
+            \Timber::render('importer/greet.twig', array(
+                'headers' => array_keys($this->header_settings),
+                'action' => $action,
+            ));
         }
 
         /**
@@ -211,6 +214,10 @@ if ( class_exists( 'WP_Importer' ) ) {
          *
          */
         protected function validate_headers($headers) {
+
+            // remove empty elements
+            $headers = array_filter($headers);
+
             // Check for invalid headers
             $matches = preg_grep('/^(' . implode('|', array_keys($this->header_settings)) . ')$/', $headers, PREG_GREP_INVERT);
 
