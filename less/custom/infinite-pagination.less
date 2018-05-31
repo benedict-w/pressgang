@@ -1,8 +1,14 @@
 #infinite-pagination-spinner {
   margin: @grid-gutter-width auto;
-  background: url('../../pressgang/img/ajax-loader.gif') center center no-repeat;
-  height: 50px;
+  padding: 0;
   display: none;
+  text-align: center;
+  &:after {
+    content: @fa-var-spinner;
+    .fa;
+    .fa-pulse;
+    font-size: 30px;
+  }
 }
 
 .page-numbers {
