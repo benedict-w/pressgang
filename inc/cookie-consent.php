@@ -17,7 +17,7 @@ class CookieConsent {
     public function __construct() {
 
         // set defaults
-        $this->implied_consent_text = __("This site uses cookies. By continuing to browse the site, you are agreeing to our use of cookies.", THEMENAME);
+        $this->implied_consent_text = __("This site uses cookies, as described in our Policy. You can disable cookies as mentioned in our Privacy Policy. By continuing to use this website without disabling the cookies, you consent to our use of those cookies which you have not disabled.", THEMENAME);
         $this->button_text = __("OK", THEMENAME);
         $this->privacy_link_text = __("View privacy policy", THEMENAME);
         $this->privacy_url = "/privacy";
