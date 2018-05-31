@@ -1,0 +1,8 @@
+<div class="wrap">
+    <h1>{{ title|e('html') }}</h1>
+    <form method="post" action="options.php">
+        {{ fn('settings_fields', key) }}
+        {{ fn('do_settings_sections', key) }}
+        {{ fn('submit_button') }}
+    </form>
+</div>
