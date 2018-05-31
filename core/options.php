@@ -14,6 +14,7 @@ class Options
     public function __construct()
     {
         add_action('init', array($this, 'init'));
+        add_filter('timber_context', array($this, 'add_to_timber_context'));
     }
 
     /**
@@ -70,6 +71,20 @@ class Options
             'key' => $key,
         ));
     }
+
+    /**
+     * add_to_timber_context
+     *
+     * TODO is this possible per options page?
+     *
+     * @param $context
+     * @return mixed
+     */
+    public function add_to_timber_context( $context ) {
+        $context['options'] = get_fields('option');
+        return $context;
+    }
+
 }
 
 new Options();
