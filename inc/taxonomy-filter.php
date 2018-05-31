@@ -65,8 +65,6 @@ class TaxonomyFilter {
 
         // allow twig to lazy load lookups
         add_filter('get_twig', array($this, 'add_taxonomy_lookups_to_twig'), 100);
-
-
     }
 
     /**
