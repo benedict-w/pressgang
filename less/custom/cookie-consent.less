@@ -2,6 +2,7 @@
 @cookie-consent-color: #fff;
 @cookie-consent-opacity: 0.8;
 @cookie-consent-font-size: 12px;
+@cookie-consent-link-color: @link-color;
 
 .cookie-consent {
   position: fixed;
@@ -21,9 +22,15 @@
     .pull-left;
     margin: 0;
     padding: 0;
+    max-width: 85%;
+  }
+  a {
+    color: @cookie-consent-link-color;
   }
   .btn-cookie {
     .pull-right;
     .btn-sm;
+    .btn-primary;
+    margin: 5px;
   }
 }

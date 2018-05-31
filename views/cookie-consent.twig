@@ -1,7 +1,9 @@
-<div class="cookie-consent">
-    <p>
-        {{ implied_consent_text }}
-        <a href="{{ privacy_url|e('html_attr') }}">{{ privacy_link_text }}</a>
-    </p>
-    <button class="btn btn-cookie">{{ button_text }}</button>
+<div class="cookie-consent-wrapper">
+    <div class="cookie-consent">
+        <p>
+            {{ implied_consent_text }}
+            <a href="{{ privacy_url|e('html_attr') }}">{{ privacy_link_text }}</a>
+        </p>
+        <button class="btn btn-cookie">{{ button_text }}</button>
+    </div>
 </div>
