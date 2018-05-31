@@ -3,7 +3,7 @@
 namespace PressGang;
 
 /**
- * Class Vimeo
+ * Class ContactForm
  *
  * @package PressGang
  */
@@ -45,7 +45,7 @@ class ContactForm extends \Pressgang\Shortcode {
 
         $contact = new Contact();
 
-        if ($contact->send_message($args));
+        $contact->send_message($args);
 
         $args['success'] = $contact->success;
         $args['error'] = $contact->error;
