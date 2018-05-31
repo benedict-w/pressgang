@@ -9,75 +9,117 @@
 
     $(document).ready(function($) {
 
-        var $spinner = $('<div id="infinite-pagination-spinner" class="spinner"></div>');
+        if (typeof(infinite_pagination) !== 'undefined') {
 
-        $('.page-numbers').remove(); // remove the standard page links
+            var $spinner = $('<div id="infinite-pagination-spinner" class="spinner"></div>');
 
-        var page = 2;
-        var fetched_all = false;
-        var selector = '.infinite-container';
+            $('.page-numbers').remove(); // remove the standard page links
 
-        $('.infinite-container:last').after($spinner);
+            var fetched_all = false;
+            var selector = '.infinite-container';
 
-        $(window).scroll(function() {
+            // set access global
+            infinite_pagination.page = 2;
+            infinite_pagination.fetched_all = false;
 
+            var $container = $(selector + ':last');
+
+            $container.after($spinner);
             $spinner = $('#infinite-pagination-spinner');
 
-            if  ($(window).scrollTop() >= $(document).height() - $(window).height() - $('#footer').outerHeight()) {
+            var animate_queue = [];
+            var animate_interval = false;
 
-                if (!fetched_all) { // keep going until we have all results
+            $(window).scroll(function () {
 
-                    $spinner.fadeIn(250);
+                if (($(window).scrollTop() >= $(document).height() - $(window).height() - $('#footer').outerHeight()) && !$.ajaxq.isRunning(['infinite-pagination-queue'])) {
 
-                    var data = {};
+                    if (!infinite_pagination.fetched_all) { // keep going until we have all results
 
-                    // get any terms from the search query
-                    var query = window.location.search.replace('?', '').split('&');
-                    for(var i in query){
-                        data[query[i].split('=')[0]] = query[i].split('=')[1];
-                    }
+                        $spinner.show();
 
-                    // get any terms from the search form if available
-                    $($('#searchform').serializeArray()).each(function(index, obj){
-                        data[obj.name] = obj.value;
-                    });
+                        var data = {};
 
-                    data['page_no'] = page;
-
-                    // from wp_localize_script
-                    data['action'] = infinite_pagination.action;
-                    data['_ajax_nonce'] = infinite_pagination._ajax_nonce;
-                    data['template'] = infinite_pagination.template;
-                    data['post_type'] = infinite_pagination.post_type;
-
-                    $.ajaxq('infinite-pagination-queue', {
-                        url: "/wp-admin/admin-ajax.php",
-                        type: 'POST',
-                        data: $.param(data),
-                        success: function (html) {
-
-                            fetched_all = !html;
-
-                            if (!fetched_all) {
-
-                                $html = $(selector, $.parseHTML(html));
-                                $(selector + ':last').after($html);
-
-                            } else {
-
-                                $.ajaxq.abort('infinite-pagination-queue');
-
-                            }
-                        },
-                        complete: function() {
-                            $spinner.hide();
+                        // get any terms from the search query
+                        var query = window.location.search.replace('?', '').split('&');
+                        for (var i in query) {
+                            data[query[i].split('=')[0]] = query[i].split('=')[1];
                         }
-                    });
 
-                    page++;
+                        // get any terms from the search form if available
+                        $($('#searchform').serializeArray()).each(function (index, obj) {
+                            data[obj.name] = obj.value;
+                        });
+
+                        data['page_no'] = infinite_pagination.page;
+
+                        // from wp_localize_script
+                        data['action'] = infinite_pagination.action;
+                        data['_ajax_nonce'] = infinite_pagination._ajax_nonce;
+                        data['template'] = infinite_pagination.template;
+                        data['post_type'] = infinite_pagination.post_type;
+
+                        $.ajaxq('infinite-pagination-queue', {
+                            url: "/wp-admin/admin-ajax.php",
+                            type: 'POST',
+                            data: $.param(data),
+                            success: function (html) {
+
+                                infinite_pagination.fetched_all = !html;
+
+                                if (!infinite_pagination.fetched_all) {
+
+                                    var $html = $(selector, $.parseHTML(html));
+
+                                    infinite_pagination.fetched_all = $html.children().length < infinite_pagination.posts_per_page;
+
+                                    var $items = $html.children();
+
+                                    $items.css('display', 'none');
+                                    $items.appendTo($container);
+
+                                    // if there are images fadein only after fully loaded
+                                    if ($items.find('img').length) {
+                                        $items.imagesLoaded(function() {
+                                            $items.each(function(i) {
+                                                var $item = $(this);
+                                                animate_queue.push(function() { $item.fadeIn(100); });
+                                            });
+                                        });
+                                    } else {
+                                        $items.each(function(i) {
+                                            var $item = $(this);
+                                            animate_queue.push(function() { $item.fadeIn(100); });
+                                        });
+                                    }
+
+                                    if (!animate_interval) {
+                                        animate_interval = setInterval(function () {
+                                            if (animate_queue.length) {
+                                                animate_queue.shift()();
+                                            } else {
+                                                clearInterval(animate_interval);
+                                                animate_interval = false;
+                                            }
+                                        }, 150);
+                                    }
+
+                                } else {
+
+                                    $.ajaxq.abort('infinite-pagination-queue');
+
+                                }
+                            },
+                            complete: function () {
+                                $spinner.hide();
+                            }
+                        });
+
+                        infinite_pagination.page++;
+                    }
                 }
-            }
-        });
+            });
+        }
     });
 
 })(jQuery);
