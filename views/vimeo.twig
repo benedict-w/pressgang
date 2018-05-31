@@ -4,6 +4,6 @@
     <iframe id="vimeo-player-{{ id|e('html_attr') }}" class="embed-responsive-item"
             width="{{ width|default(640) }}"
             height="{{ height|default(360) }}"
-            src="http://player.vimeo.com/video/{{ id|e('html_attr') }}?badge={{ badge|e('html_attr')|default(0) }}&byline={{ byline|e('html_attr')|default(0) }}&color={{ color|e('html_attr')|default('000') }}&loop={{ loop|e('html_attr')|default(0) }}&player_id={{ player_id|e('html_attr')|default('') }}&portrait={{ portrait|e('html_attr')|default(0) }}&title={{ title|e('html_attr')|default('') }}&autoplay={{ autoplay|e('html_attr')|default(0) }}&autopause={{ autopause|e('html_attr')|default(1) }}"
+            src="https://player.vimeo.com/video/{{ id|e('html_attr') }}?badge={{ badge|e('html_attr')|default(0) }}&byline={{ byline|e('html_attr')|default(0) }}&color={{ color|e('html_attr')|default('000') }}&loop={{ loop|e('html_attr')|default(0) }}&player_id={{ player_id|e('html_attr')|default('') }}&portrait={{ portrait|e('html_attr')|default(0) }}&title={{ title|e('html_attr')|default('') }}&autoplay={{ autoplay|e('html_attr')|default(0) }}&autopause={{ autopause|e('html_attr')|default(1) }}"
             frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 {% endblock %}
