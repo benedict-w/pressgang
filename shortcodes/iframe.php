@@ -16,7 +16,7 @@ class Iframe extends \Pressgang\Shortcode {
         'height' => 360,
         'width' => 640,
         'aspect_ratio' => '4by3',
-        'allowfulscreen' => false
+        'allowfullscreen' => false
     );
 }
 
