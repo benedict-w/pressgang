@@ -47,25 +47,28 @@ class Contact {
                     case 'name':
                     case 'message':
                         $args[$key] = filter_var($val, FILTER_SANITIZE_STRING);
-                        $message .= sprintf("%s: %s\n", ucwords($key), $val);
                         break;
 
                     default :
                         $args[$key] = filter_var($val, FILTER_SANITIZE_STRING);
+                        break;
                 }
             }
 
             // send email
             if (!empty($args['email']) && !empty($args['name']) && !empty($args['message'])) {
 
-                $message .= $args['message'];
-
                 foreach($args as $key => &$val) {
-                    $message = sprintf("%s: %s\n%s", ucwords($key), $val, $message);
+                    if (!in_array($key, array('recaptcha', 'to', 'success', 'message'))) {
+                        $message .= sprintf("%s: %s\r\n", ucwords($key), $val);
+                    }
                 }
 
-                add_action('wp_mail_from', function() use ($args) { return $args['email']; });
-                add_action('wp_mail_from_name', function() use ($args) { return $args['name']; });
+                $message .= sprintf("\r\nMessage: %s\r\n", $args['message']);
+
+                // TODO spoofing FROM can cause spam issues
+                // add_action('wp_mail_from', function() use ($args) { return $args['email']; });
+                // add_action('wp_mail_from_name', function() use ($args) { return $args['name']; });
 
                 $subject = $args['subject'] ? $args['subject'] : $this->subject;
 

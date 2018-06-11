@@ -43,7 +43,7 @@ class ContactForm extends \Pressgang\Shortcode {
     {
         $args = shortcode_atts($this->get_defaults(), $atts);
 
-        $contact = new Contact();
+        $contact = new Contact($args['to'], $args['subject']);
 
         $contact->send_message($args);
 
@@ -54,8 +54,6 @@ class ContactForm extends \Pressgang\Shortcode {
 
         return \Timber::compile($this->template, $this->context);
     }
-
-
 
 }
 
