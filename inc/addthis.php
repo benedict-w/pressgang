@@ -71,7 +71,7 @@ class AddThis {
     /**
      * add_to_twig
      *
-     * Add a 'breadcrumb' function to the Twig scope
+     * Add a function to the Twig scope
      *
      * @param $twig
      * @return mixed
