@@ -188,7 +188,7 @@ class Site extends \TimberSite
     public static function timber_set_product($post) {
         global $product;
         if (is_woocommerce()) {
-            $product = get_product($post->ID);
+            $product = wc_get_product($post->ID);
         }
     }
 }

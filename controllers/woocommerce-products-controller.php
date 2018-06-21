@@ -19,9 +19,6 @@ class WoocommerceProductsController extends PostsController {
      * @param string $template
      */
     public function __construct($template = 'woocommerce/archive.twig') {
-
-        add_filter('woocommerce_pagination_args', array($this, 'get_total_pages'));
-
         parent::__construct($template);
     }
 
@@ -74,29 +71,5 @@ class WoocommerceProductsController extends PostsController {
         $this->context['product_categories'] = $this->get_product_categories();
 
         return $this->context;
-    }
-
-    /**
-     * get_total_pages
-     *
-     * filter the woocommerce_pagination args based on the shop_display mode
-     *
-     * TODO - figure out whether or how to paginate this!
-     *
-     * @param $args
-     */
-    public function get_total_pages($args) {
-
-        $total = 1;
-
-        switch (get_option('woocommerce_shop_page_display')) {
-            case 'subcategories' :
-            case 'products' :
-            case 'both' :
-        }
-
-        $args['total'] = $total;
-
-        return $args;
     }
 }
