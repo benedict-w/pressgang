@@ -1,19 +1,12 @@
 {{ timber_set_product(post) }}
-<article {{ fn('post_class', 'entry', post.ID) }}>
-    <div class="media">
-        <div class="media-content">
-            {% if post.thumbnail %}
-                <a href="{{ post.link }}">
-                    <img src="{{ post.thumbnail.src|resize('shop_thumbnail') }}" alt="{{ post.title }}">
-                </a>
-            {% endif %}
-            {% if post.title %}
-                <h3 class="entry-title"><a href="{{post.link}}">{{ post.title }}</a></h3>
-            {% else %}
-                <h3 class="entry-title"><a href="{{post.link}}">{{ fn('the_title') }}</a></h3>
-            {% endif %}
-            {% do action( 'woocommerce_after_shop_loop_item_title' ) %}
-            {% do action( 'woocommerce_after_shop_loop_item' ) %}
-        </div>
-    </div>
+
+<article {{ fn('post_class', 'product-teaser', post.ID) }}>
+    {% if post.thumbnail %}
+        <a href="{{ post.link }}" title="{{ post.title }}">
+            <img src="{{ post.thumbnail.src|resize('woocommerce_thumbnail') }}" alt="{{ post.title }}">
+        </a>
+    {% endif %}
+    <h3 class="product-title"><a href="{{ post.link }}">{{ post.title ?: fn('the_title') }}</a></h3>
+    {% do action( 'woocommerce_after_shop_loop_item_title' ) %}
+    {% do action( 'woocommerce_after_shop_loop_item' ) %}
 </article>

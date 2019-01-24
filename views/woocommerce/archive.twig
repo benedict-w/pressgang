@@ -1,21 +1,37 @@
-{% extends "page-sidebar.twig" %}
+{% extends "page.twig" %}
 
 {% block content %}
+
     {% do action('woocommerce_before_main_content') %}
-    <div class="before-shop-loop">
-        {% do action( 'woocommerce_before_shop_loop') %}
-    </div>
-    <div class="loop">
-        {% if shop_page_display == 'subcategories' %}
-            {% for category in product_categories %}
-                {% include "views/woocommerce/teaser-product-cat.twig" %}
-            {% endfor %}
-        {% else %}
-            {% for post in products %}
-                {% include "views/woocommerce/teaser-product.twig" %}
-            {% endfor %}
+
+    {% do action( 'woocommerce_before_shop_loop') %}
+
+    <header class="woocommerce-products-header">
+        {% if fn('apply_filters', 'woocommerce_show_page_title', true) %}
+            <h1 class="woocommerce-products-header__title page-title">{{ fn('woocommerce_page_title') }}</h1>
         {% endif %}
-    </div>
+
+        {% do action('woocommerce_archive_description') %}
+    </header>
+
+    {% set no_cols = fn('wc_get_loop_prop', 'columns') %}
+    {% set items = shop_page_display == 'subcategories' ? product_categories : products %}
+
+    {% for row in items|batch(no_cols) %}
+        <div class="row">
+            {% for col in row %}
+                <div class="col-md-{{ (12 / no_cols)|round }}">
+                    {% if shop_page_display == 'subcategories' %}
+                        {% include "views/woocommerce/teaser-product-cat.twig" with { 'category': col } %}
+                    {% else %}
+                        {% include "views/woocommerce/teaser-product.twig" with { 'post': col } %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
     {% do action('woocommerce_after_shop_loop') %}
     {% do action('woocommerce_after_main_content') %}
-{% endblock  %}
+
+{% endblock %}
