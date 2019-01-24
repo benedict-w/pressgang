@@ -12,6 +12,7 @@
                 data = jQuery.parseJSON(data);
                 if(data.success) {
                     $self.find('.alert-success').show().delay(5000).fadeOut(500);
+                    $self[0].reset();
                 } else {
                     $self.find('.alert-danger').text(data.message).show().delay(5000).fadeOut(500);
                 }

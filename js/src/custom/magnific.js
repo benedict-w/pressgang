@@ -1,6 +1,7 @@
 (function($) {
 
     $(function() {
+
         /**
          * Setup image popups
          *
@@ -16,7 +17,7 @@
         $('.magnific-item').magnificPopup({
             type: 'image',
             gallery:{
-                enabled:true
+                enabled: true
             }
         });
     });

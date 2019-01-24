@@ -3,7 +3,9 @@
 
         var $grid = $('.grid');
 
-        $grid.masonry();
+        $grid.masonry({
+            percentPosition: true
+        });
 
         // layout masonry after each image loads
         $grid.imagesLoaded()
