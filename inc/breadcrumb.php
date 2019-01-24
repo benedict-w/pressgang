@@ -86,14 +86,7 @@ class Breadcrumb {
 
                 $post_type = get_post_type();
 
-                // if post is a custom post type
-                if($post_type !== 'post') {
-
-                    $post_type_object = get_post_type_object($post_type);
-                    $post_type_archive = get_post_type_archive_link($post_type);
-
-                    $this->append_link($post_type_object->labels->name, "breadcrumb-{$post_type}", $post_type_archive);
-                }
+                $this->add_archive_link($post_type);
 
                 // get post category info
                 $category = get_the_category();
@@ -133,6 +126,10 @@ class Breadcrumb {
 
 
             } else if (is_category()) {
+
+                $post_type = get_post_type();
+
+                $this->add_archive_link($post_type);
 
                 // category page
                 $this->append_link(single_cat_title('', false), 'breadcrumb-category');
@@ -220,6 +217,23 @@ class Breadcrumb {
             }
 
         }
+    }
+
+    /**
+     * add_archive_link
+     *
+     * @param $post_type
+     */
+    private function add_archive_link($post_type) {
+
+        $post_type_object = get_post_type_object($post_type);
+        $post_type_archive = get_post_type_archive_link($post_type);
+
+        $archive_title = $post_type === 'post'
+            ? get_the_title(get_option('page_for_posts', true))
+            : $post_type_object->labels->name;
+
+        $this->append_link($archive_title, "breadcrumb-{$post_type}", $post_type_archive);
     }
 
     /**
