@@ -90,7 +90,7 @@ class TaxonomyFilter {
      */
     public function add_taxonomy_lookups_to_twig($twig) {
 
-        $twig->addFunction('taxonomy_lookup', new \Twig_SimpleFunction('taxonomy_lookup', array($this, 'taxonomy_lookup')));
+        $twig->addFunction(new \Twig_SimpleFunction('taxonomy_lookup', array($this, 'taxonomy_lookup')));
 
         return $twig;
     }
