@@ -25,6 +25,7 @@ class Scripts {
     public function __construct() {
         static::$scripts = Config::get('scripts');
         add_action('init', array('PressGang\Scripts', 'register_scripts'));
+        add_action('init', array($this, 'modify_jquery'));
         add_filter('script_loader_tag', array('PressGang\Scripts', 'add_script_attrs'), 10, 3);
     }
 
@@ -70,7 +71,7 @@ class Scripts {
                 // enqueue on given hook
                 add_action($args['hook'], function () use ($args) {
                     wp_enqueue_script($args['handle']);
-                });
+                }, 20);
             }
 
             if ($args['defer']) {
@@ -102,6 +103,23 @@ class Scripts {
         }
 
         return $tag;
+    }
+
+    /**
+     * modify_jquery
+     *
+     * load a newer version of jquery for bootstrap 4 etc.
+     */
+    public function modify_jquery() {
+        if (!is_admin()) {
+            add_action('wp_enqueue_scripts', function() {
+                wp_deregister_script('jquery-core');
+                wp_register_script('jquery-core', "https://code.jquery.com/jquery-3.3.1.min.js", array(), '3.3.1');
+
+                wp_deregister_script( 'jquery-migrate' );
+                wp_register_script('jquery-migrate', "https://code.jquery.com/jquery-migrate-3.0.0.min.js", array(), '3.0.0');
+            }, 0);
+        }
     }
 
 }
