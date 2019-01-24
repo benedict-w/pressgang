@@ -32,21 +32,17 @@ class Site extends \TimberSite
         }, get_tags(array('orderby' => 'count', 'order' => 'DESC', 'number' => 20)))));
 
         $this->email = get_option('admin_email');
-        $this->logo = apply_filters('site_logo', get_theme_mod('logo'));
-        $this->copyright = apply_filters('site_copyright', get_theme_mod('copyright'));
 
         // replace the site icon with an image object
         if ($this->site_icon) {
             $this->site_icon = new \TimberImage($this->site_icon);
         }
 
-        // google webmaster site verification code
-        $this->google_verification_code = get_theme_mod('google_verification_code');
-
-        // bing webmaster site verification code
-        $this->bing_verification_code = get_theme_mod('bing_verification_code');
-
-        $this->theme_mods = get_theme_mods();
+        if ($theme_mods = get_theme_mods()) {
+            foreach ($theme_mods as $mod_key => &$mod_val) {
+                $this->$mod_key = apply_filters($mod_key, $mod_val);
+            }
+        }
 
         add_filter('timber_context', array($this, 'add_to_context'));
         add_filter('get_twig', array($this, 'add_to_twig'));
@@ -102,20 +98,26 @@ class Site extends \TimberSite
      * Add Custom Functions to Twig
      */
     public function add_to_twig( $twig ) {
-        $twig->addFunction('esc_attr', new \Twig_SimpleFunction('esc_attr', 'esc_attr'));
-        $twig->addFunction('esc_url', new \Twig_SimpleFunction('esc_url', 'esc_url'));
-        $twig->addFunction('get_search_query', new \Twig_SimpleFunction('get_search_query', 'get_search_query'));
+        $twig->addFunction(new \Twig_SimpleFunction('esc_attr', 'esc_attr'));
+        $twig->addFunction(new \Twig_SimpleFunction('esc_url', 'esc_url'));
+        $twig->addFunction(new \Twig_SimpleFunction('get_search_query', 'get_search_query'));
 
-        $twig->addFunction('meta_description', new \Twig_SimpleFunction('meta_description', array('PressGang\Site', 'meta_description')));
+        $twig->addFunction(new \Twig_SimpleFunction('meta_description', array('PressGang\Site', 'meta_description')));
 
-        $twig->addFunction('get_option', new \Twig_SimpleFunction('get_option', 'get_option'));
-        $twig->addFunction('get_theme_mod', new \Twig_SimpleFunction('get_theme_mod', 'get_theme_mod'));
+        $twig->addFunction(new \Twig_SimpleFunction('get_option', 'get_option'));
+        $twig->addFunction(new \Twig_SimpleFunction('get_theme_mod', 'get_theme_mod'));
 
         if (class_exists('WooCommerce')) {
-            $twig->addFunction('timber_set_product', new \Twig_SimpleFunction('timber_set_product', array('PressGang\Site', 'timber_set_product')));
+            $twig->addFunction(new \Twig_SimpleFunction('timber_set_product', array('PressGang\Site', 'timber_set_product')));
         }
 
-        $twig->addFilter('pluralize', new \Twig_SimpleFilter('pluralize', array('PressGang\Pluralizer', 'pluralize')));
+        // add svg sanitizer
+        // use plugin safe-svg
+        // $twig->getExtension('Twig_Extension_Core')->setEscaper('svg', array($this, 'svg_sanitizer'));
+
+        // TODO can we lazy load or include?
+
+        $twig->addFilter(new \Twig_SimpleFilter('pluralize', array('PressGang\Pluralizer', 'pluralize')));
 
         // add text-domain to global
         $twig->addGlobal('THEMENAME', THEMENAME);
@@ -190,6 +192,18 @@ class Site extends \TimberSite
         if (is_woocommerce()) {
             $product = wc_get_product($post->ID);
         }
+    }
+
+    /**
+     * svg_sanitizer
+     *
+     * see - https://github.com/darylldoyle/svg-sanitizer
+     */
+    public function svg_sanitizer($twig, $content, $charset) {
+
+        $sanitizer = new enshrined\svgSanitize\Sanitizer();
+
+        return $sanitizer->sanitize($content);
     }
 }
 

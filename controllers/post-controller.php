@@ -35,7 +35,8 @@ class PostController extends PageController {
 
         if(!$template) {
             // try to guess the view for custom post types
-            $template = sprintf("single%s.twig", $this->post_type === 'post' ? '' : "-{$this->post_type}") ;
+            $post_type = str_replace('_', '-', $this->post_type);
+            $template = sprintf("single%s.twig", $post_type === 'post' ? '' : "-{$post_type}") ;
         }
 
         parent::__construct(array($template, 'single.twig'));

@@ -27,11 +27,13 @@ class Options
         foreach ($this->options as $i => &$options) {
 
             // default to ACF options page
-            if (true) {
+            if (function_exists('acf_add_options_page')) {
                 // See - https://www.advancedcustomfields.com/resources/acf_add_options_page/
-                acf_add_options_page($options);
+                \acf_add_options_page($options);
             } else {
-                add_action('admin_menu', array($this, 'add_options_pages'));
+
+                // TODO fix errors
+                // add_action('admin_menu', array($this, 'add_options_pages'));
             }
         }
     }

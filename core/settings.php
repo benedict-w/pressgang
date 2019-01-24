@@ -84,6 +84,12 @@ return array (
     ),
 
     /*
+     * Add ACF Options page
+     *
+     */
+    'options' => array(),
+
+    /*
      * custom-post-types
      *
      * Array of custom_post_types to be registered

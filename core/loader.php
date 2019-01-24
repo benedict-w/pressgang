@@ -59,9 +59,10 @@ class Loader {
 
             foreach ($folders as &$folder) {
                 // try pressgang folders
-                $this->require_theme_file(get_template_directory(), $folder, $file);
-                // and search child them
-                $this->require_theme_file(get_stylesheet_directory(), $folder, $file);
+                if (!$this->require_theme_file(get_template_directory(), $folder, $file)) {
+                    // and search child theme
+                    $this->require_theme_file(get_stylesheet_directory(), $folder, $file);
+                }
             }
 
         });

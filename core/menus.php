@@ -61,7 +61,7 @@ class Menus {
     public static function add_to_context($context) {
         foreach(static::$menus as $location=>&$description) {
             if (has_nav_menu($location)) {
-                $context["menu_{$location}"] = new \TimberMenu($location);
+                $context["menu_{$location}"] = apply_filters("menu_{$location}", new \TimberMenu($location));
             }
         }
         return $context;
