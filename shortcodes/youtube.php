@@ -23,6 +23,7 @@ class Youtube extends \Pressgang\Shortcode {
         $atts['origin'] = get_permalink();
         return parent::do_shortcode($atts);
     }
+
 }
 
 new Youtube();
