@@ -1,5 +1,5 @@
 {% extends 'embed.twig' %}
 
 {% block embed %}
-    <iframe id="youtube-player-{{ id|e('html_attr') }}" class="embed-responsive-item" type="text/html" width="{{ width|e('html_attr')|default(640) }}" height="{{ height|e('html_attr')|default(640) }}" src="//www.youtube.com/embed/{{ id|e('html_attr') }}?enablejsapi={{ enablejsapi }}&origin={{ origin }}&autoplay={{ autoplay }}&loop={{ loop }}" frameborder="0"></iframe>
+    <iframe id="youtube-player-{{ id|e('html_attr') }}" class="embed-responsive-item" type="text/html" width="{{ width|e('html_attr')|default(640) }}" height="{{ height|e('html_attr')|default(360) }}" src="//www.youtube.com/embed/{{ id|e('html_attr') }}?enablejsapi={{ enablejsapi }}&origin={{ origin }}&autoplay={{ autoplay }}&loop=" frameborder="0"></iframe>
 {% endblock %}
