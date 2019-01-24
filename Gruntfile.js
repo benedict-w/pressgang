@@ -81,27 +81,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-compress');
 
 
-  grunt.registerTask("your-task-name", "your description", function() {
-
-    // read all subdirectories from your modules folder
-    grunt.file.expand("./modules/*").forEach(function (dir) {
-
-      // get the current concat config
-      var concat = grunt.config.get('concat') || {};
-
-      // set the config for this modulename-directory
-      concat[dir] = {
-        src: ['/modules/' + dir + '/js/*.js', '!/modules/' + dir + '/js/compiled.js'],
-        dest: '/modules/' + dir + '/js/compiled.js'
-      };
-
-      // save the new concat configuration
-      grunt.config.set('concat', concat);
-    });
-    // when finished run the concatinations
-    grunt.task.run('concat');
-  });
-
   grunt.registerTask('default', ['less', 'watch', 'concat', 'uglify']);
   grunt.registerTask('build', ['compress']);
 
