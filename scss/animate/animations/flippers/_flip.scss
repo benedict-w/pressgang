@@ -1,0 +1,34 @@
+@mixin keyframes-flip {
+	@include keyframes(flip) {
+		0% {
+			@include transform(perspective(400px) rotateY(0));
+			@include animation-timing-function(ease-out);
+		}
+		40% {
+			@include transform(perspective(400px) translateZ(150px) rotateY(170deg));
+			@include animation-timing-function(ease-out);
+		}
+		50% {
+			@include transform(perspective(400px) translateZ(150px) rotateY(190deg) scale(1));
+			@include animation-timing-function(ease-in);
+		}
+		80% {
+			@include transform(perspective(400px) rotateY(360deg) scale(.95));
+			@include animation-timing-function(ease-in);
+		}
+		100% {
+			@include transform(perspective(400px) scale(1));
+			@include animation-timing-function(ease-in);
+		}
+	}
+}
+
+@mixin animations-flip {
+	@include keyframes-flip;
+
+	.flip {
+	  @include animation-name(flip);
+	  @include backface-visibility(visible !important);
+	}
+}
+

@@ -1,0 +1,31 @@
+@mixin keyframes-lightSpeedIn {
+  @include keyframes(lightSpeedIn) {
+    0% {
+      @include transform(translateX(100%) skewX(-30deg));
+      opacity: 0;
+    }
+    60% {
+      @include transform(translateX(-20%) skewX(30deg));
+      opacity: 1;
+    }
+    80% {
+      @include transform(translateX(0%) skewX(-15deg));
+      opacity: 1;
+    }
+    100% {
+      @include transform(translateX(0%) skewX(0deg));
+      opacity: 1;
+    }
+  }  
+}
+
+@mixin animations-lightSpeedIn {
+	@include keyframes-lightSpeedIn;
+
+	.lightSpeedIn {
+	  @include animation-name(lightSpeedIn);
+	  @include animation-timing-function(ease-out);
+    @include animation-duration(0.5s);
+	}
+}
+

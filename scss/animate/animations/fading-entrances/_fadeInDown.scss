@@ -1,0 +1,20 @@
+@mixin keyframes-fadeInDown {
+  @include keyframes(fadeInDown) {
+    0% {
+      opacity: 0;
+      @include transform(translateY(-20px));
+    }
+    100% {
+      opacity: 1;
+      @include transform(translateY(0));
+    }
+  }
+}
+
+@mixin animations-fadeInDown {
+  @include keyframes-fadeInDown;
+  .fadeInDown {
+    @include animation-name(fadeInDown);
+  }
+}
+

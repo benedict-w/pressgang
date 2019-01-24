@@ -1,0 +1,21 @@
+@mixin keyframes-fadeOutRight {
+  @include keyframes(fadeOutRight) {
+    0% {
+      opacity: 1;
+      @include transform(translateX(0));
+    }
+    100% {
+      opacity: 0;
+      @include transform(translateX(20px));
+    }
+  }
+ 
+}
+
+@mixin animations-fadeOutRight {
+	@include keyframes-fadeOutRight;
+	.fadeOutRight {
+	  @include animation-name(fadeOutRight);
+	}
+}
+

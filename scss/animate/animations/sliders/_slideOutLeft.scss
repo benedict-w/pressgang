@@ -1,0 +1,19 @@
+@mixin keyframes-slideOutLeft {
+  @include keyframes(slideOutLeft) {
+    0% {
+      @include transform(translateX(0));
+    }
+    100% {
+      @include transform(translateX(-2000px));
+      opacity: 0;
+    }
+  }  
+}
+
+@mixin animations-slideOutLeft {
+	@include keyframes-slideOutLeft;
+	.slideOutLeft {
+	  @include animation-name(slideOutLeft);
+	}
+}
+

@@ -1,0 +1,19 @@
+@mixin keyframes-slideInDown {
+  @include keyframes(slideInDown) {
+    0% {
+      @include transform(translateY(-2000px));
+      opacity: 0;
+    }
+    100% {
+      @include transform(translateY(0));
+    }
+  } 
+}
+
+@mixin animations-slideInDown {
+	@include keyframes-slideInDown;
+	.slideInDown {
+	    @include animation-name(slideInDown);
+	}
+}
+

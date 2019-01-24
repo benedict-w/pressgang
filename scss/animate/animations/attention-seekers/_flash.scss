@@ -1,0 +1,14 @@
+@mixin keyframes-flash {
+  @include keyframes(flash) {
+    0%, 50%,  100%  { opacity: 1; }
+    25%, 75%  { opacity: 0; }
+  }
+}
+
+@mixin animations-flash {
+  @include keyframes-flash;
+
+  .flash {
+    @include animation-name(flash);
+  }
+}

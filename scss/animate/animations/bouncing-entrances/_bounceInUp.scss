@@ -1,0 +1,25 @@
+@mixin keyframes-bounceInUp {
+  @include keyframes(bounceInUp) {
+    0% {
+      opacity: 0;
+      @include transform(translateY(2000px));
+    }
+    60% {
+      opacity: 1;
+      @include transform(translateY(-30px));
+    }
+    80% {
+      @include transform(translateY(10px));
+    }
+    100% {
+      @include transform(translateY(0));
+    }
+  } 
+}
+
+@mixin animations-bounceInUp {
+	@include keyframes-bounceInUp;
+	.bounceInUp {
+	  @include animation-name(bounceInUp);
+	}
+}

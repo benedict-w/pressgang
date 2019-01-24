@@ -1,0 +1,20 @@
+@mixin keyframes-slideInLeft {
+  @include keyframes(slideInLeft) {
+    0% {
+      @include transform(translateX(-2000px));
+      opacity: 0;
+    }
+    100% {
+      @include transform(translateX(0));
+    }
+  }
+    
+}
+
+@mixin animations-slideInLeft {
+	@include keyframes-slideInLeft;
+	.slideInLeft {
+	  @include animation-name(slideInLeft);
+	}
+}
+

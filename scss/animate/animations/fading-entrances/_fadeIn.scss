@@ -1,0 +1,15 @@
+@mixin keyframes-fadeIn {
+	@include keyframes(fadeIn) {
+		0% { opacity: 0; }
+		100% { opacity: 1; }
+	}
+}
+
+@mixin animations-fadeIn {
+	@include keyframes-fadeIn;
+	.fadeIn {
+	  @include animation-name(fadeIn);
+	}
+}
+
+

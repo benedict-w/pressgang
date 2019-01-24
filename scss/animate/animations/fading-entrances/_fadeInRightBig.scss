@@ -1,0 +1,20 @@
+@mixin keyframes-fadeInRightBig {
+  @include keyframes(fadeInRightBig) {
+    0% {
+      opacity: 0;
+      @include transform(translateX(2000px));
+    }
+    100% {
+      opacity: 1;
+      @include transform(translateX(0));
+    }
+  }
+}
+
+@mixin animations-fadeInRightBig {
+	@include keyframes-fadeInRightBig;
+	.fadeInRightBig {
+	  @include animation-name(fadeInRightBig);
+	}
+}
+

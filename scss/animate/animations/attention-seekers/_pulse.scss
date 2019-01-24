@@ -1,0 +1,15 @@
+// Originally authored by Nick Pettit - https://github.com/nickpettit/glide
+
+@mixin keyframes-pulse {
+  @include keyframes(pulse) {
+    0%, 100%   { @include transform(scale(1)); }
+    50%  { @include transform(scale(1.1)); }
+  }    
+}
+
+@mixin animations-pulse {
+  @include keyframes-pulse;
+  .pulse {
+    @include animation-name(pulse);
+  }
+}

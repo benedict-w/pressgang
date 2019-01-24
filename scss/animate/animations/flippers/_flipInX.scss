@@ -1,0 +1,28 @@
+@mixin keyframes-flipInX { 
+	@include keyframes(flipInX) {
+		0% {
+			@include transform(perspective(400px) rotateX(90deg));
+			opacity: 0;
+		}
+		40% {
+			@include transform(perspective(400px) rotateX(-10deg));
+		}
+		70% {
+			@include transform(perspective(400px) rotateX(10deg));
+		}
+		100% {
+			@include transform(perspective(400px) rotateX(0deg));
+			opacity: 1;
+		}
+	}
+}
+
+@mixin animations-flipInX {
+	@include keyframes-flipInX;
+
+	.flipInX {
+	  @include animation-name(flipInX);
+	  @include backface-visibility(visible !important);
+	}
+}
+

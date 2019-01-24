@@ -1,0 +1,14 @@
+@mixin keyframes-fadeOut {
+	@include keyframes(fadeOut) {
+		0% { opacity: 1; }
+  	100% { opacity: 0; }
+	}  
+}
+
+@mixin animations-fadeOut {
+	@include keyframes-fadeOut;
+	.fadeOut {
+	  @include animation-name(fadeOut);
+	}
+}
+

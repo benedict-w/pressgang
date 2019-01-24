@@ -1,0 +1,21 @@
+@mixin keyframes-flipOutX {
+  @include keyframes(flipOutX) {
+    0% {
+      @include transform(perspective(400px) rotateX(0deg));
+      opacity: 1;
+    }
+    100% {
+      @include transform(perspective(400px) rotateX(90deg));
+      opacity: 0;
+    }
+  } 
+}
+
+@mixin animations-flipOutX {
+  @include keyframes-flipOutX;
+  .flipOutX {
+    @include animation-name(flipOutX);
+    @include backface-visibility(visible !important);
+  }
+}
+

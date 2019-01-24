@@ -1,0 +1,21 @@
+@mixin keyframes-rotateOutUpRight {
+  @include keyframes(rotateOutUpRight) {
+    0% {
+      @include transform-origin(right, bottom);
+      @include transform(rotate(0));
+      opacity: 1;
+    }
+    100% {
+      @include transform-origin(right, bottom);
+      @include transform(rotate(90deg));
+      opacity: 0;
+    }
+  }
+}
+
+@mixin animations-rotateOutUpRight {
+	@include keyframes-rotateOutUpRight;
+	.rotateOutUpRight {
+	  @include animation-name(rotateOutUpRight);
+	}
+}

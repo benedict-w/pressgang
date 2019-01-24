@@ -1,0 +1,19 @@
+@mixin keyframes-slideOutUp {
+  @include keyframes(slideOutUp) {
+    0% {
+      @include transform(translateY(0));
+    }
+    100% {
+      @include transform(translateY(-2000px));
+      opacity: 0;
+    }
+  } 
+}
+
+@mixin animations-slideOutUp {
+	@include keyframes-slideOutUp;
+	.slideOutUp {
+	    @include animation-name(slideOutUp);
+	}
+}
+

@@ -1,0 +1,23 @@
+@mixin keyframes-rotateOutDownLeft {
+  @include keyframes(rotateOutDownLeft) {
+    0% {
+      @include transform-origin(left, bottom);
+      @include transform(rotate(0));
+      opacity: 1;
+    }
+    100% {
+      @include transform-origin(left, bottom);
+      @include transform(rotate(90deg));
+      opacity: 0;
+    }
+  }
+  
+}
+
+@mixin animations-rotateOutDownLeft {
+	@include keyframes-rotateOutDownLeft;
+	.rotateOutDownLeft {
+	  @include animation-name(rotateOutDownLeft);
+	}
+}
+

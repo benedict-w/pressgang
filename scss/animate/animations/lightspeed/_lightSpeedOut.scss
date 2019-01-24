@@ -1,0 +1,23 @@
+@mixin keyframes-lightSpeedOut {
+  @include keyframes(lightSpeedOut) {
+    0% {
+      @include transform(translateX(0%) skewX(0deg));
+      opacity: 1;
+    }
+    100% {
+      @include transform(translateX(100%) skewX(-30deg));
+      opacity: 0;
+    }
+  }
+}
+
+@mixin animations-lightSpeedOut {
+	@include keyframes-lightSpeedOut;
+
+	.lightSpeedOut {
+	  @include animation-name(lightSpeedOut);
+	  @include animation-timing-function(ease-out);
+    @include animation-duration(0.25s);
+	}
+}
+

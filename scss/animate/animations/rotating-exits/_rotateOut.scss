@@ -1,0 +1,23 @@
+@mixin keyframes-rotateOut {
+  @include keyframes(rotateOut) {
+    0% {
+      @include transform-origin(center, center);
+      @include transform(rotate(0));
+      opacity: 1;
+    }
+    100% {
+      @include transform-origin(center, center);
+      @include transform(rotate(200deg));
+      opacity: 0;
+    }
+  }
+  
+}
+
+@mixin animations-rotateOut {
+	@include keyframes-rotateOut;
+	.rotateOut {
+	  @include animation-name(rotateOut);
+	}
+}
+

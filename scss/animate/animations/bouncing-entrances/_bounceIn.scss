@@ -1,0 +1,25 @@
+@mixin keyframes-bounceIn {
+  @include keyframes(bounceIn) {
+    0% {
+      opacity: 0;
+      @include transform(scale(0.3));
+    }
+    50% {
+      opacity: 1;
+      @include transform(scale(1.05));
+    }
+    70% {
+      @include transform(scale(0.9));
+    }
+    100% {
+     @include transform(scale(1));
+    }
+  }
+}
+
+@mixin animations-bounceIn {
+	@include keyframes-bounceIn;
+	.bounceIn {
+	  @include animation-name(bounceIn);
+	}
+}

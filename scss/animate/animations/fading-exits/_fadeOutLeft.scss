@@ -1,0 +1,21 @@
+@mixin keyframes-fadeOutLeft{
+  @include keyframes(fadeOutLeft) {
+    0% {
+      opacity: 1;
+      @include transform(translateX(0));
+    }
+    100% {
+      opacity: 0;
+      @include transform(translateX(-20px));
+    }
+  }
+  
+}
+
+@mixin animations-fadeOutLeft {	
+	@include keyframes-fadeOutLeft;
+	.fadeOutLeft {
+	  @include animation-name(fadeOutLeft);
+	}
+}
+

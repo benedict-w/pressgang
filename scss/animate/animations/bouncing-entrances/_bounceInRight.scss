@@ -1,0 +1,26 @@
+@mixin keyframes-bounceInRight {
+  @include keyframes(bounceInRight) {
+    0% {
+      opacity: 0;
+      @include transform(translateX(2000px));
+    }
+    60% {
+      opacity: 1;
+      @include transform(translateX(-30px));
+    }
+    80% {
+      @include transform(translateX(10px));
+    }
+    100% {
+      @include transform(translateX(0));
+    }
+  }
+}
+
+@mixin animations-bounceInRight {
+	
+	@include keyframes-bounceInRight;
+	.bounceInRight {
+	  @include animation-name(bounceInRight);
+	}
+}

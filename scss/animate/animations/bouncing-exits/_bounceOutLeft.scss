@@ -1,0 +1,23 @@
+@mixin keyframes-bounceOutLeft {
+  @include keyframes(bounceOutLeft) {
+    0% {
+      @include transform(translateX(0));
+    }
+    20% {
+      opacity: 1;
+      @include transform(translateX(20px));
+    }
+    100% {
+      opacity: 0;
+      @include transform(translateX(-2000px));
+    }
+  }
+}
+
+@mixin animations-bounceOutLeft {
+	@include keyframes-bounceOutLeft;
+	.bounceOutLeft {
+	  @include animation-name(bounceOutLeft);
+	}
+}
+

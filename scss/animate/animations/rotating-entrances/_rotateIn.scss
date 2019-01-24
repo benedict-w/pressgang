@@ -1,0 +1,21 @@
+@mixin keyframes-rotateIn {
+  @include keyframes(rotateIn) {
+    0% {
+      @include transform-origin(center, center);
+      @include transform(rotate(-200deg));
+      opacity: 0;
+    }
+    100% {
+      @include transform-origin(center, center);
+      @include transform(rotate(0));
+      opacity: 1;
+    }
+  }
+}
+@mixin animations-rotateIn {
+	@include keyframes-rotateIn;
+	.rotateIn {
+	  @include animation-name(rotateIn);
+	}
+}
+

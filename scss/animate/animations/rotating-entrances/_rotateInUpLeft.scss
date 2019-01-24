@@ -1,0 +1,23 @@
+@mixin keyframes-rotateInUpLeft {
+  @include keyframes(rotateInUpLeft) {
+    0% {
+      @include transform-origin(left, bottom);
+      @include transform(rotate(90deg));
+      opacity: 0;
+    }
+    100% {
+      @include transform-origin(left, bottom);
+      @include transform(rotate(0));
+      opacity: 1;
+    }
+  }
+  
+}
+
+@mixin animations-rotateInUpLeft {
+	@include keyframes-rotateInUpLeft;
+	.rotateInUpLeft {
+	  @include animation-name(rotateInUpLeft);
+	}
+}
+

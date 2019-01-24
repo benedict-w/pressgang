@@ -1,0 +1,26 @@
+@mixin keyframes-bounceOut {
+  @include keyframes(bounceOut) {
+    0% {
+      @include transform(scale(1));
+    }
+    25% {
+      @include transform(scale(0.95));
+    }
+    50% {
+      opacity: 1;
+      @include transform(scale(1.1));
+    }
+    100% {
+      opacity: 0;
+      @include transform(scale(0.3));
+    }
+  }
+}
+
+@mixin animations-bounceOut {
+
+	@include keyframes-bounceOut;
+	.bounceOut {
+	  @include animation-name(bounceOut);
+	}
+}
