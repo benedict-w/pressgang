@@ -1,0 +1,11 @@
+.navbar-collapse {
+  ul.navbar-nav {
+    @extend .mr-auto;
+    li.menu-item {
+      @extend .nav-item;
+      > a {
+        @extend .nav-link;
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+$blur-up-px: 10px !default;
+$blur-up-duration: 400ms !default;
+
+img {
+  &.blur-up {
+    filter: blur($blur-up-px);
+    transition: filter $blur-up-duration;
+    &.lazyloaded {
+      filter: blur(0);
+    }
+  }
+  &.lazyload,
+  &.lazyloaded {
+    display: block;
+    width: 100%;
+    @include img-fluid;
+  }
+}
