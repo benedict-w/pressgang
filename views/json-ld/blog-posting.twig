@@ -1,0 +1,18 @@
+{% extends 'json-ld/script.twig' %}
+
+{% block schema %}
+  {
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "publisher": {
+    "@id": "{{ publisher }}"
+  },
+  "author": "{{ author }}",
+  "headline": "{{ headline|e('html_attr') }}",
+  "articleBody": "{{ article_body|e('html_attr') }}",
+  "image": "{{ image }}",
+  "datePublished": "{{ date_published }}",
+  "dateModified": "{{ date_modified }}",
+  "mainEntityOfPage": "{{ main_entity_of_page }}"
+  }
+{% endblock %}

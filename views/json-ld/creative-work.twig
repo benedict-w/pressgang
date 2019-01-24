@@ -1,0 +1,28 @@
+{% extends 'json-ld/script.twig' %}
+
+{% block schema %}
+{
+  "@context": "http://schema.org",
+  "@type": "creativeWork",
+  "creator": {
+    "@type": "organization",
+    "name": "{{ organization.name }}",
+    "sameAs": "{{ organization.same_as }}"
+  },
+  {% if contributors %}
+  "contributor" : [
+  {% for contributor in contributors %}
+    {
+      "@type": "organization",
+      "name": "{{ contributor.name }}"
+    }{% if not loop.last %},{% endif %}
+  {% endfor %}
+  ],
+  {% endif %}
+  "url": "{{ url }}",
+  "headline": "{{ headline }}",
+  "description": "{{ description }}",
+  "thumbnailUrl": "{{ thumbnail_url }}",
+  "keywords": "{{ keywords }}"
+}
+{% endblock %}

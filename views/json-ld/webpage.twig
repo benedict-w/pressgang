@@ -1,0 +1,16 @@
+{% extends 'json-ld/script.twig' %}
+
+{% block schema %}
+  {
+  "@context": "http://schema.org",
+  "@type": "WebPage",
+  "publisher": {
+    "@id": "{{ publisher }}"
+  },
+  "headline": "{{ headline }}",
+  "image": "{{ image }}",
+  "mainContentOfPage": "{{ main_content_of_page }}",
+  "primaryImageOfPage": "{{ primary_image_of_page }}",
+  "lastReviewed": "{{ last_reviewed }}"
+  }
+{% endblock %}

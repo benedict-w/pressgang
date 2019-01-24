@@ -1,0 +1,15 @@
+<script type="application/ld+json">
+{
+  "@context":"http://schema.org",
+  "@type":"ItemList",
+  "itemListElement": [
+  {% for item in items %}
+    {
+      "@type": "ListItem",
+      "position": {{ loop.index }},
+      "url": "{{ item.link }}"
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>

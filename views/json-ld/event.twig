@@ -1,0 +1,15 @@
+{% extends 'json-ld/script.twig' %}
+
+{% block schema %}
+  {
+  "@context": "http://schema.org",
+  "@type": "event",
+  "name": "{{ name }}",
+  "description": "{{ description }}",
+  "image": "{{ image }}",
+  "url": "{{ url }}",
+  "startDate": "{{ start_date }}",
+  "endDate": "{{ end_date }}",
+  "location": "{{ location }}"
+  }
+{% endblock %}

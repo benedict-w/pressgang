@@ -1,0 +1,26 @@
+{% extends 'json-ld/script.twig' %}
+
+{% block schema %}
+  {
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "@id": "{{ id }}",
+    "name": "{{ name }}",
+    "logo": "{{ logo }}",
+    "sameAs": [
+      {% for url in same_as %}
+      "{{ url }}"{{ not loop.last ? ',' }}
+      {% endfor %}
+    ],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "{{ address_locality }}",
+      "addressRegion": "{{ address_region }}",
+      "postalCode": "{{ postal_code }}",
+      "streetAddress": "{{ street_address }}"
+    },
+    "email": "{{ email }}",
+    "telephone": "{{ telephone }}",
+    "vatID": "{{ vat_id }}"
+  }
+{% endblock %}

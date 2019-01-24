@@ -1,0 +1,22 @@
+{% extends 'json-ld/script.twig' %}
+
+{% block schema %}
+  {
+    "@context": "http://schema.org",
+    "@type": "JobPosting",
+    "title": "{{ title }}",
+    "description": "{{ description }}",
+    "hiringOrganization": {
+      "@id": "{{ hiring_organization }}"
+    },
+    "jobLocation": "{{ job_location }}",
+    "employmentType": "{{ employment_type }}",
+    "baseSalary": {
+      "@type": "MonetaryAmount",
+      "currency": "{{ currency }}",
+      "value": "{{ base_salary }}"
+    },
+    "datePosted": "{{ date_posted }}",
+    "validThrough": "{{ valid_through }}"
+  }
+{% endblock %}

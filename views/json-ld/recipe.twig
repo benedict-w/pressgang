@@ -1,0 +1,48 @@
+{% extends 'json-ld/script.twig' %}
+
+{% block schema %}
+{
+    "@context": "http://schema.org",
+    "@type": "Recipe",
+    "name": "{{ name }}",
+    "image": [
+    {% for image in images %}
+        "{{ image }}"{% if not loop.last %},{% endif %}
+    {% endfor %}
+    ],
+    "datePublished": "{{ date_published }}",
+    "description": "{{ description }}",
+    {% if prep_time %}"prepTime": "{{ prep_time }}",{% endif %}
+    {% if cook_time %}"cookTime": "{{ cook_time }}",{% endif %}
+    {% if prep_time or cook_time %}"cookTime": "{{ prep_time ?? 0 + cook_time ?? 0 }}",{% endif %}
+    {% if keywords %}
+    "keywords": "{{ keywords|join(', ') }}",
+    {% endif %}
+    {% if recipe_yield %}
+    "recipeYield": "{{ '%d servings'|format(recipe_yield) }}",
+    {% endif %}
+    {% if recipe_category %}
+    "recipeCategory": "{{ recipe_category }}",
+    {% endif %}
+    {% if recipe_cuisine %}
+        "recipeCuisine": "{{ recipe_cuisine }}",
+    {% endif %}
+    {% if recipe_ingredients %}
+        "recipeIngredient": [
+        {% for ingredient in recipe_ingredients %}
+            "{{ ingredient }}"{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ],
+    {% endif %}
+    {% if recipe_instructions %}
+    "recipeInstructions": [
+        {% for step in recipe_instructions %}
+            {
+                "@type": "HowToStep",
+                "text": "{{ step }}"
+            }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ]
+    {% endif %}
+}
+{% endblock %}

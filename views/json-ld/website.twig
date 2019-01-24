@@ -1,0 +1,16 @@
+{% extends 'json-ld/script.twig' %}
+
+{% block schema %}
+  {
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "@id": "{{ id }}",
+    "name": "{{ name }}",
+    "url": "{{ url }}",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "{{ url }}?s={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+{% endblock %}

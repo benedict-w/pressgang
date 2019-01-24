@@ -1,0 +1,18 @@
+{% extends 'json-ld/script.twig' %}
+
+{% block schema %}
+{
+    "@context": "http://schema.org",
+    "@type": "LocalBusiness",
+    "parent_organization": "{{ parent_organization }}",
+    "name": "{{ name }}",
+    "description": "{{ description }}",
+    "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "{{ address_locality }},
+        "addressRegion": "{{ address_region }}",
+        "streetAddress": "{{ street_address }}"
+    },
+    "telephone": "{{ telephone }}"
+}
+{% endblock %}

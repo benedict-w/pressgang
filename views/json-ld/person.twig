@@ -1,0 +1,18 @@
+{% extends 'json-ld/script.twig' %}
+
+{% block schema %}
+  {
+    "@context": "http://schema.org",
+    "@type": "Person",
+    "givenName": "{{ given_name }}",
+    "familyName": "{{ family_name }}",
+    "image": "{{ image }}",
+    "url": "{{ url }}",
+    "jobTitle": "{{ job_title }}",
+    "awards": "{{ awards }}",
+    "worksFor": {
+      "@id": "{{ works_for }}"
+    },
+    "workLocation": "{{ work_location }}"
+  }
+{% endblock %}
