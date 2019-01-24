@@ -26,7 +26,7 @@ class AdminLogo {
                     background-image: url(<?php echo $logo; ?>) !important;
                     padding-bottom: 30px;
                     width: auto !important;
-                    /* height: auto !important; */
+                    height: auto !important;
                     -webkit-background-size: contain !important;
                     background-size: contain !important;
                 }
