@@ -21,6 +21,7 @@
 @stackoverflow-color: #fe7a15;
 @behance-color: #1769ff;
 @medium-color: #02b875;
+@soundcloud-color: #ff8800;
 
 @email-icon: @fa-var-envelope;
 @facebook-icon: @fa-var-facebook;
@@ -39,6 +40,7 @@
 @stackoverflow-icon: @fa-var-stack-overflow;
 @behance-icon: @fa-var-behance;
 @medium-icon: @fa-var-medium;
+@soundcloud-icon: @fa-var-soundcloud;
 
 // To display a background circle provide the @circle argument with a color value
 
@@ -116,6 +118,10 @@
       .icon(@medium-icon);
       width: floor(@size * 1.2);
     }
+    &.soundcloud a {
+      .icon(@soundcloud-icon);
+      width: floor(@size * 1.4);
+    }
 
     // when circle use brand as background color
     & when not (@circle = '') {
@@ -178,6 +184,9 @@
       &.medium a {
         .icon-a(@color, @social-color, @circle, @medium-color);
       }
+      &.soundcloud a {
+        .icon-a(@color, @social-color, @circle, @medium-color);
+      }
     }
 
     // no circle
@@ -233,6 +242,9 @@
       }
       &.medium a {
         .icon-a(@color, @medium-color);
+      }
+      &.soundcloud a {
+        .icon-a(@color, @soundcloud-color);
       }
     }
   }
