@@ -3,7 +3,7 @@
 namespace PressGang;
 
 /**
- * Class WCProductsController
+ * Class WoocommerceProductsController
  *
  * @package PressGang
  */
@@ -37,7 +37,7 @@ class WoocommerceProductsController extends PostsController {
             $product_categories = get_categories(apply_filters('woocommerce_product_subcategories_args', array(
                 'parent' => $parent_id,
                 'menu_order' => 'ASC',
-                'hide_empty' => 0,
+                'hide_empty' => true,
                 'hierarchical' => 1,
                 'taxonomy' => 'product_cat',
                 'pad_counts' => 1
