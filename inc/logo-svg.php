@@ -20,6 +20,7 @@ class LogoSvg {
     public function __construct() {
         add_action('customize_register', array($this, 'logo_svg'));
         add_filter('upload_mimes', array($this, 'add_svg_mime'));
+        add_filter('timber_context', array($this, 'add_to_context'), 100);
     }
 
     /**
@@ -64,6 +65,57 @@ class LogoSvg {
         return $mimes;
     }
 
+    /**
+     * svg_sanitizer
+     *
+     * TODO
+     *
+     * see - https://github.com/darylldoyle/svg-sanitizer
+     */
+    public function svg_sanitizer($twig, $content, $charset) {
+
+        $sanitizer = new enshrined\svgSanitize\Sanitizer();
+
+        return $sanitizer->sanitize($content);
+    }
+
+    /**
+     * add_to_twig
+     *
+     * add svg sanitizer
+     *
+     * TODO use plugin safe-svg instead for now?
+     *
+     * @param $twig
+     * @return mixed
+     */
+    public function add_to_twig($twig) {
+
+        $twig->getExtension('Twig_Extension_Core')->setEscaper('svg', array($this, 'svg_sanitizer'));
+
+        return $twig;
+    }
+
+    /**
+     * add_to_twig
+     *
+     * TODO
+     *
+     * @param $twig
+     */
+    public function add_to_context($context) {
+
+        if ($file = get_theme_mod('logo_svg')) {
+
+            $dir = wp_upload_dir();
+            $file = str_replace($dir['url'], $dir['path'], $file);
+
+            $context['site']->logo_svg = file_get_contents($file);
+        }
+
+        return $context;
+
+    }
 
 }
 

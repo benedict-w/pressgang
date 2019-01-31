@@ -111,10 +111,6 @@ class Site extends \TimberSite
             $twig->addFunction(new \Twig_SimpleFunction('timber_set_product', array('PressGang\Site', 'timber_set_product')));
         }
 
-        // add svg sanitizer
-        // use plugin safe-svg
-        // $twig->getExtension('Twig_Extension_Core')->setEscaper('svg', array($this, 'svg_sanitizer'));
-
         // TODO can we lazy load or include?
 
         $twig->addFilter(new \Twig_SimpleFilter('pluralize', array('PressGang\Pluralizer', 'pluralize')));
@@ -194,17 +190,6 @@ class Site extends \TimberSite
         }
     }
 
-    /**
-     * svg_sanitizer
-     *
-     * see - https://github.com/darylldoyle/svg-sanitizer
-     */
-    public function svg_sanitizer($twig, $content, $charset) {
-
-        $sanitizer = new enshrined\svgSanitize\Sanitizer();
-
-        return $sanitizer->sanitize($content);
-    }
 }
 
 new Site();
