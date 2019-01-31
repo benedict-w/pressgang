@@ -31,6 +31,9 @@ class Block
      */
     public static function get_context($block) {
 
+        // clear each static context
+        static::$context = array();
+
         // add a reference to the post
         static::$context['post'] = new \TimberPost();
 
@@ -55,6 +58,7 @@ class Block
         }
 
         return $fields;
+
     }
 
     /**
