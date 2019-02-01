@@ -108,7 +108,7 @@ class LogoSvg {
         if ($file = get_theme_mod('logo_svg')) {
 
             $dir = wp_upload_dir();
-            $file = str_replace($dir['url'], $dir['path'], $file);
+            $file = str_replace($dir['baseurl'], $dir['basedir'], $file);
 
             $context['site']->logo_svg = file_get_contents($file);
         }
