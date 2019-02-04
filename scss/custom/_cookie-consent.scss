@@ -3,12 +3,13 @@ $cookie-consent-color: #fff !default;
 $cookie-consent-opacity: 0.8 !default;
 $cookie-consent-font-size: $font-size-sm !default;
 $cookie-consent-link-color: $link-color !default;
+$cookie-consent-button-bg: $cookie-consent-color;
 
 .cookie-consent {
   position: fixed;
   bottom: 0;
   width: 100%;
-  padding: $grid-gutter-width / 3;
+  padding: $grid-gutter-width / 2;
   color: $cookie-consent-color;
   background-color: rgba($cookie-consent-bg, $cookie-consent-opacity);
   font-size: $cookie-consent-font-size;
@@ -27,11 +28,17 @@ $cookie-consent-link-color: $link-color !default;
   }
   .btn-cookie {
     margin: $grid-gutter-width / 3 $grid-gutter-width;
+    background-color: $cookie-consent-button-bg;
   }
   @include media-breakpoint-down(sm) {
     flex-wrap: wrap;
+    p {
+      padding: 0;
+    }
     .btn-cookie {
       margin: $grid-gutter-width auto;
+      display: block;
+      width: 100%;
     }
   }
 }
