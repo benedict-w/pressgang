@@ -23,14 +23,19 @@ class Site extends \TimberSite
      */
     function __construct($site_name_or_id = null)
     {
-        $stylesheet = get_theme_mod('stylesheet', 'styles.css');
-        $this->stylesheet = sprintf("%s/css/%s?v=%s", get_stylesheet_directory_uri(), $stylesheet, filemtime(get_stylesheet_directory() . "/css/{$stylesheet}"));
+        // load all customizer mods
+        if ($theme_mods = get_theme_mods()) {
+            foreach ($theme_mods as $mod_key => &$mod_val) {
+                $this->$mod_key = apply_filters($mod_key, $mod_val);
+            }
+        }
 
         // add custom params
         $this->keywords = apply_filters('site_keywords', implode(', ', array_map(function ($tag) {
             return $tag->name;
         }, get_tags(array('orderby' => 'count', 'order' => 'DESC', 'number' => 20)))));
 
+        // get site email
         $this->email = get_option('admin_email');
 
         // replace the site icon with an image object
@@ -38,11 +43,8 @@ class Site extends \TimberSite
             $this->site_icon = new \TimberImage($this->site_icon);
         }
 
-        if ($theme_mods = get_theme_mods()) {
-            foreach ($theme_mods as $mod_key => &$mod_val) {
-                $this->$mod_key = apply_filters($mod_key, $mod_val);
-            }
-        }
+        // get stylesheet
+        $this->stylesheet = sprintf("%s/css/%s?v=%s", get_stylesheet_directory_uri(), $this->stylesheet, filemtime(get_stylesheet_directory() . "/css/{$this->stylesheet}"));
 
         add_filter('timber_context', array($this, 'add_to_context'));
         add_filter('get_twig', array($this, 'add_to_twig'));
