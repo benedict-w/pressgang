@@ -14,7 +14,7 @@
     "description": "{{ description }}",
     {% if prep_time %}"prepTime": "{{ prep_time }}",{% endif %}
     {% if cook_time %}"cookTime": "{{ cook_time }}",{% endif %}
-    {% if prep_time or cook_time %}"cookTime": "{{ prep_time ?? 0 + cook_time ?? 0 }}",{% endif %}
+    {% if total_time %}"totalTime": "{{ total_time }}",{% endif %}
     {% if keywords %}
     "keywords": "{{ keywords|join(', ') }}",
     {% endif %}
