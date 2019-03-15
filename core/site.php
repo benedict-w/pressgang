@@ -44,6 +44,7 @@ class Site extends \TimberSite
         }
 
         // get stylesheet
+        $this->stylesheet = $this->stylesheet ?: 'styles.css';
         $this->stylesheet = sprintf("%s/css/%s?v=%s", get_stylesheet_directory_uri(), $this->stylesheet, filemtime(get_stylesheet_directory() . "/css/{$this->stylesheet}"));
 
         add_filter('timber_context', array($this, 'add_to_context'));
