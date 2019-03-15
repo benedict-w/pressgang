@@ -94,6 +94,11 @@ class CustomMenuItems
                     'object_id'         => '',
                     'db_id'             => '',
                     'classes'           => isset($subitem['classes']) ? $subitem['classes'] : '',
+                    'target'            => isset($subitem['target']) ? $subitem['target'] : '_blank',
+                    'attr_title'        => $subitem['text'],
+                    'description'       => isset($subitem['description']) ? $subitem['description'] : '',
+                    'xfn'               => '',
+                    'status'            => '',
                 );
                 $menu_order++;
             }
