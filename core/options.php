@@ -83,7 +83,9 @@ class Options
      * @return mixed
      */
     public function add_to_timber_context( $context ) {
-        $context['options'] = get_fields('option');
+        if (function_exists('get_fields')) {
+            $context['options'] = get_fields('option');
+        }
         return $context;
     }
 
