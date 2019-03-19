@@ -3,7 +3,7 @@ $cookie-consent-color: #fff !default;
 $cookie-consent-opacity: 0.8 !default;
 $cookie-consent-font-size: $font-size-sm !default;
 $cookie-consent-link-color: $link-color !default;
-$cookie-consent-button-bg: $cookie-consent-color;
+$cookie-consent-button-bg: $cookie-consent-color !default;
 
 .cookie-consent {
   position: fixed;
