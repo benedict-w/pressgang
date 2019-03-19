@@ -15,10 +15,9 @@
   #{$wrapper-selector} {
     min-height: 100%;
     height: auto !important;
-    height: 100%;
     margin-bottom: -$footer-height;
     #{$container-selector} {
-      padding: 0 0 $footer-height 0;
+      padding-bottom: $footer-height;
     }
   }
   #{$footer-selector} {
