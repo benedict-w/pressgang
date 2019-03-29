@@ -1,6 +1,7 @@
 {% if posts|length %}
 <ul class="sitemap-{{ posts[0].post_type }}">
     {% for post in posts %}
+        {% set post = TimberPost(post) %}
     <li><a href="{{ post.link|e('html_attr') }}">{{ post.title }}</a></li>
     {% endfor %}
 </ul>

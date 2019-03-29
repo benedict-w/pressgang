@@ -27,9 +27,6 @@ class Sitemap
         // update sitemap.xml when a post is saved
         add_action('save_post', array($this, 'create_sitemap'), 10, 3);
 
-        // add a sitemap shortcode
-        add_shortcode('sitemap', array($this, 'html_sitemap'));
-
         // we need to redirect requests to individual sitemaps files on multisite installs
         if (is_multisite()) {
             // TODO - not working! add redirect manually
@@ -224,29 +221,6 @@ class Sitemap
         $priority = number_format(apply_filters('sitemap_post_priority', $priority, $object), 1);
 
         return $priority;
-    }
-
-
-    /**
-     * html_sitemap
-     *
-     * @param array $post_types
-     */
-    public function html_sitemap ($atts = array()) {
-
-        $atts = shortcode_atts( array(
-            'post_type' => 'page',
-        ), $atts );
-
-        $data['posts'] = \Timber::get_posts(array(
-            'numberposts' => -1,
-            'post_type' => $atts['post_type'],
-            'post_status' => 'publish',
-            'orderby' => 'menu_order',
-            'order' => 'ASC',
-        ));
-
-        return \Timber::compile('sitemap-html.twig', $data);
     }
 
     /**
