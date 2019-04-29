@@ -58,6 +58,11 @@ class Site extends \TimberSite
             add_filter('timber_context', array($this, 'add_woocommerce_to_context'));
         }
 
+        // switch on twig caching if production
+        if (class_exists( 'Timber')){
+            \Timber::$cache = !WP_DEBUG;
+        }
+
         parent::__construct($site_name_or_id);
     }
 
@@ -191,6 +196,8 @@ class Site extends \TimberSite
         if (is_woocommerce()) {
             $product = wc_get_product($post->ID);
         }
+
+        return $product;
     }
 
 }
