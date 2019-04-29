@@ -73,28 +73,18 @@ class Block
 
         $fields = array();
 
-        foreach ($data as $key => $value) {
+        foreach ($data as $key => &$value) {
 
-            $fields[self::get_acf_field_name($key)] = is_array($value)
-                ? self::get_fields_from_keys($value)
-                : $value;
+            if (substr($key, 0, 1) === '_') {
+                $field = \get_field_object(ltrim($key, '_'));
+                if ($field) {
+                    $fields[$field['name']] = $field['value'];
+                }
+
+            }
         }
 
         return $fields;
     }
 
-    /**
-     * get_acf_field_name
-     *
-     * @param $key
-     * @param $value
-     */
-    protected static function get_acf_field_name($key) {
-        if (substr($key, 0, 6) === 'field_') {
-            $field = get_field_object($key);
-            $key = $field['name'];
-        }
-
-        return $key;
-    }
 }
