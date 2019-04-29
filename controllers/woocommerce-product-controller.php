@@ -25,7 +25,7 @@ class WoocommerceProductController extends PageController {
         parent::get_context();
         $this->context['widget_sidebar'] = \Timber::get_widgets('shop_sidebar');
         $this->context['product'] = \wc_get_product($this->get_post()->ID);
-        $this->context['post'] = \wc_get_product($this->get_post()->ID);
+        $this->context['post'] = \Timber::get_post($this->get_post()->ID);
 
         return $this->context;
     }
