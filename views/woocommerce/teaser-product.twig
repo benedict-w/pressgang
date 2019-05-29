@@ -1,9 +1,9 @@
-{{ timber_set_product(post) }}
+{% set product = timber_set_product(post) %}
 
 <article {{ fn('post_class', 'product-teaser', post.ID) }}>
     {% if post.thumbnail %}
-        <a href="{{ post.link }}" title="{{ post.title }}">
-            <img src="{{ post.thumbnail.src|resize('woocommerce_thumbnail') }}" alt="{{ post.title }}">
+        <a href="{{ post.link }}" title="{{ post.post_title|e('html_attr') }}">
+            <img src="{{ post.thumbnail.src|resize('woocommerce_thumbnail') }}" alt="{{ post.post_title|e('html_attr')  }}">
         </a>
     {% endif %}
     <h3 class="product-title"><a href="{{ post.link }}">{{ post.title ?: fn('the_title') }}</a></h3>
