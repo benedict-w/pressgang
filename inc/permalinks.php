@@ -28,6 +28,7 @@ class Permalinks {
      * @param $content
      */
     public static function add_rewrites($content) {
+
         $var = explode('/themes/', get_stylesheet_directory());
         $theme_name = next($var);
         global $wp_rewrite;
