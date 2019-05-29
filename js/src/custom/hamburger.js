@@ -3,14 +3,14 @@
     $(function () {
 
         // set hamburger classes
-        $('#main-menu')
+        $('#header .navbar-collapse')
             .on('shown.bs.collapse', function () {
                 $('.hamburger').addClass('is-active');
-                $('body').addClass('push-menu');
+                $('body').addClass('hamburger-open');
             })
             .on('hide.bs.collapse', function () {
                 $('.hamburger').removeClass('is-active');
-                $('body').removeClass('push-menu');
+                $('body').removeClass('hamburger-open');
             });
 
     });
