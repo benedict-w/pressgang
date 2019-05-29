@@ -10,6 +10,8 @@ class Block
     /**
      * render
      *
+     * TODO Note that there is a bug where
+     *
      * @param $block
      */
     public static function render ($block) {
@@ -40,88 +42,12 @@ class Block
         // add a block ID in case needed for front end
         static::$context['id'] = static::$id;
 
-        foreach(static::get_acf_fields($block) as $name => $value) {
-            static::$context[$name] = $value;
+        foreach(get_field_objects() as $name => $field) {
+            static::$context[$field['name']] = $field['value'];
         }
 
         return static::$context;
     }
 
-    /**
-     * get_acf_fields
-     *
-     * @param $block
-     */
-    public static function get_acf_fields($block) {
-
-        $fields = array();
-
-        if (!empty($block['data'])) {
-            $fields = static::get_fields_from_keys($block['data']);
-        }
-
-        return $fields;
-
-    }
-
-    /*
-     * get_fields_from_keys
-     *
-     * Recursively check for ACF field keys
-     *
-     * DEPRECATE? Use for ACF 5.8 ALPHA
-     *
-     * @param $data
-     * @return array
-     *
-    protected static function get_fields_from_keys($data) {
-
-        $fields = array();
-
-        foreach ($data as $key => &$value) {
-
-            if (substr($key, 0, 1) === '_') {
-                $field = \get_field_object(ltrim($key, '_'));
-                if ($field) {
-                    $fields[$field['name']] = $field['value'];
-                }
-
-            }
-        }
-
-        return $fields;
-    }
-    */
-
-    /**
-     * get_fields_from_keys
-     *
-     * Recursively check for ACF field keys
-     *
-     * @param $data
-     * @return array
-     */
-    protected static function get_fields_from_keys($data) {
-        $fields = array();
-        foreach ($data as $key => $value) {
-            $fields[self::get_acf_field_name($key)] = is_array($value)
-                ? self::get_fields_from_keys($value)
-                : $value;
-        }
-        return $fields;
-    }
-    /**
-     * get_acf_field_name
-     *
-     * @param $key
-     * @param $value
-     */
-    protected static function get_acf_field_name($key) {
-        if (substr($key, 0, 6) === 'field_') {
-            $field = get_field_object($key);
-            $key = $field['name'];
-        }
-        return $key;
-    }
 
 }
