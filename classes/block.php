@@ -37,6 +37,9 @@ class Block
         // add a reference to the post
         static::$context['post'] = new \TimberPost();
 
+        // add a block ID in case needed for front end
+        static::$context['id'] = static::$id;
+
         foreach(static::get_acf_fields($block) as $name => $value) {
             static::$context[$name] = $value;
         }
