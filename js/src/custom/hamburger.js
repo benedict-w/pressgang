@@ -3,7 +3,7 @@
     $(function () {
 
         // set hamburger classes
-        $('#main-menu')
+        $('#header .navbar-collapse')
             .on('shown.bs.collapse', function () {
                 $('.hamburger').addClass('is-active');
                 $('body').addClass('push-menu');
