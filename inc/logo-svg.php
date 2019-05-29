@@ -105,10 +105,12 @@ class LogoSvg {
      */
     public function add_to_context($context) {
 
-        if ($file = get_theme_mod('logo_svg')) {
+        if ($url = get_theme_mod('logo_svg')) {
+
+            $context['site']->logo_svg_url = $url;
 
             $dir = wp_upload_dir();
-            $file = str_replace($dir['baseurl'], $dir['basedir'], $file);
+            $file = str_replace($dir['baseurl'], $dir['basedir'], $url);
 
             $context['site']->logo_svg = file_get_contents($file);
         }
