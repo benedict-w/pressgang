@@ -61,14 +61,16 @@ class Block
 
     }
 
-    /**
+    /*
      * get_fields_from_keys
      *
      * Recursively check for ACF field keys
      *
+     * DEPRECATE? Use for ACF 5.8 ALPHA
+     *
      * @param $data
      * @return array
-     */
+     *
     protected static function get_fields_from_keys($data) {
 
         $fields = array();
@@ -85,6 +87,38 @@ class Block
         }
 
         return $fields;
+    }
+    */
+
+    /**
+     * get_fields_from_keys
+     *
+     * Recursively check for ACF field keys
+     *
+     * @param $data
+     * @return array
+     */
+    protected static function get_fields_from_keys($data) {
+        $fields = array();
+        foreach ($data as $key => $value) {
+            $fields[self::get_acf_field_name($key)] = is_array($value)
+                ? self::get_fields_from_keys($value)
+                : $value;
+        }
+        return $fields;
+    }
+    /**
+     * get_acf_field_name
+     *
+     * @param $key
+     * @param $value
+     */
+    protected static function get_acf_field_name($key) {
+        if (substr($key, 0, 6) === 'field_') {
+            $field = get_field_object($key);
+            $key = $field['name'];
+        }
+        return $key;
     }
 
 }
