@@ -24,7 +24,7 @@ class Sidebars
         add_theme_support('widgets');
         $this->sidebars = Config::get('sidebars');
         add_action('widgets_init', array($this, 'init'));
-        add_filter('timber_context', array($this, 'add_to_context'));
+        add_filter('timber/twig', array($this, 'add_widget_functions'));
     }
 
     /**
@@ -68,16 +68,21 @@ class Sidebars
      *
      * Add available sidebars to the Timber context
      *
-     * @param $context
+     * @param $twig
      *
-     * @return array
+     * @return \Twig_Environment
      */
-    public function add_to_context($context) {
+    public function add_widget_functions(\Twig_Environment $twig) {
         foreach($this->sidebars as $key=>&$sidebar) {
-            $context["widget_{$key}"] = \Timber::get_widgets($sidebar['id']);
+
+            $twig->addFunction( new \Timber\Twig_Function( "widget_{$key}", function() use ($sidebar) {
+                return \Timber::get_widgets($sidebar['id']);
+            }));
         }
-        return $context;
+
+        return $twig;
     }
+
 }
 
 new Sidebars();
