@@ -1,0 +1,27 @@
+{% if add_gtag_script %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ google_adwords_id|url_encode }}"></script>
+{% endif %}
+
+<script>
+
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', '{{ google_adwords_id|e }}');
+
+</script>
+
+{% if conversion %}
+    <script>
+        gtag('event', 'conversion', {
+            'send_to': '{{ google_adwords_id|e }}/jTn_CI3sShDBrbD_Aw',
+            'value': '{{ order_total|e }}',
+            'currency': '{{ currency|e }}',
+            'transaction_id': '{{ tracking_id|e }}'
+        });
+    </script>
+{% endif %}

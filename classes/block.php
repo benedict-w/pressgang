@@ -42,8 +42,10 @@ class Block
         // add a block ID in case needed for front end
         static::$context['id'] = static::$id;
 
-        foreach(get_field_objects() as $name => $field) {
-            static::$context[$field['name']] = $field['value'];
+        if($fields = get_field_objects()) {
+            foreach ($fields as $name => $field) {
+                static::$context[$field['name']] = $field['value'];
+            }
         }
 
         return static::$context;
