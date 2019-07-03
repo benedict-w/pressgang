@@ -1,0 +1,38 @@
+@mixin ios-toggle($diameter: 1.2rem, $border-width: 1px, $padding: 2px, $color: $primary, $bg: $white) {
+
+  position: relative;
+
+  display: inline-block;
+  width: $diameter * 2;
+  height: $diameter;
+  background-color: $color;
+  border: $border-width solid $bg;
+  border-radius: $diameter * 2;
+
+  input[type=checkbox] {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: -99999px;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: $padding;
+    left: $padding;
+    background: $bg;
+    width: calc(#{$diameter} - #{($border-width + $padding) * 2});
+    height: calc(#{$diameter} - #{($border-width + $padding) * 2});
+    border-radius: 50%;
+  }
+
+  &.checked {
+    border-color: $bg;
+
+    &:after {
+      left: auto;
+      right: $padding;
+    }
+  }
+}
