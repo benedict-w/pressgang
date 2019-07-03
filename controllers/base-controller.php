@@ -11,6 +11,7 @@ abstract class BaseController {
 
     public $context;
     public $template;
+    protected $expires = false;
 
     /**
      * __construct
@@ -53,6 +54,7 @@ abstract class BaseController {
 
         do_action("render_{$class}");
 
-        \Timber::render($this->template, $this->context);
+        \Timber::render($this->template, $this->context, $this->expires);
+
     }
 }
