@@ -26,12 +26,14 @@ class Contact {
     /**
      * send_contact_message
      *
+     * TODO Nonce
+     *
      * Loop $_POST['contact'] array and send a contact message
      *
      * @param $args
      * @return string
      */
-    public function send_message($args, $content = null)
+    public function send_message($args = array(), $content = null)
     {
         $message = '';
 
@@ -70,7 +72,7 @@ class Contact {
                 // add_action('wp_mail_from', function() use ($args) { return $args['email']; });
                 // add_action('wp_mail_from_name', function() use ($args) { return $args['name']; });
 
-                $subject = $args['subject'] ? $args['subject'] : $this->subject;
+                $subject = isset($args['subject']) ? $args['subject'] : $this->subject;
 
                 if (wp_mail($this->to, $subject, $message)) {
                     $this->success = __("Thank you your message was sent.", THEMENAME);
