@@ -43,6 +43,7 @@ class MailchimpSignup extends \Pressgang\Widget {
             'deps' => array('jquery'),
             'ver' => '1.0',
             'hook' => 'render_widget_mailchimp_signup',
+            'defer' => true,
         );
 
         $this->description = __("A simple widget that embeds a Mailchimp signup form", THEMENAME);
