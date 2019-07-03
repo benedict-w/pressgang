@@ -838,7 +838,7 @@
             return {
                 notFound: templates.notFound && _.templatify(templates.notFound),
                 pending: templates.pending && _.templatify(templates.pending),
-                header: templates.header && _.templatify(templates.header),
+                header: templates._header && _.templatify(templates._header),
                 footer: templates.footer && _.templatify(templates.footer),
                 suggestion: templates.suggestion || suggestionTemplate
             };

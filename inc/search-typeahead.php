@@ -55,12 +55,13 @@ class SearchTypeahead {
 
         // check_ajax_referer('search_typeahead');
 
-        // TODO $post_type = filter_input(INPUT_POST, 'post_type', FILTER_SANITIZE_STRING);
-        $s = filter_input(INPUT_POST, 's', FILTER_SANITIZE_STRING);
+        $s = filter_input(INPUT_GET, 's', FILTER_SANITIZE_STRING);
+
+        $post_types = apply_filters('search_post_types', get_post_types(array('exclude_from_search' => false)));
 
         $args = array(
             's' => $s,
-            'post_type' => array('product'),
+            'post_type' => $post_types,
             'post_status' => 'publish',
         );
 
@@ -70,12 +71,14 @@ class SearchTypeahead {
 
         $posts = array();
 
-        foreach ($query->posts as $post) {
-            $posts[] = array(
-                'id' => $post->ID,
-                'title' => $post->post_title,
-                'link' => get_permalink($post->ID),
-            );
+        if ($query->posts) {
+            foreach ($query->posts as $post) {
+                $posts[] = apply_filters('search_typeahead_result', array(
+                    'id' => $post->ID,
+                    'title' => esc_html($post->post_title),
+                    'link' => esc_url(get_permalink($post->ID)),
+                ), $post);
+            }
         }
 
         echo json_encode($posts);
