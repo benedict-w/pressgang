@@ -226,8 +226,8 @@
 				}
 				// update header classes
 				$headers
-					.removeClass( (hasOldTheme ? [ oldtheme.header, oldtheme.hover, oldremove ].join(' ') : '') || '' )
-					.addClass(themes.header)
+					.removeClass( (hasOldTheme ? [ oldtheme._header, oldtheme.hover, oldremove ].join(' ') : '') || '' )
+					.addClass(themes._header)
 					.not('.sorter-false')
 					.unbind('mouseenter.tsuitheme mouseleave.tsuitheme')
 					.bind('mouseenter.tsuitheme mouseleave.tsuitheme', function(event) {
@@ -308,7 +308,7 @@
 			$table.removeClass('tablesorter-' + theme + ' ' + themes.table);
 			wo.uitheme_applied = false;
 			if (refreshing) { return; }
-			$table.find(ts.css.header).removeClass(themes.header);
+			$table.find(ts.css._header).removeClass(themes.header);
 			$headers
 				.unbind('mouseenter.tsuitheme mouseleave.tsuitheme') // remove hover
 				.removeClass(themes.hover + ' ' + remove + ' ' + themes.active)
@@ -956,7 +956,7 @@
 					// only add processing to certain columns to all columns
 					$header = ( columns ) ?
 						c.$table
-							.find( '.' + tscss.header )
+							.find( '.' + tscss._header )
 							.filter( '[data-column]' )
 							.filter( function() {
 								return columns[ $( this ).data( 'column' ) ] !== '';
@@ -2593,7 +2593,7 @@
 					resizeHeader();
 				});
 
-			ts.bindEvents(table, $stickyThead.children().children('.' + ts.css.header));
+			ts.bindEvents(table, $stickyThead.children().children('.' + ts.css._header));
 
 			if (wo.stickyHeaders_appendTo) {
 				$(wo.stickyHeaders_appendTo).append( $stickyWrap );
@@ -2781,7 +2781,7 @@
 							'data-column' : column,
 							'unselectable' : 'on'
 						})
-						.data( 'header', $header )
+						.data( '_header.scss', $header )
 						.bind( 'selectstart', false );
 				}
 			}
@@ -2857,7 +2857,7 @@
 				var $this = $(this),
 					column = parseInt( $this.attr( 'data-column' ), 10 ),
 					columns = c.columns - 1,
-					$header = $this.data( 'header' );
+					$header = $this.data( '_header.scss' );
 				if ( !$header ) { return; } // see #859
 				if (
 					!$header.is(':visible') ||
@@ -2907,7 +2907,7 @@
 				var column,
 					vars = wo.resizable_vars,
 					$extras = $( c.namespace + '_extra_headers' ),
-					$header = $( event.target ).data( 'header' );
+					$header = $( event.target ).data( '_header.scss' );
 
 				column = parseInt( $header.attr( 'data-column' ), 10 );
 				vars.$target = $header = $header.add( $extras.filter('[data-column="' + column + '"]') );

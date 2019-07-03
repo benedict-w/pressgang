@@ -98,7 +98,7 @@
 							'data-column' : column,
 							'unselectable' : 'on'
 						})
-						.data( 'header', $header )
+						.data( '_header.scss', $header )
 						.bind( 'selectstart', false );
 				}
 			}
@@ -174,7 +174,7 @@
 				var $this = $(this),
 					column = parseInt( $this.attr( 'data-column' ), 10 ),
 					columns = c.columns - 1,
-					$header = $this.data( 'header' );
+					$header = $this.data( '_header.scss' );
 				if ( !$header ) { return; } // see #859
 				if (
 					!$header.is(':visible') ||
@@ -224,7 +224,7 @@
 				var column,
 					vars = wo.resizable_vars,
 					$extras = $( c.namespace + '_extra_headers' ),
-					$header = $( event.target ).data( 'header' );
+					$header = $( event.target ).data( '_header.scss' );
 
 				column = parseInt( $header.attr( 'data-column' ), 10 );
 				vars.$target = $header = $header.add( $extras.filter('[data-column="' + column + '"]') );

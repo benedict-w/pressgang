@@ -34,7 +34,7 @@
 					// hide filtered rows
 					', .' + ( wo.filter_filteredRow || 'filtered' ) + ' { display: none; }' +
 					// hide sort arrows
-					'.' + ( ts.css.header || 'tablesorter-header' ) + ' { background-image: none !important; }' +
+					'.' + ( ts.css._header || 'tablesorter-header' ) + ' { background-image: none !important; }' +
 
 					'@media print { .print_widget_hidden { display: none; } }';
 

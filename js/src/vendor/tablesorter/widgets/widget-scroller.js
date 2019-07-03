@@ -248,7 +248,7 @@
 
 			$hCells = $hdr
 				.wrap( '<div class="' + tscss.scrollerHeader + '" />' )
-				.find( '.' + tscss.header );
+				.find( '.' + tscss._header );
 
 			// if max-height is greater than 0 use max-height, so the height resizes dynamically while filtering
 			// else let the table not have a vertical scroll
@@ -576,7 +576,7 @@
 				}
 			}
 
-			ts.bindEvents( c.table, $fixedColumn.find( '.' + tscss.header ) );
+			ts.bindEvents( c.table, $fixedColumn.find( '.' + tscss._header ) );
 			ts.scroller.bindFixedColumnEvents( c, wo );
 
 			/*** Scrollbar hack! Since we can't hide the scrollbar with css ***/

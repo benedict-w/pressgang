@@ -555,7 +555,7 @@
 					// only add processing to certain columns to all columns
 					$header = ( columns ) ?
 						c.$table
-							.find( '.' + tscss.header )
+							.find( '.' + tscss._header )
 							.filter( '[data-column]' )
 							.filter( function() {
 								return columns[ $( this ).data( 'column' ) ] !== '';

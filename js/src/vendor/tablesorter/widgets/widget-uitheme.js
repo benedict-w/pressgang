@@ -101,8 +101,8 @@
 				}
 				// update header classes
 				$headers
-					.removeClass( (hasOldTheme ? [ oldtheme.header, oldtheme.hover, oldremove ].join(' ') : '') || '' )
-					.addClass(themes.header)
+					.removeClass( (hasOldTheme ? [ oldtheme._header, oldtheme.hover, oldremove ].join(' ') : '') || '' )
+					.addClass(themes._header)
 					.not('.sorter-false')
 					.unbind('mouseenter.tsuitheme mouseleave.tsuitheme')
 					.bind('mouseenter.tsuitheme mouseleave.tsuitheme', function(event) {
@@ -183,7 +183,7 @@
 			$table.removeClass('tablesorter-' + theme + ' ' + themes.table);
 			wo.uitheme_applied = false;
 			if (refreshing) { return; }
-			$table.find(ts.css.header).removeClass(themes.header);
+			$table.find(ts.css._header).removeClass(themes.header);
 			$headers
 				.unbind('mouseenter.tsuitheme mouseleave.tsuitheme') // remove hover
 				.removeClass(themes.hover + ' ' + remove + ' ' + themes.active)

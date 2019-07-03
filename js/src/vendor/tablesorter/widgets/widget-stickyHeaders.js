@@ -235,7 +235,7 @@
 					resizeHeader();
 				});
 
-			ts.bindEvents(table, $stickyThead.children().children('.' + ts.css.header));
+			ts.bindEvents(table, $stickyThead.children().children('.' + ts.css._header));
 
 			if (wo.stickyHeaders_appendTo) {
 				$(wo.stickyHeaders_appendTo).append( $stickyWrap );
