@@ -50,7 +50,7 @@ class Breadcrumb {
 
         $prefix = '';
 
-        global $post, $wp_query;
+        global $post;
 
         // do not display on the homepage
         if ( !is_front_page() ) {
@@ -227,7 +227,7 @@ class Breadcrumb {
     private function add_archive_link($post_type) {
 
         $post_type_object = get_post_type_object($post_type);
-        $post_type_archive = get_post_type_archive_link($post_type);
+        $post_type_archive = apply_filters('breadcrumb_archive_link', get_post_type_archive_link($post_type), $post_type_object);
 
         $archive_title = $post_type === 'post'
             ? get_the_title(get_option('page_for_posts', true))
