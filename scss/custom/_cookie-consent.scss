@@ -4,12 +4,15 @@ $cookie-consent-opacity: 0.8 !default;
 $cookie-consent-font-size: $font-size-sm !default;
 $cookie-consent-link-color: $link-color !default;
 $cookie-consent-button-bg: $cookie-consent-color !default;
+$cookie-consent-zindex: 10000000000 !default;
+$cookie-consent-padding-x: $grid-gutter-width / 2 !default;
+$cookie-consent-padding-y: $grid-gutter-width / 2 !default;
 
 .cookie-consent {
   position: fixed;
   bottom: 0;
   width: 100%;
-  padding: $grid-gutter-width / 2;
+  padding: $cookie-consent-padding-y $cookie-consent-padding-x;
   color: $cookie-consent-color;
   background-color: rgba($cookie-consent-bg, $cookie-consent-opacity);
   font-size: $cookie-consent-font-size;
@@ -18,7 +21,7 @@ $cookie-consent-button-bg: $cookie-consent-color !default;
   justify-content: space-between;
   flex-wrap: nowrap;
   align-items: center;
-  z-index: 10000000;
+  z-index: $cookie-consent-zindex;
   p {
     margin: 0;
     padding: 0 $grid-gutter-width;
@@ -36,7 +39,7 @@ $cookie-consent-button-bg: $cookie-consent-color !default;
       padding: 0;
     }
     .btn-cookie {
-      margin: $grid-gutter-width auto;
+      margin: $grid-gutter-width auto 0 auto;
       display: block;
       width: 100%;
     }
