@@ -75,6 +75,7 @@ $slick-arrow-size: 20px !default;
     cursor: pointer;
     background: transparent;
     color: transparent;
+    z-index: 1;
     top: 50%;
     -webkit-transform: translate(0, -50%);
     -ms-transform: translate(0, -50%);
