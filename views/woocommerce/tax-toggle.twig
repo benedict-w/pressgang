@@ -1,6 +1,14 @@
-<div class="tax-toggle">
-    <input type="checkbox" value="{{ display_tax }}" id="tax-toggle">
-    <label for="tax-toggle" class="tax-toggle--label">
-        {{ display_label }}
-    </label>
-</div>
+<form method="POST">
+    <div class="tax-toggle">
+        <label for="tax-toggle" class="tax-toggle--label">
+            {{ __("Ex VAT", 'woocommerce') }}
+        </label>
+        <span class="ios-toggle"{% if display_tax %} class="checked"{% endif %}>
+            <input type="checkbox" id="tax-toggle" name="{{ cookie_name }}" value="true" onChange="this.form.submit();" {% if display_tax %}checked{% endif %}>
+        </span>
+        <label for="tax-toggle" class="tax-toggle--label">
+            {{ __("Inc VAT", 'woocommerce') }}
+        </label>
+    </div>
+    <input type="hidden" name="{{ cookie_name }}_toggle" />
+</form>

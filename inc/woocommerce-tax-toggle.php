@@ -11,8 +11,8 @@ class WooCommerceTaxToggle {
 
     const COOKIE_NAME = 'woocommerce_tax_display';
 
-    protected $woocommerce_tax_display_shop = null;
-    protected $woocommerce_tax_display_cart = null;
+    static $woocommerce_tax_display_shop = null;
+    static $woocommerce_tax_display_cart = null;
 
     /**
      * WooCommerceTaxToggle constructor.
@@ -20,13 +20,13 @@ class WooCommerceTaxToggle {
      */
     public function __construct() {
 
-        $this->woocommerce_tax_display_shop = get_option('woocommerce_tax_display_shop');
-        $this->woocommerce_tax_display_cart = get_option('woocommerce_tax_display_cart');
+        static::$woocommerce_tax_display_shop = get_option('woocommerce_tax_display_shop');
+        static::$woocommerce_tax_display_cart = get_option('woocommerce_tax_display_cart');
 
         add_filter('timber/twig', array($this, 'add_to_twig'), 100, 2);
 
-        add_filter('option_woocommerce_tax_display_shop', array($this, 'woocommerce_tax_display_shop'), 10, 2);
-        add_filter('option_woocommerce_tax_display_cart', array($this, 'woocommerce_tax_display_shop'), 10, 2);
+        add_filter('option_woocommerce_tax_display_shop', array('\PressGang\WooCommerceTaxToggle', 'woocommerce_tax_display_shop'), 10, 2);
+        add_filter('option_woocommerce_tax_display_cart', array('\PressGang\WooCommerceTaxToggle', 'woocommerce_tax_display_shop'), 10, 2);
 
         add_action('init', array($this, 'set_tax_display'));
     }
@@ -44,14 +44,11 @@ class WooCommerceTaxToggle {
 
             setcookie('woocommerce_tax_display', $display_tax, time() + 365 * 24 * 60 * 60, COOKIEPATH, COOKIE_DOMAIN);
 
-            global $wp;
-
-            if (wp_redirect(\Timber\UrlHelper::get_current_url())) {
+            // redirect to prevent resubmit - add query string cache buster for dynamic caching
+            if (wp_redirect(add_query_arg('vat', $display_tax, \Timber\UrlHelper::get_current_url()))) {
                 exit;
             }
-
         }
-
 
     }
 
@@ -72,10 +69,8 @@ class WooCommerceTaxToggle {
      */
     public function render_tax_toggle() {
 
-        $display_tax = $this->woocommerce_tax_display_shop() === 'incl';
-
         \Timber::render('woocommerce/tax-toggle.twig', array(
-            'display_tax' => $display_tax,
+            'display_tax' => self::woocommerce_tax_display_shop() === 'incl',
             'cookie_name' => self::COOKIE_NAME,
         ));
 
@@ -86,9 +81,9 @@ class WooCommerceTaxToggle {
      *
      * @return string ('incl' / 'excl')
      */
-    public function woocommerce_tax_display_shop() {
+    public static function woocommerce_tax_display_shop() {
 
-        return isset($_COOKIE[self::COOKIE_NAME]) ? $_COOKIE[self::COOKIE_NAME] : $this->woocommerce_tax_display_shop;
+        return isset($_COOKIE[self::COOKIE_NAME]) ? $_COOKIE[self::COOKIE_NAME] : static::$woocommerce_tax_display_shop;
 
     }
 
@@ -97,9 +92,9 @@ class WooCommerceTaxToggle {
      *
      * @return string ('incl' / 'excl')
      */
-    public function woocommerce_tax_display_cart() {
+    public static function woocommerce_tax_display_cart() {
 
-        return isset($_COOKIE[self::COOKIE_NAME]) ? $_COOKIE[self::COOKIE_NAME] : $this->woocommerce_tax_display_cart;
+        return isset($_COOKIE[self::COOKIE_NAME]) ? $_COOKIE[self::COOKIE_NAME] : static::$woocommerce_tax_display_cart;
 
     }
 
