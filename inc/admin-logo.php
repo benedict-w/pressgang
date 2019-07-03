@@ -24,9 +24,8 @@ class AdminLogo {
             <style type="text/css">
                 .login h1 a {
                     background-image: url(<?php echo $logo; ?>) !important;
-                    padding-bottom: 30px;
-                    width: auto !important;
-                    height: auto !important;
+                    width: 100% !important;
+                    max-width: 300px !important;
                     -webkit-background-size: contain !important;
                     background-size: contain !important;
                 }
