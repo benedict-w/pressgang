@@ -30,7 +30,7 @@ class WoocommerceProductCategoryController extends TaxonomyController {
     {
         parent::get_context();
 
-        $this->context['widget_sidebar'] = \Timber::get_widgets('shop_sidebar');
+        // $this->context['widget_sidebar'] = \Timber::get_widgets('shop_sidebar');
         $this->context['category'] = $this->get_taxonomy();
         $this->context['title'] = single_term_title('', false);
 

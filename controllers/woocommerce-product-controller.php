@@ -7,7 +7,7 @@ namespace PressGang;
  *
  * @package PressGang
  */
-class WoocommerceProductController extends PageController {
+class WoocommerceProductController extends BaseController {
 
     /**
      * WCProductController constructor.
@@ -15,6 +15,20 @@ class WoocommerceProductController extends PageController {
      */
     public function __construct($template = 'woocommerce/single-product.twig') {
         parent::__construct($template);
+    }
+
+    /**
+     * get_post
+     *
+     * @return mixed
+     */
+    protected function get_post()
+    {
+        if (empty($this->post)) {
+            $this->post = \Timber::get_post();
+        }
+
+        return $this->post;
     }
 
     /**

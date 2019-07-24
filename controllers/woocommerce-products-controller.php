@@ -7,7 +7,7 @@ namespace PressGang;
  *
  * @package PressGang
  */
-class WoocommerceProductsController extends PostsController {
+class WoocommerceProductsController extends BaseController {
 
     protected $product_categories = array();
 
@@ -59,6 +59,20 @@ class WoocommerceProductsController extends PostsController {
     }
 
     /**
+     * get_posts
+     *
+     * @return mixed
+     */
+    protected function get_posts()
+    {
+        if (empty($this->posts)) {
+            $this->posts = \Timber::get_posts();
+        }
+
+        return $this->posts;
+    }
+
+    /**
      * get_context
      *
      */
@@ -66,9 +80,10 @@ class WoocommerceProductsController extends PostsController {
     {
         parent::get_context();
 
+        $this->context['products'] = $this->context['posts'] = $this->get_posts();
         $this->context['widget_sidebar'] = \Timber::get_widgets('shop_sidebar');
         $this->context['shop_page_display'] = get_option('woocommerce_shop_page_display');
-        $this->context['product_categories'] = $this->get_product_categories();
+        // $this->context['product_categories'] = $this->get_product_categories();
 
         return $this->context;
     }

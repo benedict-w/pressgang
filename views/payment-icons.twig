@@ -1,0 +1,5 @@
+<ul class="payment-icons">
+    {% for payment in accepted_payments %}
+        <li class="payment-{{ payment.value|e('html_attr') }}" title="{{ __("Payment by %s", THEMENAME)|format(payment.label|e('html_attr')) }}">{{ payment.label|e() }}</li>
+    {% endfor %}
+</ul>
