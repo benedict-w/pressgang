@@ -35,6 +35,9 @@
             }
         });
 
+        // fix google search console duplicate crawl error
+        $('.tt-hint').removeAttr("itemprop");
+
     });
 
 })(jQuery);

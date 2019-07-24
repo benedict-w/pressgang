@@ -29,7 +29,7 @@ class SearchTypeahead {
         Scripts::$scripts['search-typeahead'] = array(
             'src' => get_template_directory_uri() . '/js/src/custom/search-typeahead.js',
             'deps' => array('typeahead'),
-            'ver' => '0.11.1',
+            'ver' => '0.1',
         );
 
     }
