@@ -1,0 +1,13 @@
+{% set recaptcha_site_key = fn('get_theme_mod', 'google-recaptcha-site-key') %}
+{% set recaptcha_secret = fn('get_theme_mod', 'google-recaptcha-secret') %}
+
+{% if recaptcha_site_key and recaptcha_secret %}
+<script src="https://www.google.com/recaptcha/api.js?render={{ recaptcha_site_key|e('html_attr') }}"></script>
+<script>
+    grecaptcha.ready(function() {
+        grecaptcha.execute('{{ recaptcha_site_key|e }}', { action: 'contact' }).then(function(token) {
+            $('input[name=recaptcha]').val(token);
+        });
+    });
+</script>
+{% endif %}
