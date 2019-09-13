@@ -13,20 +13,20 @@ class Contact {
     public $error = false;
     public $subject = '';
     public $to = '';
+    public $has_recaptcha = false;
 
     /**
      * __construct
      *
      */
-    public function __construct($to = null, $subject = null) {
+    public function __construct($to = null, $subject = null, $has_recaptcha = false) {
         $this->to = $to ? $to : get_option('admin_email');
         $this->subject = $subject ? $subject : __("New Contact Message", THEMENAME);
+        $this->has_recaptcha = $has_recaptcha;
     }
 
     /**
      * send_contact_message
-     *
-     * TODO NONCE needed
      *
      * Loop $_POST['contact'] array and send a contact message
      *
@@ -74,7 +74,7 @@ class Contact {
 
                 $subject = isset($args['subject']) ? $args['subject'] : $this->subject;
 
-                if (!isset($_POST['recaptcha']) || (isset($_POST['recaptcha']) && $this->verify_recaptcha())) {
+                if (!$this->has_recaptcha || ($this->has_recaptcha && $this->verify_recaptcha())) {
                     if (wp_mail($this->to, $subject, $message)) {
                         $this->success = __("Thank you your message was sent.", THEMENAME);
 
@@ -131,6 +131,7 @@ class Contact {
                 'content' => $post_data
             )
         );
+
         $context  = stream_context_create($opts);
         $response = file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
         $result = json_decode($response);
