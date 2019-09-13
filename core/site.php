@@ -30,10 +30,19 @@ class Site extends \TimberSite
             }
         }
 
-        // add custom params
-        $this->keywords = apply_filters('site_keywords', implode(', ', array_map(function ($tag) {
-            return $tag->name;
-        }, get_tags(array('orderby' => 'count', 'order' => 'DESC', 'number' => 20)))));
+        $keywords = wp_cache_get('site_keywords');
+
+        if (!$keywords) {
+            // add custom params
+            $keywords = apply_filters('site_keywords', implode(', ', array_map(function ($tag) {
+                return $tag->name;
+            }, get_tags(array('orderby' => 'count', 'order' => 'DESC', 'number' => 20)))));
+
+            wp_cache_set('site_keywords', $keywords);
+        }
+
+        $this->keywords = $keywords;
+
 
         // get site email
         $this->email = get_option('admin_email');
