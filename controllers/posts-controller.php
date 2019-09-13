@@ -57,7 +57,11 @@ class PostsController extends BaseController {
                     $template = 'taxonomy.twig';
                 }
 
-            } else {
+            }
+            else if(is_search()) {
+                $template = 'search.twig';
+            }
+            else {
                 $template = sprintf("archive%s.twig", $this->post_type === 'post' ? '' : "-{$this->post_type}") ;
             }
 
