@@ -10,8 +10,6 @@ class Block
     /**
      * render
      *
-     * TODO Note that there is a bug where
-     *
      * @param $block
      */
     public static function render ($block) {
