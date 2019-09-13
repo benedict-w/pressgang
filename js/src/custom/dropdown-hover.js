@@ -16,8 +16,9 @@
                     const shouldOpen = e.type !== 'click' && _d.is(':hover');
                     _m.toggleClass('show', shouldOpen);
                     _d.toggleClass('show', shouldOpen);
+                    _d.parents('.menu').hide().show(0); // fix safari redraw bug - https://stackoverflow.com/questions/31587890/safari-on-mac-not-updating-redrawing-after-hover-effect
                     $('[data-toggle="dropdown"]', _d).attr('aria-expanded', shouldOpen);
-                }, e.type === 'mouseleave' ? 300 : 0);
+                },e.type === 'mouseleave' ? 200 : 0);
             }
         };
 
