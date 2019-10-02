@@ -41,10 +41,11 @@ class CustomTaxonomies
 
             $args = $this->parse_labels($key, $args);
 
-            $object_type = isset($options['object-type']) ? $args['object-type'] : 'post';
-
             $key = apply_filters("pressgang_taxonomy_{$key}", $key);
             $args = apply_filters("pressgang_taxonomy_{$key}_args", $args);
+
+            $object_type = isset($args['object-type']) ? $args['object-type'] : 'post';
+
             register_taxonomy($key, $object_type, $args);
         }
     }
