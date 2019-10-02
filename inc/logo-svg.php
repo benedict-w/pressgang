@@ -109,10 +109,13 @@ class LogoSvg {
 
             $context['site']->logo_svg_url = $url;
 
-            $dir = wp_upload_dir();
-            $file = str_replace($dir['baseurl'], $dir['basedir'], $url);
+            $url = parse_url($url);
 
-            $context['site']->logo_svg = file_get_contents($file);
+            if (isset($url['path'])) {
+                $path = sprintf("%s%s", ABSPATH, ltrim($url['path'], '/'));
+                $context['site']->logo_svg = file_get_contents($path);
+            }
+
         }
 
         return $context;
