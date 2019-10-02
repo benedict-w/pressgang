@@ -127,6 +127,7 @@ class Inflector
             'trilby' => 'trilbys',
             'turf' => 'turfs',
             'volcano' => 'volcanoes',
+            'volunteering' => 'volunteering',
         )
     );
 
