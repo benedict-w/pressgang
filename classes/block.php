@@ -46,6 +46,9 @@ class Block
             }
         }
 
+
+        static::$context['css_class'] = isset($block['className']) ? $block['className'] : '';
+
         return static::$context;
     }
 
