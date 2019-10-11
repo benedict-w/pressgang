@@ -30,25 +30,26 @@ class AcfBlocks
      */
     public function setup()
     {
-        if (function_exists('acf_register_block')) {
+        if (function_exists('acf_register_block_type')) {
 
             $blocks = Config::get('acf-blocks');
 
-            foreach ($blocks as $key => &$args) {
+            foreach ($blocks as $key => &$settings) {
 
                 // when category is an array use it to register custom categories
                 // otherwise expect category to be the slug for a default gutenberg category
-                if (is_array($args['category'])) {
+                if (is_array($settings['category'])) {
 
-                    $this->custom_categories[$args['category']['slug']] = $args['category'];
-                    $args['category'] = $args['category']['slug'];
+                    $this->custom_categories[$settings['category']['slug']] = $settings['category'];
+                    $settings['category'] = $settings['category']['slug'];
 
                 }
 
-                acf_register_block($args);
+                acf_register_block_type($settings);
+
+                // load the template for the block
                 $inc = preg_match('/.php/', $key) ? "blocks/{$key}" : "blocks/{$key}.php";
                 locate_template($inc, true, true);
-
             }
         }
 
@@ -63,7 +64,7 @@ class AcfBlocks
      */
     public function add_custom_categories($categories) {
 
-        return array_merge($categories, $this->custom_categories);
+        return array_values(array_merge($categories, $this->custom_categories));
 
     }
 
