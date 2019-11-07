@@ -1,24 +1,24 @@
-<nav class="page-numbers">
+<nav aria-label="{{ __("Pagination", THEMENAME) }}">
     <ul class="pagination">
         {% if pagination.prev.link|length %}
-            <li>
-                <a href="{{pagination.prev.link}}" aria-label="Previous" class="pagination-previous">
+            <li class="page-item">
+                <a href="{{ pagination.prev.link|relative }}" aria-label="{{ __("Previous", THEMENAME) }}" class="page-link page-prev">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
         {% endif %}
         {% for page in pagination.pages %}
-            <li>
+            <li class="page-item">
                 {% if page.link %}
-                    <a href="{{ page.link }}" class="pagination-page">{{ page.title }}</a>
+                    <a href="{{ page.link|relative }}" class="page-link">{{ page.title }}</a>
                 {% else %}
-                    <span class="{{ page.class|e('html_attr') }}">{{ page.title }}</span>
+                    <span class="page-link">{{ page.title }}</span>
                 {% endif %}
             </li>
         {% endfor %}
         {% if pagination.next.link|length %}
-            <li>
-                <a href="{{ pagination.next.link|e('html_attr') }}" aria-label="Next" class="pagination-next">
+            <li class="page-item">
+                <a href="{{ pagination.next.link|relative }}" aria-label="{{ __("Next", THEMENAME) }}" class="page-link page-next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
