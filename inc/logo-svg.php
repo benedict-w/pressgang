@@ -109,10 +109,19 @@ class LogoSvg {
 
             $context['site']->logo_svg_url = $url;
 
-            $url = parse_url($url);
+            $url_parts = parse_url($url);
 
-            if (isset($url['path'])) {
-                $path = sprintf("%s%s", ABSPATH, ltrim($url['path'], '/'));
+            if (isset($url_parts['path'])) {
+
+                $path = $url_parts['path'];
+
+                if (is_multisite()) {
+                    $path = ltrim($path, get_blog_details()->path);
+                }
+
+                $path = ltrim($path, '/');
+                $path = sprintf("%s%s", ABSPATH, $path);
+
                 $context['site']->logo_svg = file_get_contents($path);
             }
 
