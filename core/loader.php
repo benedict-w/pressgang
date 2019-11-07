@@ -2,7 +2,7 @@
 
 namespace PressGang;
 
-require_once 'config.php';
+require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/../classes/helper.php';
 
 /**
