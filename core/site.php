@@ -52,7 +52,7 @@ class Site extends \TimberSite
             $this->site_icon = new \TimberImage($this->site_icon);
         }
 
-        // get stylesheet
+        // get stylesheet (can be set in customizer theme mod)
         $this->stylesheet = $this->stylesheet ?: 'styles.css';
         $this->stylesheet = sprintf("%s/css/%s?v=%s", get_stylesheet_directory_uri(), $this->stylesheet, filemtime(get_stylesheet_directory() . "/css/{$this->stylesheet}"));
 
