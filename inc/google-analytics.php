@@ -4,6 +4,8 @@ namespace PressGang;
 
 class GoogleAnalytics {
 
+    protected $consented = false;
+
     /**
      * __construct
      *
@@ -12,6 +14,9 @@ class GoogleAnalytics {
     public function __construct() {
         add_action('customize_register', array($this, 'customizer'));
         add_action('wp_head', array($this, 'script'));
+
+        $this->consented = isset($_COOKIE['cookie-consent']) && !!$_COOKIE['cookie-consent'];
+
     }
 
     /**
@@ -67,9 +72,9 @@ class GoogleAnalytics {
     public function script () {
         $track_logged_in = get_theme_mod('track-logged-in');
 
-        if ($track_logged_in || (!$track_logged_in && !is_user_logged_in()) ) {
+        if (($track_logged_in || (!$track_logged_in && !is_user_logged_in())) && $this->consented) {
 
-            if ($google_analytics_id = urlencode(get_theme_mod('google-analytics-id'))) {
+            if ($google_analytics_id = get_theme_mod('google-analytics-id')) {
                 \Timber::render('google-analytics.twig', array(
                     'google_analytics_id' => $google_analytics_id,
                 ));

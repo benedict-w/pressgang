@@ -4,6 +4,8 @@ namespace PressGang;
 
 class AddThis {
 
+    protected $consented = false;
+
     /**
      * init
      *
@@ -14,6 +16,8 @@ class AddThis {
         add_action('wp_enqueue_scripts', array($this, 'register_script'));
         add_shortcode('addthis', array($this, array('PressGang\AddThis', 'button')));
         add_filter('get_twig', array($this, 'add_to_twig'));
+
+        $this->consented = isset($_COOKIE['cookie-consent']) && !!$_COOKIE['cookie-consent'];
     }
 
     /**
@@ -62,7 +66,7 @@ class AddThis {
      * @return void
      */
     public function register_script () {
-        if ($addthis_id = urlencode(get_theme_mod('addthis-id'))) {
+        if ($addthis_id = urlencode(get_theme_mod('addthis-id')) && $this->consented ) {
             wp_register_script('addthis', "//s7.addthis.com/js/300/addthis_widget.js#pubid={$addthis_id}", array(), false, true);
             wp_enqueue_script('addthis');
         }
@@ -88,7 +92,7 @@ class AddThis {
      *
      */
     public static function button() {
-        if ($addthis_id = get_theme_mod('addthis-id')) {
+        if ($addthis_id = get_theme_mod('addthis-id') && (isset($_COOKIE['cookie-consent']) && !!$_COOKIE['cookie-consent'])) {
             wp_enqueue_script('addthis');
             \Timber::render('addthis.twig', array('addthis_class' => get_theme_mod('addthis-class')));
         }
