@@ -39,6 +39,9 @@ class PostController extends PageController {
             $template = sprintf("single%s.twig", $post_type === 'post' ? '' : "-{$post_type}") ;
         }
 
+        // add page specific twig rendering
+        add_filter('timber/twig', array($this, 'add_to_twig'));
+
         parent::__construct(array($template, 'single.twig'));
     }
 
@@ -48,7 +51,7 @@ class PostController extends PageController {
      * @param $page
      * @return array
      */
-    protected function get_tags() {
+    public function get_tags() {
 
         if(empty($this->tags)) {
             $this->tags = wp_get_post_tags($this->get_post()->ID);
@@ -63,7 +66,7 @@ class PostController extends PageController {
      *
      * @return array
      */
-    protected function get_categories() {
+    public function get_categories() {
         if (empty($this->categories)) {
             $this->categories = get_the_category(', ');
         }
@@ -75,26 +78,35 @@ class PostController extends PageController {
      * get_custom_taxonomies
      *
      */
-    protected function get_custom_taxonomy_terms() {
+    public function get_custom_taxonomy_terms() {
 
         if(empty($this->custom_taxonomy_terms)) {
 
-            $taxonomies = get_object_taxonomies($this->post_type, 'objects');
+            $id = $this->get_post()->ID;
 
-            foreach ($taxonomies as $slug => &$taxonomy) {
+            $this->custom_taxonomy_terms = wp_cache_get(sprintf("custom_tax_terms_%d", $id), 'custom_tax_terms');
 
-                $terms = get_the_terms($this->get_post()->ID, $slug);
+            if (!$this->custom_taxonomy_terms) {
 
-                if (is_array($terms) && count($terms)) {
+                $taxonomies = get_object_taxonomies($this->post_type, 'objects');
 
-                    foreach ($terms as &$term) {
-                        $term = new \TimberTerm($term);
+                foreach ($taxonomies as $slug => &$taxonomy) {
+
+                    $terms = get_the_terms($this->get_post()->ID, $slug);
+
+                    if (is_array($terms) && count($terms)) {
+
+                        foreach ($terms as &$term) {
+                            $term = new \TimberTerm($term);
+                        }
+
+                        $name = Pluralizer::pluralize($slug);
+                        $this->custom_taxonomy_terms[$name] = $terms;
                     }
-
-                    $name = Pluralizer::pluralize($slug);
-                    $this->custom_taxonomy_terms[$name] = $terms;
                 }
             }
+
+            wp_cache_add(sprintf("custom_tax_terms_%d", $id), $this->custom_taxonomy_terms, 'custom_tax_terms', 0);
 
         }
 
@@ -104,79 +116,86 @@ class PostController extends PageController {
     /**
      * get_related_posts
      *
-     * TODO this should be an inc
-     *
      * @param $post
      * @param $tags
      * @return array
      */
-    protected function get_related_posts() {
+    public function get_related_posts($posts_per_page = null) {
+
+        $posts_per_page = $posts_per_page ?? $posts_per_page;
 
         if(empty($this->related_posts)) {
 
             $id = $this->get_post()->ID;
 
-            $not_in = array($id);
+            $this->related_posts = wp_cache_get(sprintf("related_posts_%d", $id), 'related_posts');
 
-            $args = array(
-                'post_type' => $this->post_type,
-                'orderby' => 'rand',
-                'numberposts' => POST_NO_RELATED_POSTS,
-                'post__not_in' => $not_in,
-                'ignore_sticky_posts' => true,
-                'tax_query' => array(
-                    'relation' => 'AND',
-                ),
-            );
+            if (!$this->related_posts) {
 
-            $taxonomies = get_object_taxonomies($this->post_type, 'objects');
+                $not_in = array($id);
 
-            foreach($taxonomies as &$taxonomy) {
+                $args = array(
+                    'post_type' => $this->post_type,
+                    'orderby' => 'rand',
+                    'numberposts' => $posts_per_page,
+                    'post__not_in' => $not_in,
+                    'ignore_sticky_posts' => true,
+                    'tax_query' => array(
+                        'relation' => 'AND',
+                    ),
+                );
 
-                if ($terms = wp_get_object_terms($id, $taxonomy->name, array('fields' => 'ids'))) {
-                    $args['tax_query'][] = array(
-                        'taxonomy' => $taxonomy->name,
-                        'field' => 'term_id',
-                        'terms' => $terms,
-                        'operator' => 'IN',
-                        'include_children' => false,
-                    );
+                $taxonomies = get_object_taxonomies($this->post_type, 'objects');
+
+                foreach ($taxonomies as &$taxonomy) {
+
+                    if ($terms = wp_get_object_terms($id, $taxonomy->name, array('fields' => 'ids'))) {
+                        $args['tax_query'][] = array(
+                            'taxonomy' => $taxonomy->name,
+                            'field' => 'term_id',
+                            'terms' => $terms,
+                            'operator' => 'IN',
+                            'include_children' => false,
+                        );
+                    }
                 }
-            }
-
-            $posts = \Timber::get_posts($args);
-
-            foreach ($posts as &$post) {
-                $this->related_posts[$post->ID] = $post;
-            }
-
-            if (count($this->related_posts) < POST_NO_RELATED_POSTS) {
-
-                $not_in = array_merge($not_in, array_keys($this->related_posts));
-
-                $args['tax_query']['relation'] = 'OR';
-                $args['post__not_in'] = $not_in;
-                $args['numberposts'] = POST_NO_RELATED_POSTS - count($this->related_posts);
 
                 $posts = \Timber::get_posts($args);
 
                 foreach ($posts as &$post) {
                     $this->related_posts[$post->ID] = $post;
                 }
-            }
 
-            if (count($this->related_posts) < POST_NO_RELATED_POSTS) {
-                $not_in = array_merge($not_in, array_keys($this->related_posts));
+                if (is_array($this->related_posts) && count($this->related_posts) < $posts_per_page) {
 
-                unset($args['tax_query']);
-                $args['numberposts'] = $not_in;
-                $args['numberposts'] = POST_NO_RELATED_POSTS - count($this->related_posts);
+                    $not_in = array_merge($not_in, array_keys($this->related_posts));
 
-                $posts = \Timber::get_posts($args);
+                    $args['tax_query']['relation'] = 'OR';
+                    $args['post__not_in'] = $not_in;
+                    $args['numberposts'] = $posts_per_page - count($this->related_posts);
 
-                foreach ($posts as &$post) {
-                    $this->related_posts[$post->ID] = $post;
+                    $posts = \Timber::get_posts($args);
+
+                    foreach ($posts as &$post) {
+                        $this->related_posts[$post->ID] = $post;
+                    }
                 }
+
+                if (is_array($this->related_posts) && count($this->related_posts) < $posts_per_page) {
+                    $not_in = array_merge($not_in, array_keys($this->related_posts));
+
+                    unset($args['tax_query']);
+                    $args['numberposts'] = $not_in;
+                    $args['numberposts'] = $posts_per_page - count($this->related_posts);
+
+                    $posts = \Timber::get_posts($args);
+
+                    foreach ($posts as &$post) {
+                        $this->related_posts[$post->ID] = $post;
+                    }
+                }
+
+                wp_cache_add(sprintf("related_posts_%d", $id), $this->related_posts, 'related_posts', 0);
             }
         }
 
@@ -188,7 +207,7 @@ class PostController extends PageController {
      *
      * @return TimberUser
      */
-    protected function get_author() {
+    public function get_author() {
 
         if (empty($this->author)) {
             $post = $this->get_post();
@@ -209,16 +228,26 @@ class PostController extends PageController {
     protected function get_context()
     {
         $this->context['post'] = $this->context[$this->post_type] = $this->get_post();
-        $this->context['tags'] = $this->get_tags();
-        $this->context['categories'] = $this->get_categories();
-        $this->context['related_posts'] = $this->get_related_posts();
-        $this->context['author'] = $this->get_author();
-
-        foreach($this->get_custom_taxonomy_terms() as $name => &$terms) {
-            $this->context[$name] = $terms;
-        }
 
         return $this->context;
+    }
+
+    /**
+     * add_to_twig
+     *
+     * Add these functions to twig so that the required data can be retrieved only when needed
+     *
+     * @param $twig
+     * @return mixed
+     */
+    public function add_to_twig($twig) {
+
+        $twig->addFunction(new \Timber\Twig_Function('get_author', array($this, 'get_author')));
+        $twig->addFunction(new \Timber\Twig_Function('get_related_posts', array($this, 'get_related_posts')));
+        $twig->addFunction(new \Timber\Twig_Function('get_tags', array($this, 'get_tags')));
+        $twig->addFunction(new \Timber\Twig_Function('get_categories', array($this, 'get_categories')));
+        $twig->addFunction(new \Timber\Twig_Function('get_custom_taxonomy_terms', array($this, 'get_custom_taxonomy_terms')));
+        return $twig;
     }
 
 }
