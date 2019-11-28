@@ -66,9 +66,11 @@ class AddThis {
      * @return void
      */
     public function register_script () {
-        if ($addthis_id = urlencode(get_theme_mod('addthis-id')) && $this->consented ) {
-            wp_register_script('addthis', "//s7.addthis.com/js/300/addthis_widget.js#pubid={$addthis_id}", array(), false, true);
-            wp_enqueue_script('addthis');
+        if($this->consented) {
+            if ($addthis_id = urlencode(get_theme_mod('addthis-id'))) {
+                wp_register_script('addthis', "//s7.addthis.com/js/300/addthis_widget.js#pubid={$addthis_id}", array(), false, true);
+                wp_enqueue_script('addthis');
+            }
         }
     }
 
