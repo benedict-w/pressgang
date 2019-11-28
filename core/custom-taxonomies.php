@@ -39,12 +39,11 @@ class CustomTaxonomies
 
         foreach($this->custom_taxonomies as $key=>&$args) {
 
-            $args = $this->parse_labels($key, $args);
+            $object_type = isset($args['object-type']) ? $args['object-type'] : 'post';
+            $args = $this->parse_labels($key, $args['args']);
 
             $key = apply_filters("pressgang_taxonomy_{$key}", $key);
             $args = apply_filters("pressgang_taxonomy_{$key}_args", $args);
-
-            $object_type = isset($args['object-type']) ? $args['object-type'] : 'post';
 
             register_taxonomy($key, $object_type, $args);
         }
