@@ -1,6 +1,12 @@
 <nav>
     <ul class="pager">
-        <li class="previous">{{ function('next_post_link', '%link', "&lt; %s"|format(__("Previous: %title", THEMENAME))) }}</li>
-        <li class="next">{{ function('previous_post_link', '%link', "%s &gt;"|format(__("Next: %title", THEMENAME))) }}</li>
+        {% set next_post_link = function('get_next_post_link', '%link', "&lt; %s"|format(__("Previous: %title", THEMENAME))) %}
+        {% if next_post_link %}
+        <li class="previous">{{ next_post_link }}</li>
+        {% endif %}
+        {% set previous_post_link = function('get_next_post_link', '%link', "%s &gt;"|format(__("Next: %title", THEMENAME))) %}
+        {% if previous_post_link %}
+        <li class="next">{{ previous_post_link }}</li>
+        {% endif %}
     </ul>
 </nav>
