@@ -92,9 +92,12 @@ class AddThis {
      *
      */
     public static function button() {
-        if ($addthis_id = get_theme_mod('addthis-id') && (isset($_COOKIE['cookie-consent']) && !!$_COOKIE['cookie-consent'])) {
-            wp_enqueue_script('addthis');
-            \Timber::render('addthis.twig', array('addthis_class' => get_theme_mod('addthis-class')));
+
+        if ((isset($_COOKIE['cookie-consent']) && !!$_COOKIE['cookie-consent'])) {
+            if ($addthis_id = get_theme_mod('addthis-id')) {
+                wp_enqueue_script('addthis');
+                \Timber::render('addthis.twig', array('addthis_class' => get_theme_mod('addthis-class')));
+            }
         }
     }
 }
