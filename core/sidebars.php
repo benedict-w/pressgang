@@ -70,9 +70,9 @@ class Sidebars
      *
      * @param $twig
      *
-     * @return \Twig_Environment
+     * @return  \Twig\Environment
      */
-    public function add_widget_functions(\Twig_Environment $twig) {
+    public function add_widget_functions(\Twig\Environment $twig) {
         foreach($this->sidebars as $key=>&$sidebar) {
 
             $twig->addFunction( new \Timber\Twig_Function( "widget_{$key}", function() use ($sidebar) {
