@@ -19,7 +19,7 @@ class PostsController extends BaseController {
     /**
      * __construct
      *
-     * PageController constructor
+     * PostsController constructor
      *
      * @param string $template
      */
