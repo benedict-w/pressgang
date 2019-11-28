@@ -1,15 +1,15 @@
-<div id="{{ id|default('accordion') }}" class="panel-group" role="tablist" aria-multiselectable="true">
+<div id="{{ id|default('accordion') }}" class="accordion" role="tablist" aria-multiselectable="true">
     {% for item in items %}
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading-{{ loop.index }}">
-            <h4 class="panel-title">
+    <div class="card">
+        <div class="card-header" role="tab" id="{{ id }}-heading-{{ loop.index }}">
+            <h4 class="mb-0">
                 <a role="button" data-toggle="collapse" data-parent="#{{ id|default('accordion') }}" href="#{{ item.post_name }}" aria-expanded="false" aria-controls="{{ item.name }}" class="collapsed">
                     {{ item.title }}
                 </a>
             </h4>
         </div>
-        <div id="{{ item.post_name }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{ loop.index }}">
-            <div class="panel-body">
+        <div id="{{ item.post_name }}" class="collapse" role="tabpanel" aria-labelledby="{{ id }}-heading-{{ loop.index }}">
+            <div class="card-body">
                 {{ item.content }}
             </div>
         </div>
