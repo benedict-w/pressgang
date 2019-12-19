@@ -2,6 +2,10 @@
 
 namespace PressGang;
 
+if (!defined('EXPLICIT_CONSENT')) {
+    define("EXPLICIT_CONSENT", false);
+}
+
 class GoogleAnalytics {
 
     protected $consented = false;
@@ -16,7 +20,6 @@ class GoogleAnalytics {
         add_action('wp_head', array($this, 'script'));
 
         $this->consented = isset($_COOKIE['cookie-consent']) && !!$_COOKIE['cookie-consent'];
-
     }
 
     /**
@@ -72,7 +75,7 @@ class GoogleAnalytics {
     public function script () {
         $track_logged_in = get_theme_mod('track-logged-in');
 
-        if (($track_logged_in || (!$track_logged_in && !is_user_logged_in())) && $this->consented) {
+        if (($track_logged_in || (!$track_logged_in && !is_user_logged_in())) && (!EXPLICIT_CONSENT || $this->consented)) {
 
             if ($google_analytics_id = get_theme_mod('google-analytics-id')) {
                 \Timber::render('google-analytics.twig', array(
