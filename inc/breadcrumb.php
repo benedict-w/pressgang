@@ -74,7 +74,7 @@ class Breadcrumb {
                         $post_type_object = get_post_type_object($post_type);
                         $post_type_archive = get_post_type_archive_link($post_type);
 
-                        $this->append_link($post_type_object->labels->name, "breadcrumb-{$post_type}", $post_type_archive);
+                        $this->add_archive_link($post_type);
                     }
                 }
 
@@ -87,6 +87,8 @@ class Breadcrumb {
                 $post_type = get_post_type();
 
                 $this->add_archive_link($post_type);
+
+                $this->add_parent_links($post);
 
                 // get post category info
                 $category = get_the_category();
@@ -137,28 +139,9 @@ class Breadcrumb {
             } else if (is_page()) {
 
                 // standard page
-                if($post->post_parent){
-
-                    // if child page, get parents
-                    $ancestors = get_post_ancestors($post->ID);
-
-                    // get parents in the right order
-                    $ancestors = array_reverse($ancestors);
-
-                    // parent page loop
-                    foreach ($ancestors as $ancestor) {
-                        $this->append_link(get_the_title($ancestor), "breadcrumb-page breadcrumb-{$ancestor}", get_permalink($ancestor));
-                    }
-
-                    // current page
-                    $this->append_link(get_the_title(), 'breadcrumb-page breadcrumb-current');
-
-                } else {
-
-                    // just display current page if no parents
-                    $this->append_link(get_the_title(), 'breadcrumb-page breadcrumb-current');
-
-                }
+                $this->add_parent_links($post);
+                // display current page
+                $this->append_link(get_the_title(), 'breadcrumb-page breadcrumb-current');
 
             } else if ( is_tag() ) {
 
@@ -220,11 +203,32 @@ class Breadcrumb {
     }
 
     /**
+     * add_parent_link
+     *
+     * @param $post
+     */
+    protected function add_parent_links($post) {
+        if($post->post_parent){
+
+            // if child page, get parents
+            $ancestors = get_post_ancestors($post->ID);
+
+            // get parents in the right order
+            $ancestors = array_reverse($ancestors);
+
+            // parent page loop
+            foreach ($ancestors as $ancestor) {
+                $this->append_link(get_the_title($ancestor), "breadcrumb-page breadcrumb-{$ancestor}", get_permalink($ancestor));
+            }
+        }
+    }
+
+    /**
      * add_archive_link
      *
      * @param $post_type
      */
-    private function add_archive_link($post_type) {
+    protected function add_archive_link($post_type) {
 
         $post_type_object = get_post_type_object($post_type);
         $post_type_archive = apply_filters('breadcrumb_archive_link', get_post_type_archive_link($post_type), $post_type_object);
