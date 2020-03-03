@@ -3,8 +3,8 @@
         <label for="tax-toggle" class="tax-toggle--label">
             {{ __("Ex VAT", 'woocommerce') }}
         </label>
-        <span class="ios-toggle"{% if display_tax %} class="checked"{% endif %}>
-            <input type="checkbox" id="tax-toggle" name="{{ cookie_name }}" value="true" onChange="this.form.submit();" {% if display_tax %}checked{% endif %}>
+        <span class="ios-toggle {% if display_tax %}checked{% endif %}">
+            <input type="checkbox" id="tax-toggle" name="{{ cookie_name }}" value="true" onChange="this.form.submit();" {% if display_tax %}checked="checked"{% endif %}>
         </span>
         <label for="tax-toggle" class="tax-toggle--label">
             {{ __("Inc VAT", 'woocommerce') }}
