@@ -13,7 +13,8 @@
 
             if (increment || val >= 0) {
                 $qty.val(val);
-                $this.parents('.cart_item').find('[name=update_cart]').prop('disabled', false);
+                $this.parents('.cart_item').find('button[name=update_cart]').prop('disabled', false);
+                $('.actions button[name=update_cart]').prop('disabled', false);
             }
         };
 
