@@ -66,7 +66,7 @@ class AddThis {
      * @return void
      */
     public function register_script () {
-        if($this->consented) {
+        if(!EXPLICIT_CONSENT || $this->consented) {
             if ($addthis_id = urlencode(get_theme_mod('addthis-id'))) {
                 wp_register_script('addthis', "//s7.addthis.com/js/300/addthis_widget.js#pubid={$addthis_id}", array(), false, true);
                 wp_enqueue_script('addthis');
@@ -95,7 +95,7 @@ class AddThis {
      */
     public static function button() {
 
-        if ((isset($_COOKIE['cookie-consent']) && !!$_COOKIE['cookie-consent'])) {
+        if (! (isset($_COOKIE['cookie-consent']) && !!$_COOKIE['cookie-consent'])) {
             if ($addthis_id = get_theme_mod('addthis-id')) {
                 wp_enqueue_script('addthis');
                 \Timber::render('addthis.twig', array('addthis_class' => get_theme_mod('addthis-class')));
