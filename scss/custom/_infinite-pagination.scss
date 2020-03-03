@@ -1,0 +1,17 @@
+#infinite-pagination-spinner {
+  margin: $grid-gutter-width auto;
+  padding: 0;
+  display: none;
+  text-align: center;
+  &:after {
+    @extend %fa-icon;
+    @extend .fas;
+    content: fa-content($fa-var-spinner);
+    @extend .fa-pulse;
+    font-size: 2rem;
+  }
+}
+
+.page-numbers {
+  display: none;
+}
