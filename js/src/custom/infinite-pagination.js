@@ -13,7 +13,7 @@
 
             var $spinner = $('<div id="infinite-pagination-spinner" class="spinner"></div>');
 
-            $('.page-numbers').remove(); // remove the standard page links
+            $('.page-numbers, .pagination').remove(); // remove the standard page links
 
             var fetched_all = false;
             var selector = '.infinite-container';
