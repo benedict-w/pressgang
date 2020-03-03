@@ -1,14 +1,10 @@
 <!-- brand -->
-<h1 title="{{ site.name|e('html_attr') }}" class="brand">
-    <a href="/" title="{{ site.name|e('html_attr') }}" rel="home">
-        {% if site.logo %}
-            <img src="{{ site.logo|relative }}" alt="{{ site.name|e('html_attr') }}" class="logo"
-                 srcset="{{ site.logo|retina(1)|relative }} 1x,
-                    {{ site.logo|retina(2)|relative }} 2x,
-                    {{ site.logo|retina(3)|relative }} 3x,
-                    {{ site.logo|retina(4)|relative }} 4x">
-        {% else %}
-            {{ site.name }}
-        {% endif %}
-    </a>
-</h1>
+<a href="/" title="{{ __("Return to the %s homepage", THEMENAME)|format(site.name|e('html_attr')) }}" rel="home" class="brand">
+    {% if site.logo_svg %}
+        {{ site.logo_svg }}
+    {% elseif site.logo %}
+        <img src="{{ site.logo|relative }}" alt="{{ site.name|e('html_attr') }}" class="logo">
+    {% else %}
+        {{ site.name|e }}
+    {% endif %}
+</a>
