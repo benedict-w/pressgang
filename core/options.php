@@ -84,7 +84,15 @@ class Options
      */
     public function add_to_timber_context( $context ) {
         if (function_exists('get_fields')) {
-            $context['options'] = \get_fields('option');
+
+            $theme_options = wp_cache_get('theme_options');
+            if ( false === $theme_options ) {
+                $theme_options = \get_fields('option');
+                wp_cache_set( 'theme_options', $theme_options );
+            }
+
+            $context['options'] = $theme_options;
+
         }
         return $context;
     }
