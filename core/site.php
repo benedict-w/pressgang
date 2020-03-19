@@ -30,6 +30,7 @@ class Site extends \TimberSite
             }
         }
 
+        /*
         $keywords = wp_cache_get('site_keywords');
 
         if (!$keywords) {
@@ -42,7 +43,7 @@ class Site extends \TimberSite
         }
 
         $this->keywords = $keywords;
-
+        */
 
         // get site email
         $this->email = get_option('admin_email');
@@ -61,7 +62,7 @@ class Site extends \TimberSite
 
         add_filter('meta_description', array('PressGang\Site', 'meta_description'));
 
-        add_filter('wp_headers', array($this, 'add_ie_header'));
+        // add_filter('wp_headers', array($this, 'add_ie_header'));
 
         if (class_exists('WooCommerce')) {
             add_filter('timber_context', array($this, 'add_woocommerce_to_context'));
@@ -186,6 +187,8 @@ class Site extends \TimberSite
 
     /**
      * force_ie_headers
+     *
+     * TODO BREAK SITEGROUND DYNAMIC CACHE
      *
      * see - http://stackoverflow.com/questions/14198594/bad-value-x-ua-compatible-for-attribute-http-equiv-on-element-meta
      */
