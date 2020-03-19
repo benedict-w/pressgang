@@ -73,6 +73,9 @@ class Site extends \TimberSite
             \Timber::$cache = !WP_DEBUG;
         }
 
+        // add a theme color
+        $this->theme_color = Config::get('theme-color');
+
         parent::__construct($site_name_or_id);
     }
 
