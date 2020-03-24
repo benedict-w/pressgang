@@ -13,15 +13,15 @@ class OpenGraph {
      * init
      *
      */
-    public static function init() {
-        add_action('wp_head', array('PressGang\OpenGraph', 'fb_opengraph'), 5);
+    public function __construct() {
+        add_action('wp_head', array($this, 'fb_opengraph'), 5);
     }
 
     /**
      * fb_opengraph
      *
      */
-    public static function fb_opengraph() {
+    public function fb_opengraph() {
 
         $post = new \TimberPost();
 
@@ -66,4 +66,4 @@ class OpenGraph {
     }
 }
 
-OpenGraph::init();
+new OpenGraph();

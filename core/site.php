@@ -15,6 +15,7 @@ class Site extends \TimberSite
     public $keywords;
     public $logo;
     public $copyright;
+    private static $meta_description;
 
     /**
      *__construct
@@ -149,40 +150,53 @@ class Site extends \TimberSite
      */
     public static function meta_description()
     {
-        $post = new \TimberPost();
+        $description = self::$meta_description;
 
-        // check for custom field
-        $description = wptexturize($post->get_field('meta_description'));
-
-        if (is_tax()) {
-            if ($temp = term_description(get_queried_object(), get_query_var('taxonomy'))) {
-                $description = $temp;
-            }
-        }
-        elseif(is_post_type_archive()) {
-            if ($temp = get_the_archive_description()) {
-                $description = $temp;
-            } else {
-                $description = get_bloginfo('description', 'raw');
-            }
-        }
-
-        // else use preview
         if (empty($description)) {
-            $description = $post->get_preview(50, false, false, true);
-        }
 
-        // finally use the blog description
-        if (empty($description)) {
-            $description = get_bloginfo('description', 'raw');
-        }
+            $post = new \TimberPost();
 
-        $description = esc_attr(wp_strip_all_tags($description));
+            $key = sprintf("meta_description_%d", $post->ID);
 
-        // limit to SEO recommended length
-        if (strlen($description) > 155) {
-            $description = substr($description, 0, 155);
-            $description = \TimberHelper::trim_words($description, str_word_count($description) - 1);
+            if (!$description = wp_cache_get($key)) {
+
+                // check for custom field
+                $description = wptexturize($post->get_field('meta_description'));
+
+                if (is_tax()) {
+                    if ($temp = term_description(get_queried_object(), get_query_var('taxonomy'))) {
+                        $description = $temp;
+                    }
+                } elseif (is_post_type_archive()) {
+                    if ($temp = get_the_archive_description()) {
+                        $description = $temp;
+                    } else {
+                        $description = get_bloginfo('description', 'raw');
+                    }
+                }
+
+                // else use preview
+                if (empty($description)) {
+                    // TODO get_preview is rendering block content
+                    $description = $post->get_preview(50, false, false, true);
+                }
+
+                // finally use the blog description
+                if (empty($description)) {
+                    $description = get_bloginfo('description', 'raw');
+                }
+
+                $description = esc_attr(wp_strip_all_tags($description));
+
+                // limit to SEO recommended length
+                if (strlen($description) > 155) {
+                    $description = substr($description, 0, 155);
+                    $description = \TimberHelper::trim_words($description, str_word_count($description) - 1);
+                }
+
+                self::$meta_description = $description;
+                wp_cache_set($key, self::$meta_description);
+            }
         }
 
         return $description;
