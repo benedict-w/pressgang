@@ -61,10 +61,10 @@ class Title {
         // setup according to location of site name
         switch (strtolower($location)) {
             case 'left' :
-                $title = get_bloginfo('name', 'display') . $title;
+                $title = get_bloginfo('name', 'display') . $separator . $title;
                 break;
             case 'right' :
-                $title .= get_bloginfo('name', 'display');
+                $title .= $separator . get_bloginfo('name', 'display');
                 break;
             default:
                 $title .= $separator . get_bloginfo('name', 'display');
