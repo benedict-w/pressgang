@@ -77,6 +77,9 @@ class Site extends \TimberSite
         // add a theme color
         $this->theme_color = Config::get('theme-color');
 
+        // disable default ypast meta description (we'll add it ourselves)
+        add_filter('wpseo_metadesc', function() { return false; });
+
         parent::__construct($site_name_or_id);
     }
 
@@ -160,30 +163,36 @@ class Site extends \TimberSite
 
             if (!$description = wp_cache_get($key)) {
 
-                // check for custom field
-                $description = wptexturize($post->get_field('meta_description'));
+                // try Yoast
+                $description = get_post_meta($post->ID, '_yoast_wpseo_metadesc', true);
 
-                if (is_tax()) {
-                    if ($temp = term_description(get_queried_object(), get_query_var('taxonomy'))) {
-                        $description = $temp;
+                if (!$description) {
+
+                    // check for custom field
+                    $description = wptexturize($post->get_field('meta_description'));
+
+                    if (is_tax()) {
+                        if ($temp = term_description(get_queried_object(), get_query_var('taxonomy'))) {
+                            $description = $temp;
+                        }
+                    } elseif (is_post_type_archive()) {
+                        if ($temp = get_the_archive_description()) {
+                            $description = $temp;
+                        } else {
+                            $description = get_bloginfo('description', 'raw');
+                        }
                     }
-                } elseif (is_post_type_archive()) {
-                    if ($temp = get_the_archive_description()) {
-                        $description = $temp;
-                    } else {
+
+                    // else use preview
+                    if (empty($description)) {
+                        // TODO get_preview is rendering block content
+                        $description = $post->get_preview(50, false, false, true);
+                    }
+
+                    // finally use the blog description
+                    if (empty($description)) {
                         $description = get_bloginfo('description', 'raw');
                     }
-                }
-
-                // else use preview
-                if (empty($description)) {
-                    // TODO get_preview is rendering block content
-                    $description = $post->get_preview(50, false, false, true);
-                }
-
-                // finally use the blog description
-                if (empty($description)) {
-                    $description = get_bloginfo('description', 'raw');
                 }
 
                 $description = esc_attr(wp_strip_all_tags($description));
@@ -205,7 +214,7 @@ class Site extends \TimberSite
     /**
      * force_ie_headers
      *
-     * TODO BREAK SITEGROUND DYNAMIC CACHE
+     * TODO BREAKS SITEGROUND DYNAMIC CACHE
      *
      * see - http://stackoverflow.com/questions/14198594/bad-value-x-ua-compatible-for-attribute-http-equiv-on-element-meta
      */

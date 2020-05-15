@@ -1,8 +1,6 @@
 <head>
     <title>{{ function('wp_title', '|', false, 'right') }}</title>
-    {% if ( not fn('is_plugin_active', 'wordpress-seo/wp-seo.php' ) and not fn('is_plugin_active', 'wordpress-seo-premium/wp-seo-premium.php') ) %}
     <meta name="description" content="{{ meta_description() }}">
-    {% endif %}
     {% if site.keywords %}
     <meta name="keywords" content="{{ site.keywords|e('html_attr') }}">
     {% endif %}
