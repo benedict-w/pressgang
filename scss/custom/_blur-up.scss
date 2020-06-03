@@ -3,6 +3,9 @@ $blur-up-duration: 400ms !default;
 
 img {
   &.blur-up {
+    will-change: filter;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
     filter: blur($blur-up-px);
     transition: filter $blur-up-duration;
     &.lazyloaded {
