@@ -15,7 +15,9 @@
                         </div>
                         {% endif %}
                         <div class="page-content">
-                            {{ page.content }}
+                            {% block content %}
+                                {{ page.content }}
+                            {% endblock %}
                         </div>
                     </div>
                 </section>
