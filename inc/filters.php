@@ -25,6 +25,15 @@ class Filters
             add_filter('_get_page_link', array('PressGang\Filters', 'single_page_permalink'), 10, 2);
             add_filter('the_permalink', array('PressGang\Filters', 'single_page_permalink'), 10, 2);
             add_filter('get_sample_permalink', array('PressGang\Filters', 'single_page_permalink'), 10, 2);
+            // Hack fix for WPML trailing slashes
+            add_filter('page_link', function($permalink) {
+
+                if(substr($permalink, 0, 1 ) === '#') {
+                    $permalink = rtrim($permalink,'/');
+                }
+
+                return $permalink;
+            }, 10, 1);
         }
     }
 
@@ -72,13 +81,17 @@ class Filters
                         // this is for the admin sample permalink
                         $permalink = str_replace('/%pagename%', '#%pagename%', $permalink);
                     } else {
-                        if (!is_admin() && get_permalink($parent) === get_permalink()) {
-                            // relative
-                            $permalink = "#{$post->post_name}";
-                        } else {
-                            // absolute
-                            $permalink = preg_replace('/\/' . preg_quote($post->post_name, '/') . '\/$/', "#{$post->post_name}", $permalink);
+                        if( !is_admin() ) {
+                            $the_id = get_the_ID();
+                            if (in_array($parent_id, array($the_id, wp_get_post_parent_id($the_id)))) {
+                                // link is relative to the current page
+                                $permalink = "#{$post->post_name}";
+                            }
+                            else {
+                            }
                         }
+                        // else absolute
+                        $permalink = preg_replace('/\/' . preg_quote($post->post_name, '/') . '\/?$/', "#{$post->post_name}", $permalink);
                     }
                 }
             }
