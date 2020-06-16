@@ -8,9 +8,19 @@ $cookie-consent-zindex: 10000000000 !default;
 $cookie-consent-padding-x: $grid-gutter-width / 2 !default;
 $cookie-consent-padding-y: $grid-gutter-width / 2 !default;
 
+@keyframes ccSlideInUp {
+  0% {
+    bottom: -100%;
+  }
+  100% {
+    bottom: 0;
+  }
+}
+
 .cookie-consent {
   position: fixed;
   bottom: 0;
+  animation: 1s ease-out 0s 1 ccSlideInUp;
   width: 100%;
   padding: $cookie-consent-padding-y $cookie-consent-padding-x;
   color: $cookie-consent-color;
@@ -22,6 +32,7 @@ $cookie-consent-padding-y: $grid-gutter-width / 2 !default;
   flex-wrap: nowrap;
   align-items: center;
   z-index: $cookie-consent-zindex;
+
   p {
     margin: 0;
     padding: 0 $grid-gutter-width;
