@@ -1,8 +1,9 @@
 {% set dropdown = dropdown|default(true) %}
 <ul class="menu {{ class }}">
     {% for item in menu.get_items %}
-        <li class="{{ item.classes|join(' ') }}{% if item.current %} active{% endif %}{% if item.get_children %} dropdown{% endif %}">
-            <a href="{{ item.get_link }}" target="{{ item.is_external ? '_blank' : '_self' }}" {% if item.get_children %} class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" {% endif %} title="{{ item.title|e('html_attr') }}">{{ item.title }}
+        <li class="nav-item {{ item.classes|join(' ') }}{% if item.current %} active{% endif %}{% if item.get_children %} dropdown{% endif %}">
+            <a href="{{ item.get_link }}" target="{{ item.is_external ? '_blank' : '_self' }}" class="nav-link{% if item.get_children %} dropdown-toggle{% endif %}" {% if item.get_children %} data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" {% endif %} title="{{ item.title|e('html_attr') }}">
+                {{ item.title }}
                 {% if item.get_children and has_dropdown %}
                     <span class="caret"></span>
                 {% endif %}
@@ -11,7 +12,7 @@
                 <ul class="sub-menu{% if 'nav' in class and dropdown %} dropdown-menu{% endif %}">
                     {% for child in item.get_children %}
                         <li class="{{ item.classes | join(' ') }}">
-                            <a href="{{ child.get_link }}" target="{{ item.is_external ? '_blank' : '_self' }}" title="{{ child.title|e('html_attr') }}">{{ child.title }}</a>
+                            <a href="{{ child.get_link }}" target="{{ item.is_external ? '_blank' : '_self' }}" title="{{ child.title|e('html_attr') }}" class="nav-link">{{ child.title }}</a>
                         </li>
                     {% endfor %}
                 </ul>
