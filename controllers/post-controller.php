@@ -132,7 +132,11 @@ class PostController extends PageController {
 
             $this->related_posts = wp_cache_get($key, 'related_posts', true);
 
-            if (!$this->related_posts) {
+            if (empty($this->related_posts)) {
+
+                $this->related_posts = array();
+
+                // search post with AND terms
 
                 $not_in = array($id);
 
@@ -170,6 +174,8 @@ class PostController extends PageController {
 
                 if (is_array($this->related_posts) && count($this->related_posts) < $posts_per_page) {
 
+                    // merge related posts with OR terms
+
                     $not_in = array_merge($not_in, array_keys($this->related_posts));
 
                     $args['tax_query']['relation'] = 'OR';
@@ -181,23 +187,25 @@ class PostController extends PageController {
                     foreach ($posts as &$post) {
                         $this->related_posts[$post->ID] = $post;
                     }
-                }
 
-                if (is_array($this->related_posts) && count($this->related_posts) < $posts_per_page) {
-                    $not_in = array_merge($not_in, array_keys($this->related_posts));
+                    // fill the rest of related posts by post_type
 
-                    unset($args['tax_query']);
-                    $args['numberposts'] = $not_in;
-                    $args['numberposts'] = $posts_per_page - count($this->related_posts);
+                    if (count($this->related_posts) < $posts_per_page) {
+                        $not_in = array_merge($not_in, array_keys($this->related_posts));
 
-                    $posts = \Timber::get_posts($args);
+                        unset($args['tax_query']);
+                        $args['numberposts'] = $not_in;
+                        $args['numberposts'] = $posts_per_page - count($this->related_posts);
 
-                    foreach ($posts as &$post) {
-                        $this->related_posts[$post->ID] = $post;
+                        $posts = \Timber::get_posts($args);
+
+                        foreach ($posts as &$post) {
+                            $this->related_posts[$post->ID] = $post;
+                        }
                     }
                 }
 
-                wp_cache_add($key, $this->related_posts, 'related_posts', 24 * 60 * 60);
+                wp_cache_add($key, $this->related_posts, 'related_posts', 0);
             }
         }
 
