@@ -128,7 +128,9 @@ class PostController extends PageController {
 
             $id = $this->get_post()->ID;
 
-            $this->related_posts = wp_cache_get(sprintf("related_posts_%d", $id), 'related_posts');
+            $key = sprintf("related_posts_%d", $id);
+
+            $this->related_posts = wp_cache_get($key, 'related_posts', true);
 
             if (!$this->related_posts) {
 
@@ -195,7 +197,7 @@ class PostController extends PageController {
                     }
                 }
 
-                wp_cache_add(sprintf("related_posts_%d", $id), $this->related_posts, 'related_posts', 0);
+                wp_cache_add($key, $this->related_posts, 'related_posts', 24 * 60 * 60);
             }
         }
 
