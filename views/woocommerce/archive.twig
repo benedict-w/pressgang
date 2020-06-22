@@ -1,9 +1,8 @@
 {% extends "page.twig" %}
 
-{% block content %}
+{% block main %}
 
     {% do action('woocommerce_before_main_content') %}
-
     {% do action( 'woocommerce_before_shop_loop') %}
 
     <header class="woocommerce-products-header">

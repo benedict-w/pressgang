@@ -14,11 +14,11 @@
             {% include 'header.twig' %}
         </header>
         {% endblock %}
+        {% block main %}
         <main id="main">
-            {% block main %}
-                {{  __("Sorry, there is no content to display!", THEMENAME) }}
-            {% endblock %}
+            {{  __("Sorry, there is no content to display!", THEMENAME) }}
         </main>
+        {% endblock %}s
     </div>
     {% block footer %}
     <footer id="footer">

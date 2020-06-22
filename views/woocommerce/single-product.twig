@@ -1,6 +1,6 @@
 {% extends "page-sidebar.twig" %}
 
-{% block content %}
+{% block main %}
     {{ fn('the_post') }}
     {% do action('woocommerce_before_main_content') %}
     {% do action('woocommerce_before_single_product') %}
