@@ -16,6 +16,7 @@
     {% set no_cols = fn('wc_get_loop_prop', 'columns') %}
     {% set items = shop_page_display == 'subcategories' ? product_categories : products %}
 
+    <div class="archive-products">
     {% for row in items|batch(no_cols) %}
         <div class="row">
             {% for col in row %}
@@ -29,6 +30,7 @@
             {% endfor %}
         </div>
     {% endfor %}
+    </div>
 
     {% do action('woocommerce_after_shop_loop') %}
     {% do action('woocommerce_after_main_content') %}
