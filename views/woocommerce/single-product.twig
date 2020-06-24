@@ -3,10 +3,8 @@
 {% block main %}
     {{ fn('the_post') }}
     {% do action('woocommerce_before_main_content') %}
-    {% do action('woocommerce_before_single_product') %}
 
     {{ fn('wc_get_template_part', 'content', 'single-product') }}
 
-    {% do action('woocommerce_after_single_product') %}
     {% do action('woocommerce_after_main_content') %}
 {% endblock %}
