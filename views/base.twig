@@ -1,7 +1,7 @@
 <!doctype html>
 <html {{ site.language_attributes }}>
 {% block head %}
-{% include 'head.twig' %}
+    {% include 'head.twig' %}
 {% endblock %}
 <body class="{{ body_class }}">
 {% block body %}
@@ -16,7 +16,9 @@
         {% endblock %}
         {% block main %}
         <main id="main">
-            {{  __("Sorry, there is no content to display!", THEMENAME) }}
+            {% block content %}
+                {{  __("Sorry, there is no content to display!", THEMENAME) }}
+            {% endblock %}
         </main>
         {% endblock %}
     </div>
