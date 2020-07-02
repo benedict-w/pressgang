@@ -14,8 +14,14 @@ class Support {
      *
      */
     public static function init() {
-        foreach (Config::get('support') as &$support) {
-            add_theme_support($support);
+
+        foreach (Config::get('support') as $key => &$value) {
+
+            if (is_numeric($key)) {
+                add_theme_support($value);
+            } elseif (is_array($value)) {
+                add_theme_support($key, $value);
+            }
         }
     }
 }
