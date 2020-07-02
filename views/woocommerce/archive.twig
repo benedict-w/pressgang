@@ -17,7 +17,7 @@
     {% set items = shop_page_display == 'subcategories' ? product_categories : products %}
 
     <div class="archive-products">
-    {% if items.length %}
+    {% if items|length %}
         {% for row in items|batch(no_cols) %}
             <div class="row">
                 {% for col in row %}
