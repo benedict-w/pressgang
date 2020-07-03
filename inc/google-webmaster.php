@@ -40,6 +40,7 @@ class GoogleWebmaster {
             'label' => __("Google Webmaster Verification Code", THEMENAME),
             'description' => sprintf(__("See %s"), 'https://goo.gl/kXrMha'),
             'section'  => 'google',
+            'type' => 'text',
         )));
     }
 }
