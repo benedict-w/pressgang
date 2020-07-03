@@ -1,5 +1,5 @@
 {% if add_gtag_script %}
-<script async src="https://www.googletagmanager.com/gtag/js?id={{ google_adwords_id|url_encode }}"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ google_adwords_id|e('html_attr') }}"></script>
 {% endif %}
 
 <script>
@@ -11,17 +11,17 @@
     }
 
     gtag('js', new Date());
-    gtag('config', '{{ google_adwords_id|e }}');
+    gtag('config', '{{ google_adwords_id|e('html_attr') }}');
 
 </script>
 
-{% if conversion %}
+{% if google_conversion_label %}
     <script>
         gtag('event', 'conversion', {
-            'send_to': '{{ google_adwords_id|e }}/jTn_CI3sShDBrbD_Aw',
-            'value': '{{ order_total|e }}',
-            'currency': '{{ currency|e }}',
-            'transaction_id': '{{ tracking_id|e }}'
+            'send_to': '{{ google_adwords_id|e('html_attr') }}/{{ google_conversion_label|e('html_attr') }}',
+            'value': '{{ order_total|e('html_attr') }}',
+            'currency': '{{ currency|e('html_attr') }}',
+            'transaction_id': '{{ tracking_id|e('html_attr') }}'
         });
     </script>
 {% endif %}

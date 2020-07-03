@@ -43,6 +43,22 @@ class GoogleConversionTracking
             'section' => 'google',
             'type' => 'text',
         )));
+
+        // conversion label
+
+        $wp_customize->add_setting(
+            'google-conversion-label',
+            array(
+                'default' => '',
+                'sanitize_callback' => 'sanitize_text_field',
+            )
+        );
+
+        $wp_customize->add_control(new \WP_Customize_Control($wp_customize, 'google-conversion-label', array(
+            'label' => __("Google Conversion Label", THEMENAME),
+            'section' => 'google',
+            'type' => 'text',
+        )));
     }
 
     /**
@@ -69,8 +85,6 @@ class GoogleConversionTracking
 
             if (class_exists('woocommerce') && is_order_received_page()) {
 
-                $data['conversion'] = true;
-
                 global $wp;
 
                 $order_id = absint($wp->query_vars['order-received']);
@@ -82,6 +96,7 @@ class GoogleConversionTracking
                         $data['order_total'] = $order->get_total();
                         $data['currency'] = $order->get_currency();
                         $data['tracking_id'] = $order->get_id();
+                        $data['google_conversion_label'] = get_theme_mod('google-conversion-label');
 
                     }
                 }
