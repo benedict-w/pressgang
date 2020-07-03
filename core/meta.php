@@ -38,7 +38,6 @@ class Meta {
         foreach($this->meta as $name => &$content ) {
             echo sprintf('<meta name="%s" content="%s">', esc_attr($name), esc_attr($content));
         }
-
     }
 
 }

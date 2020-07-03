@@ -15,7 +15,6 @@ class Block
     public static function render ($block) {
         // convert name into path friendly slug
         $slug = substr($block['name'], strpos($block['name'], '/') + 1, strlen($block['name']));
-
         static::$id = $block['id'];
 
         $context = static::get_context($block);
