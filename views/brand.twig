@@ -1,5 +1,5 @@
 <!-- brand -->
-<a href="/" title="{{ __("Return to the %s homepage", THEMENAME)|format(site.name|e('html_attr')) }}" rel="home" class="brand">
+<a href="/" aria-label="{{ __("Return to the %s homepage", THEMENAME)|format(site.name|e('html_attr')) }}" title="{{ __("Return to the %s homepage", THEMENAME)|format(site.name|e('html_attr')) }}" rel="home" class="brand">
     {% if site.logo_svg %}
         {{ site.logo_svg }}
     {% elseif site.logo %}
