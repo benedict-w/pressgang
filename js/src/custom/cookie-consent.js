@@ -1,6 +1,6 @@
-(function($) {
+(function ($) {
 
-    $(function() {
+    $(function () {
 
         var $consent = $('.cookie-consent');
 
@@ -8,9 +8,9 @@
             $consent.hide();
         }
 
-        $consent.find('.btn').on('click', function() {
+        $consent.find('.btn').on('click', function () {
 
-            Cookies.set('cookie-consent', 1, { expires : 28 });
+            Cookies.set('cookie-consent', 1, {expires: 28});
 
             $consent.fadeOut();
 
