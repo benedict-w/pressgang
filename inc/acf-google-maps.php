@@ -21,7 +21,7 @@ class AcfGoogleMaps {
     public function set_google_maps_key() {
 
         if ($google_maps_key = filter_var(get_theme_mod('acf_google_maps_key'), FILTER_SANITIZE_STRING)) {
-            acf_update_setting('google_api_key', $google_maps_key);
+            acf_update_setting('acf_google_maps_key', $google_maps_key);
         }
     }
 
