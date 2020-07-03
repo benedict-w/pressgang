@@ -14,15 +14,15 @@
 
 /* jshint browser: true, strict: true, undef: true, unused: true */
 
-( function( window, factory ) {
+(function (window, factory) {
     // universal module definition
     /*jshint strict: false */ /* globals define, module, require */
-    if ( typeof define == 'function' && define.amd ) {
+    if (typeof define == 'function' && define.amd) {
         // AMD
-        define( 'jquery-bridget/jquery-bridget',[ 'jquery' ], function( jQuery ) {
-            return factory( window, jQuery );
+        define('jquery-bridget/jquery-bridget', ['jquery'], function (jQuery) {
+            return factory(window, jQuery);
         });
-    } else if ( typeof module == 'object' && module.exports ) {
+    } else if (typeof module == 'object' && module.exports) {
         // CommonJS
         module.exports = factory(
             window,
@@ -36,7 +36,7 @@
         );
     }
 
-}( window, function factory( window, jQuery ) {
+}(window, function factory(window, jQuery) {
     'use strict';
 
 // ----- utils ----- //
@@ -46,66 +46,67 @@
 // helper function for logging errors
 // $.error breaks jQuery chaining
     var console = window.console;
-    var logError = typeof console == 'undefined' ? function() {} :
-        function( message ) {
-            console.error( message );
+    var logError = typeof console == 'undefined' ? function () {
+        } :
+        function (message) {
+            console.error(message);
         };
 
 // ----- jQueryBridget ----- //
 
-    function jQueryBridget( namespace, PluginClass, $ ) {
+    function jQueryBridget(namespace, PluginClass, $) {
         $ = $ || jQuery || window.jQuery;
-        if ( !$ ) {
+        if (!$) {
             return;
         }
 
         // add option method -> $().plugin('option', {...})
-        if ( !PluginClass.prototype.option ) {
+        if (!PluginClass.prototype.option) {
             // option setter
-            PluginClass.prototype.option = function( opts ) {
+            PluginClass.prototype.option = function (opts) {
                 // bail out if not an object
-                if ( !$.isPlainObject( opts ) ){
+                if (!$.isPlainObject(opts)) {
                     return;
                 }
-                this.options = $.extend( true, this.options, opts );
+                this.options = $.extend(true, this.options, opts);
             };
         }
 
         // make jQuery plugin
-        $.fn[ namespace ] = function( arg0 /*, arg1 */ ) {
-            if ( typeof arg0 == 'string' ) {
+        $.fn[namespace] = function (arg0 /*, arg1 */) {
+            if (typeof arg0 == 'string') {
                 // method call $().plugin( 'methodName', { options } )
                 // shift arguments by 1
-                var args = arraySlice.call( arguments, 1 );
-                return methodCall( this, arg0, args );
+                var args = arraySlice.call(arguments, 1);
+                return methodCall(this, arg0, args);
             }
             // just $().plugin({ options })
-            plainCall( this, arg0 );
+            plainCall(this, arg0);
             return this;
         };
 
         // $().plugin('methodName')
-        function methodCall( $elems, methodName, args ) {
+        function methodCall($elems, methodName, args) {
             var returnValue;
             var pluginMethodStr = '$().' + namespace + '("' + methodName + '")';
 
-            $elems.each( function( i, elem ) {
+            $elems.each(function (i, elem) {
                 // get instance
-                var instance = $.data( elem, namespace );
-                if ( !instance ) {
-                    logError( namespace + ' not initialized. Cannot call methods, i.e. ' +
-                        pluginMethodStr );
+                var instance = $.data(elem, namespace);
+                if (!instance) {
+                    logError(namespace + ' not initialized. Cannot call methods, i.e. ' +
+                        pluginMethodStr);
                     return;
                 }
 
-                var method = instance[ methodName ];
-                if ( !method || methodName.charAt(0) == '_' ) {
-                    logError( pluginMethodStr + ' is not a valid method' );
+                var method = instance[methodName];
+                if (!method || methodName.charAt(0) == '_') {
+                    logError(pluginMethodStr + ' is not a valid method');
                     return;
                 }
 
                 // apply method, get return value
-                var value = method.apply( instance, args );
+                var value = method.apply(instance, args);
                 // set return value if value is returned, use only first value
                 returnValue = returnValue === undefined ? value : returnValue;
             });
@@ -113,36 +114,36 @@
             return returnValue !== undefined ? returnValue : $elems;
         }
 
-        function plainCall( $elems, options ) {
-            $elems.each( function( i, elem ) {
-                var instance = $.data( elem, namespace );
-                if ( instance ) {
+        function plainCall($elems, options) {
+            $elems.each(function (i, elem) {
+                var instance = $.data(elem, namespace);
+                if (instance) {
                     // set options & init
-                    instance.option( options );
+                    instance.option(options);
                     instance._init();
                 } else {
                     // initialize new instance
-                    instance = new PluginClass( elem, options );
-                    $.data( elem, namespace, instance );
+                    instance = new PluginClass(elem, options);
+                    $.data(elem, namespace, instance);
                 }
             });
         }
 
-        updateJQuery( $ );
+        updateJQuery($);
 
     }
 
 // ----- updateJQuery ----- //
 
 // set $.bridget for v1 backwards compatibility
-    function updateJQuery( $ ) {
-        if ( !$ || ( $ && $.bridget ) ) {
+    function updateJQuery($) {
+        if (!$ || ($ && $.bridget)) {
             return;
         }
         $.bridget = jQueryBridget;
     }
 
-    updateJQuery( jQuery || window.jQuery );
+    updateJQuery(jQuery || window.jQuery);
 
 // -----  ----- //
 
@@ -158,13 +159,13 @@
 
 /* jshint unused: true, undef: true, strict: true */
 
-( function( global, factory ) {
+(function (global, factory) {
     // universal module definition
     /* jshint strict: false */ /* globals define, module, window */
-    if ( typeof define == 'function' && define.amd ) {
+    if (typeof define == 'function' && define.amd) {
         // AMD - RequireJS
-        define( 'ev-emitter/ev-emitter',factory );
-    } else if ( typeof module == 'object' && module.exports ) {
+        define('ev-emitter/ev-emitter', factory);
+    } else if (typeof module == 'object' && module.exports) {
         // CommonJS - Browserify, Webpack
         module.exports = factory();
     } else {
@@ -172,82 +173,82 @@
         global.EvEmitter = factory();
     }
 
-}( typeof window != 'undefined' ? window : this, function() {
+}(typeof window != 'undefined' ? window : this, function () {
 
 
-
-    function EvEmitter() {}
+    function EvEmitter() {
+    }
 
     var proto = EvEmitter.prototype;
 
-    proto.on = function( eventName, listener ) {
-        if ( !eventName || !listener ) {
+    proto.on = function (eventName, listener) {
+        if (!eventName || !listener) {
             return;
         }
         // set events hash
         var events = this._events = this._events || {};
         // set listeners array
-        var listeners = events[ eventName ] = events[ eventName ] || [];
+        var listeners = events[eventName] = events[eventName] || [];
         // only add once
-        if ( listeners.indexOf( listener ) == -1 ) {
-            listeners.push( listener );
+        if (listeners.indexOf(listener) == -1) {
+            listeners.push(listener);
         }
 
         return this;
     };
 
-    proto.once = function( eventName, listener ) {
-        if ( !eventName || !listener ) {
+    proto.once = function (eventName, listener) {
+        if (!eventName || !listener) {
             return;
         }
         // add event
-        this.on( eventName, listener );
+        this.on(eventName, listener);
         // set once flag
         // set onceEvents hash
         var onceEvents = this._onceEvents = this._onceEvents || {};
         // set onceListeners object
-        var onceListeners = onceEvents[ eventName ] = onceEvents[ eventName ] || {};
+        var onceListeners = onceEvents[eventName] = onceEvents[eventName] || {};
         // set flag
-        onceListeners[ listener ] = true;
+        onceListeners[listener] = true;
 
         return this;
     };
 
-    proto.off = function( eventName, listener ) {
-        var listeners = this._events && this._events[ eventName ];
-        if ( !listeners || !listeners.length ) {
+    proto.off = function (eventName, listener) {
+        var listeners = this._events && this._events[eventName];
+        if (!listeners || !listeners.length) {
             return;
         }
-        var index = listeners.indexOf( listener );
-        if ( index != -1 ) {
-            listeners.splice( index, 1 );
+        var index = listeners.indexOf(listener);
+        if (index != -1) {
+            listeners.splice(index, 1);
         }
 
         return this;
     };
 
-    proto.emitEvent = function( eventName, args ) {
-        var listeners = this._events && this._events[ eventName ];
-        if ( !listeners || !listeners.length ) {
+    proto.emitEvent = function (eventName, args) {
+        var listeners = this._events && this._events[eventName];
+        if (!listeners || !listeners.length) {
             return;
         }
         var i = 0;
         var listener = listeners[i];
         args = args || [];
         // once stuff
-        var onceListeners = this._onceEvents && this._onceEvents[ eventName ];
+        var onceListeners = this._onceEvents && this._onceEvents[eventName];
 
-        while ( listener ) {
-            var isOnce = onceListeners && onceListeners[ listener ];
-            if ( isOnce ) {
+        while (listener) {
+            var isOnce = onceListeners && onceListeners[listener];
+            if (isOnce) {
                 // remove listener
                 // remove before trigger to prevent recursion
-                this.off( eventName, listener );
+                this.off(eventName, listener);
                 // unset once flag
-                delete onceListeners[ listener ];
+                delete onceListeners[listener];
             }
             // trigger listener
-            listener.apply( this, args );
+            listener.apply(this, args);
             // get next listener
             i += isOnce ? 0 : 1;
             listener = listeners[i];
@@ -269,15 +270,15 @@
 /*jshint browser: true, strict: true, undef: true, unused: true */
 /*global define: false, module: false, console: false */
 
-( function( window, factory ) {
+(function (window, factory) {
     'use strict';
 
-    if ( typeof define == 'function' && define.amd ) {
+    if (typeof define == 'function' && define.amd) {
         // AMD
-        define( 'get-size/get-size',[],function() {
+        define('get-size/get-size', [], function () {
             return factory();
         });
-    } else if ( typeof module == 'object' && module.exports ) {
+    } else if (typeof module == 'object' && module.exports) {
         // CommonJS
         module.exports = factory();
     } else {
@@ -285,24 +286,25 @@
         window.getSize = factory();
     }
 
-})( window, function factory() {
+})(window, function factory() {
     'use strict';
 
 // -------------------------- helpers -------------------------- //
 
 // get a number from a string, not a percentage
-    function getStyleSize( value ) {
-        var num = parseFloat( value );
+    function getStyleSize(value) {
+        var num = parseFloat(value);
         // not a percent like '100%', and a number
-        var isValid = value.indexOf('%') == -1 && !isNaN( num );
+        var isValid = value.indexOf('%') == -1 && !isNaN(num);
         return isValid && num;
     }
 
-    function noop() {}
+    function noop() {
+    }
 
     var logError = typeof console == 'undefined' ? noop :
-        function( message ) {
-            console.error( message );
+        function (message) {
+            console.error(message);
         };
 
 // -------------------------- measurements -------------------------- //
@@ -333,9 +335,9 @@
             outerWidth: 0,
             outerHeight: 0
         };
-        for ( var i=0; i < measurementsLength; i++ ) {
+        for (var i = 0; i < measurementsLength; i++) {
             var measurement = measurements[i];
-            size[ measurement ] = 0;
+            size[measurement] = 0;
         }
         return size;
     }
@@ -346,12 +348,12 @@
      * getStyle, get style of element, check for Firefox bug
      * https://bugzilla.mozilla.org/show_bug.cgi?id=548397
      */
-    function getStyle( elem ) {
-        var style = getComputedStyle( elem );
-        if ( !style ) {
-            logError( 'Style returned ' + style +
+    function getStyle(elem) {
+        var style = getComputedStyle(elem);
+        if (!style) {
+            logError('Style returned ' + style +
                 '. Are you running this code in a hidden iframe on Firefox? ' +
-                'See http://bit.ly/getsizebug1' );
+                'See http://bit.ly/getsizebug1');
         }
         return style;
     }
@@ -369,7 +371,7 @@
      */
     function setup() {
         // setup once
-        if ( isSetup ) {
+        if (isSetup) {
             return;
         }
         isSetup = true;
@@ -388,33 +390,33 @@
         div.style.boxSizing = 'border-box';
 
         var body = document.body || document.documentElement;
-        body.appendChild( div );
-        var style = getStyle( div );
+        body.appendChild(div);
+        var style = getStyle(div);
 
-        getSize.isBoxSizeOuter = isBoxSizeOuter = getStyleSize( style.width ) == 200;
-        body.removeChild( div );
+        getSize.isBoxSizeOuter = isBoxSizeOuter = getStyleSize(style.width) == 200;
+        body.removeChild(div);
 
     }
 
 // -------------------------- getSize -------------------------- //
 
-    function getSize( elem ) {
+    function getSize(elem) {
         setup();
 
         // use querySeletor if elem is string
-        if ( typeof elem == 'string' ) {
-            elem = document.querySelector( elem );
+        if (typeof elem == 'string') {
+            elem = document.querySelector(elem);
         }
 
         // do not proceed on non-objects
-        if ( !elem || typeof elem != 'object' || !elem.nodeType ) {
+        if (!elem || typeof elem != 'object' || !elem.nodeType) {
             return;
         }
 
-        var style = getStyle( elem );
+        var style = getStyle(elem);
 
         // if hidden, everything is 0
-        if ( style.display == 'none' ) {
+        if (style.display == 'none') {
             return getZeroSize();
         }
 
@@ -425,12 +427,12 @@
         var isBorderBox = size.isBorderBox = style.boxSizing == 'border-box';
 
         // get all measurements
-        for ( var i=0; i < measurementsLength; i++ ) {
+        for (var i = 0; i < measurementsLength; i++) {
             var measurement = measurements[i];
-            var value = style[ measurement ];
-            var num = parseFloat( value );
+            var value = style[measurement];
+            var num = parseFloat(value);
             // any 'auto', 'medium' value will be 0
-            size[ measurement ] = !isNaN( num ) ? num : 0;
+            size[measurement] = !isNaN(num) ? num : 0;
         }
 
         var paddingWidth = size.paddingLeft + size.paddingRight;
@@ -443,22 +445,22 @@
         var isBorderBoxSizeOuter = isBorderBox && isBoxSizeOuter;
 
         // overwrite width and height if we can get it from style
-        var styleWidth = getStyleSize( style.width );
-        if ( styleWidth !== false ) {
+        var styleWidth = getStyleSize(style.width);
+        if (styleWidth !== false) {
             size.width = styleWidth +
-                    // add padding and border unless it's already including it
-                ( isBorderBoxSizeOuter ? 0 : paddingWidth + borderWidth );
+                // add padding and border unless it's already including it
+                (isBorderBoxSizeOuter ? 0 : paddingWidth + borderWidth);
         }
 
-        var styleHeight = getStyleSize( style.height );
-        if ( styleHeight !== false ) {
+        var styleHeight = getStyleSize(style.height);
+        if (styleHeight !== false) {
             size.height = styleHeight +
-                    // add padding and border unless it's already including it
-                ( isBorderBoxSizeOuter ? 0 : paddingHeight + borderHeight );
+                // add padding and border unless it's already including it
+                (isBorderBoxSizeOuter ? 0 : paddingHeight + borderHeight);
         }
 
-        size.innerWidth = size.width - ( paddingWidth + borderWidth );
-        size.innerHeight = size.height - ( paddingHeight + borderHeight );
+        size.innerWidth = size.width - (paddingWidth + borderWidth);
+        size.innerHeight = size.height - (paddingHeight + borderHeight);
 
         size.outerWidth = size.width + marginWidth;
         size.outerHeight = size.height + marginHeight;
@@ -478,14 +480,14 @@
 
 /*jshint browser: true, strict: true, undef: true, unused: true */
 
-( function( window, factory ) {
+(function (window, factory) {
     /*global define: false, module: false */
     'use strict';
     // universal module definition
-    if ( typeof define == 'function' && define.amd ) {
+    if (typeof define == 'function' && define.amd) {
         // AMD
-        define( 'desandro-matches-selector/matches-selector',factory );
-    } else if ( typeof module == 'object' && module.exports ) {
+        define('desandro-matches-selector/matches-selector', factory);
+    } else if (typeof module == 'object' && module.exports) {
         // CommonJS
         module.exports = factory();
     } else {
@@ -493,33 +495,33 @@
         window.matchesSelector = factory();
     }
 
-}( window, function factory() {
+}(window, function factory() {
     'use strict';
 
-    var matchesMethod = ( function() {
+    var matchesMethod = (function () {
         var ElemProto = Element.prototype;
         // check for the standard method name first
-        if ( ElemProto.matches ) {
+        if (ElemProto.matches) {
             return 'matches';
         }
         // check un-prefixed
-        if ( ElemProto.matchesSelector ) {
+        if (ElemProto.matchesSelector) {
             return 'matchesSelector';
         }
         // check vendor prefixes
-        var prefixes = [ 'webkit', 'moz', 'ms', 'o' ];
+        var prefixes = ['webkit', 'moz', 'ms', 'o'];
 
-        for ( var i=0; i < prefixes.length; i++ ) {
+        for (var i = 0; i < prefixes.length; i++) {
             var prefix = prefixes[i];
             var method = prefix + 'MatchesSelector';
-            if ( ElemProto[ method ] ) {
+            if (ElemProto[method]) {
                 return method;
             }
         }
     })();
 
-    return function matchesSelector( elem, selector ) {
-        return elem[ matchesMethod ]( selector );
+    return function matchesSelector(elem, selector) {
+        return elem[matchesMethod](selector);
     };
 
 }));
@@ -531,18 +533,18 @@
 
 /*jshint browser: true, undef: true, unused: true, strict: true */
 
-( function( window, factory ) {
+(function (window, factory) {
     // universal module definition
     /*jshint strict: false */ /*globals define, module, require */
 
-    if ( typeof define == 'function' && define.amd ) {
+    if (typeof define == 'function' && define.amd) {
         // AMD
-        define( 'fizzy-ui-utils/utils',[
+        define('fizzy-ui-utils/utils', [
             'desandro-matches-selector/matches-selector'
-        ], function( matchesSelector ) {
-            return factory( window, matchesSelector );
+        ], function (matchesSelector) {
+            return factory(window, matchesSelector);
         });
-    } else if ( typeof module == 'object' && module.exports ) {
+    } else if (typeof module == 'object' && module.exports) {
         // CommonJS
         module.exports = factory(
             window,
@@ -556,8 +558,7 @@
         );
     }
 
-}( window, function factory( window, matchesSelector ) {
-
+}(window, function factory(window, matchesSelector) {
 
 
     var utils = {};
@@ -565,54 +566,54 @@
 // ----- extend ----- //
 
 // extends objects
-    utils.extend = function( a, b ) {
-        for ( var prop in b ) {
-            a[ prop ] = b[ prop ];
+    utils.extend = function (a, b) {
+        for (var prop in b) {
+            a[prop] = b[prop];
         }
         return a;
     };
 
 // ----- modulo ----- //
 
-    utils.modulo = function( num, div ) {
-        return ( ( num % div ) + div ) % div;
+    utils.modulo = function (num, div) {
+        return ((num % div) + div) % div;
     };
 
 // ----- makeArray ----- //
 
 // turn element or nodeList into an array
-    utils.makeArray = function( obj ) {
+    utils.makeArray = function (obj) {
         var ary = [];
-        if ( Array.isArray( obj ) ) {
+        if (Array.isArray(obj)) {
             // use object if already an array
             ary = obj;
-        } else if ( obj && typeof obj.length == 'number' ) {
+        } else if (obj && typeof obj.length == 'number') {
             // convert nodeList to array
-            for ( var i=0; i < obj.length; i++ ) {
-                ary.push( obj[i] );
+            for (var i = 0; i < obj.length; i++) {
+                ary.push(obj[i]);
             }
         } else {
             // array of single index
-            ary.push( obj );
+            ary.push(obj);
         }
         return ary;
     };
 
 // ----- removeFrom ----- //
 
-    utils.removeFrom = function( ary, obj ) {
-        var index = ary.indexOf( obj );
-        if ( index != -1 ) {
-            ary.splice( index, 1 );
+    utils.removeFrom = function (ary, obj) {
+        var index = ary.indexOf(obj);
+        if (index != -1) {
+            ary.splice(index, 1);
         }
     };
 
 // ----- getParent ----- //
 
-    utils.getParent = function( elem, selector ) {
-        while ( elem != document.body ) {
+    utils.getParent = function (elem, selector) {
+        while (elem != document.body) {
             elem = elem.parentNode;
-            if ( matchesSelector( elem, selector ) ) {
+            if (matchesSelector(elem, selector)) {
                 return elem;
             }
         }
@@ -621,9 +622,9 @@
 // ----- getQueryElement ----- //
 
 // use element as selector string
-    utils.getQueryElement = function( elem ) {
-        if ( typeof elem == 'string' ) {
-            return document.querySelector( elem );
+    utils.getQueryElement = function (elem) {
+        if (typeof elem == 'string') {
+            return document.querySelector(elem);
         }
         return elem;
     };
@@ -631,40 +632,40 @@
 // ----- handleEvent ----- //
 
 // enable .ontype to trigger from .addEventListener( elem, 'type' )
-    utils.handleEvent = function( event ) {
+    utils.handleEvent = function (event) {
         var method = 'on' + event.type;
-        if ( this[ method ] ) {
-            this[ method ]( event );
+        if (this[method]) {
+            this[method](event);
         }
     };
 
 // ----- filterFindElements ----- //
 
-    utils.filterFindElements = function( elems, selector ) {
+    utils.filterFindElements = function (elems, selector) {
         // make array of elems
-        elems = utils.makeArray( elems );
+        elems = utils.makeArray(elems);
         var ffElems = [];
 
-        elems.forEach( function( elem ) {
+        elems.forEach(function (elem) {
             // check that elem is an actual element
-            if ( !( elem instanceof HTMLElement ) ) {
+            if (!(elem instanceof HTMLElement)) {
                 return;
             }
             // add elem if no selector
-            if ( !selector ) {
-                ffElems.push( elem );
+            if (!selector) {
+                ffElems.push(elem);
                 return;
             }
             // filter & find items if we have a selector
             // filter
-            if ( matchesSelector( elem, selector ) ) {
-                ffElems.push( elem );
+            if (matchesSelector(elem, selector)) {
+                ffElems.push(elem);
             }
             // find children
-            var childElems = elem.querySelectorAll( selector );
+            var childElems = elem.querySelectorAll(selector);
             // concat childElems to filterFound array
-            for ( var i=0; i < childElems.length; i++ ) {
-                ffElems.push( childElems[i] );
+            for (var i = 0; i < childElems.length; i++) {
+                ffElems.push(childElems[i]);
             }
         });
 
@@ -673,42 +674,42 @@
 
 // ----- debounceMethod ----- //
 
-    utils.debounceMethod = function( _class, methodName, threshold ) {
+    utils.debounceMethod = function (_class, methodName, threshold) {
         // original method
-        var method = _class.prototype[ methodName ];
+        var method = _class.prototype[methodName];
         var timeoutName = methodName + 'Timeout';
 
-        _class.prototype[ methodName ] = function() {
-            var timeout = this[ timeoutName ];
-            if ( timeout ) {
-                clearTimeout( timeout );
+        _class.prototype[methodName] = function () {
+            var timeout = this[timeoutName];
+            if (timeout) {
+                clearTimeout(timeout);
             }
             var args = arguments;
 
             var _this = this;
-            this[ timeoutName ] = setTimeout( function() {
-                method.apply( _this, args );
-                delete _this[ timeoutName ];
-            }, threshold || 100 );
+            this[timeoutName] = setTimeout(function () {
+                method.apply(_this, args);
+                delete _this[timeoutName];
+            }, threshold || 100);
         };
     };
 
 // ----- docReady ----- //
 
-    utils.docReady = function( callback ) {
+    utils.docReady = function (callback) {
         var readyState = document.readyState;
-        if ( readyState == 'complete' || readyState == 'interactive' ) {
+        if (readyState == 'complete' || readyState == 'interactive') {
             callback();
         } else {
-            document.addEventListener( 'DOMContentLoaded', callback );
+            document.addEventListener('DOMContentLoaded', callback);
         }
     };
 
 // ----- htmlInit ----- //
 
 // http://jamesroberts.name/blog/2010/02/22/string-functions-for-javascript-trim-to-camel-case-to-dashed-and-to-underscore/
-    utils.toDashed = function( str ) {
-        return str.replace( /(.)([A-Z])/g, function( match, $1, $2 ) {
+    utils.toDashed = function (str) {
+        return str.replace(/(.)([A-Z])/g, function (match, $1, $2) {
             return $1 + '-' + $2;
         }).toLowerCase();
     };
@@ -719,36 +720,36 @@
      * htmlInit( Widget, 'widgetName' )
      * options are parsed from data-namespace-options
      */
-    utils.htmlInit = function( WidgetClass, namespace ) {
-        utils.docReady( function() {
-            var dashedNamespace = utils.toDashed( namespace );
+    utils.htmlInit = function (WidgetClass, namespace) {
+        utils.docReady(function () {
+            var dashedNamespace = utils.toDashed(namespace);
             var dataAttr = 'data-' + dashedNamespace;
-            var dataAttrElems = document.querySelectorAll( '[' + dataAttr + ']' );
-            var jsDashElems = document.querySelectorAll( '.js-' + dashedNamespace );
-            var elems = utils.makeArray( dataAttrElems )
-                .concat( utils.makeArray( jsDashElems ) );
+            var dataAttrElems = document.querySelectorAll('[' + dataAttr + ']');
+            var jsDashElems = document.querySelectorAll('.js-' + dashedNamespace);
+            var elems = utils.makeArray(dataAttrElems)
+                .concat(utils.makeArray(jsDashElems));
             var dataOptionsAttr = dataAttr + '-options';
             var jQuery = window.jQuery;
 
-            elems.forEach( function( elem ) {
-                var attr = elem.getAttribute( dataAttr ) ||
-                    elem.getAttribute( dataOptionsAttr );
+            elems.forEach(function (elem) {
+                var attr = elem.getAttribute(dataAttr) ||
+                    elem.getAttribute(dataOptionsAttr);
                 var options;
                 try {
-                    options = attr && JSON.parse( attr );
-                } catch ( error ) {
+                    options = attr && JSON.parse(attr);
+                } catch (error) {
                     // log error, do not initialize
-                    if ( console ) {
-                        console.error( 'Error parsing ' + dataAttr + ' on ' + elem.className +
-                            ': ' + error );
+                    if (console) {
+                        console.error('Error parsing ' + dataAttr + ' on ' + elem.className +
+                            ': ' + error);
                     }
                     return;
                 }
                 // initialize
-                var instance = new WidgetClass( elem, options );
+                var instance = new WidgetClass(elem, options);
                 // make available via $().data('layoutname')
-                if ( jQuery ) {
-                    jQuery.data( elem, namespace, instance );
+                if (jQuery) {
+                    jQuery.data(elem, namespace, instance);
                 }
             });
 
@@ -765,18 +766,18 @@
  * Outlayer Item
  */
 
-( function( window, factory ) {
+(function (window, factory) {
     // universal module definition
     /* jshint strict: false */ /* globals define, module, require */
-    if ( typeof define == 'function' && define.amd ) {
+    if (typeof define == 'function' && define.amd) {
         // AMD - RequireJS
-        define( 'outlayer/item',[
+        define('outlayer/item', [
                 'ev-emitter/ev-emitter',
                 'get-size/get-size'
             ],
             factory
         );
-    } else if ( typeof module == 'object' && module.exports ) {
+    } else if (typeof module == 'object' && module.exports) {
         // CommonJS - Browserify, Webpack
         module.exports = factory(
             require('ev-emitter'),
@@ -791,13 +792,13 @@
         );
     }
 
-}( window, function factory( EvEmitter, getSize ) {
+}(window, function factory(EvEmitter, getSize) {
     'use strict';
 
 // ----- helpers ----- //
 
-    function isEmptyObj( obj ) {
-        for ( var prop in obj ) {
+    function isEmptyObj(obj) {
+        for (var prop in obj) {
             return false;
         }
         prop = null;
@@ -817,7 +818,7 @@
     var transitionEndEvent = {
         WebkitTransition: 'webkitTransitionEnd',
         transition: 'transitionend'
-    }[ transitionProperty ];
+    }[transitionProperty];
 
 // cache all vendor properties that could have vendor prefix
     var vendorProperties = {
@@ -830,8 +831,8 @@
 
 // -------------------------- Item -------------------------- //
 
-    function Item( element, layout ) {
-        if ( !element ) {
+    function Item(element, layout) {
+        if (!element) {
             return;
         }
 
@@ -847,10 +848,10 @@
     }
 
 // inherit EvEmitter
-    var proto = Item.prototype = Object.create( EvEmitter.prototype );
+    var proto = Item.prototype = Object.create(EvEmitter.prototype);
     proto.constructor = Item;
 
-    proto._create = function() {
+    proto._create = function () {
         // transition objects
         this._transn = {
             ingProperties: {},
@@ -864,48 +865,48 @@
     };
 
 // trigger specified handler for event type
-    proto.handleEvent = function( event ) {
+    proto.handleEvent = function (event) {
         var method = 'on' + event.type;
-        if ( this[ method ] ) {
-            this[ method ]( event );
+        if (this[method]) {
+            this[method](event);
         }
     };
 
-    proto.getSize = function() {
-        this.size = getSize( this.element );
+    proto.getSize = function () {
+        this.size = getSize(this.element);
     };
 
     /**
      * apply CSS styles to element
      * @param {Object} style
      */
-    proto.css = function( style ) {
+    proto.css = function (style) {
         var elemStyle = this.element.style;
 
-        for ( var prop in style ) {
+        for (var prop in style) {
             // use vendor property if available
-            var supportedProp = vendorProperties[ prop ] || prop;
-            elemStyle[ supportedProp ] = style[ prop ];
+            var supportedProp = vendorProperties[prop] || prop;
+            elemStyle[supportedProp] = style[prop];
         }
     };
 
     // measure position, and sets it
-    proto.getPosition = function() {
-        var style = getComputedStyle( this.element );
+    proto.getPosition = function () {
+        var style = getComputedStyle(this.element);
         var isOriginLeft = this.layout._getOption('originLeft');
         var isOriginTop = this.layout._getOption('originTop');
-        var xValue = style[ isOriginLeft ? 'left' : 'right' ];
-        var yValue = style[ isOriginTop ? 'top' : 'bottom' ];
+        var xValue = style[isOriginLeft ? 'left' : 'right'];
+        var yValue = style[isOriginTop ? 'top' : 'bottom'];
         // convert percent to pixels
         var layoutSize = this.layout.size;
         var x = xValue.indexOf('%') != -1 ?
-        ( parseFloat( xValue ) / 100 ) * layoutSize.width : parseInt( xValue, 10 );
+            (parseFloat(xValue) / 100) * layoutSize.width : parseInt(xValue, 10);
         var y = yValue.indexOf('%') != -1 ?
-        ( parseFloat( yValue ) / 100 ) * layoutSize.height : parseInt( yValue, 10 );
+            (parseFloat(yValue) / 100) * layoutSize.height : parseInt(yValue, 10);
 
         // clean up 'auto' or other non-integer values
-        x = isNaN( x ) ? 0 : x;
-        y = isNaN( y ) ? 0 : y;
+        x = isNaN(x) ? 0 : x;
+        y = isNaN(y) ? 0 : y;
         // remove padding from measurement
         x -= isOriginLeft ? layoutSize.paddingLeft : layoutSize.paddingRight;
         y -= isOriginTop ? layoutSize.paddingTop : layoutSize.paddingBottom;
@@ -915,7 +916,7 @@
     };
 
 // set settled position, apply padding
-    proto.layoutPosition = function() {
+    proto.layoutPosition = function () {
         var layoutSize = this.layout.size;
         var style = {};
         var isOriginLeft = this.layout._getOption('originLeft');
@@ -926,54 +927,54 @@
         var xProperty = isOriginLeft ? 'left' : 'right';
         var xResetProperty = isOriginLeft ? 'right' : 'left';
 
-        var x = this.position.x + layoutSize[ xPadding ];
+        var x = this.position.x + layoutSize[xPadding];
         // set in percentage or pixels
-        style[ xProperty ] = this.getXValue( x );
+        style[xProperty] = this.getXValue(x);
         // reset other property
-        style[ xResetProperty ] = '';
+        style[xResetProperty] = '';
 
         // y
         var yPadding = isOriginTop ? 'paddingTop' : 'paddingBottom';
         var yProperty = isOriginTop ? 'top' : 'bottom';
         var yResetProperty = isOriginTop ? 'bottom' : 'top';
 
-        var y = this.position.y + layoutSize[ yPadding ];
+        var y = this.position.y + layoutSize[yPadding];
         // set in percentage or pixels
-        style[ yProperty ] = this.getYValue( y );
+        style[yProperty] = this.getYValue(y);
         // reset other property
-        style[ yResetProperty ] = '';
+        style[yResetProperty] = '';
 
-        this.css( style );
-        this.emitEvent( 'layout', [ this ] );
+        this.css(style);
+        this.emitEvent('layout', [this]);
     };
 
-    proto.getXValue = function( x ) {
+    proto.getXValue = function (x) {
         var isHorizontal = this.layout._getOption('horizontal');
         return this.layout.options.percentPosition && !isHorizontal ?
-        ( ( x / this.layout.size.width ) * 100 ) + '%' : x + 'px';
+            ((x / this.layout.size.width) * 100) + '%' : x + 'px';
     };
 
-    proto.getYValue = function( y ) {
+    proto.getYValue = function (y) {
         var isHorizontal = this.layout._getOption('horizontal');
         return this.layout.options.percentPosition && isHorizontal ?
-        ( ( y / this.layout.size.height ) * 100 ) + '%' : y + 'px';
+            ((y / this.layout.size.height) * 100) + '%' : y + 'px';
     };
 
-    proto._transitionTo = function( x, y ) {
+    proto._transitionTo = function (x, y) {
         this.getPosition();
         // get current x & y from top/left
         var curX = this.position.x;
         var curY = this.position.y;
 
-        var compareX = parseInt( x, 10 );
-        var compareY = parseInt( y, 10 );
+        var compareX = parseInt(x, 10);
+        var compareY = parseInt(y, 10);
         var didNotMove = compareX === this.position.x && compareY === this.position.y;
 
         // save end position
-        this.setPosition( x, y );
+        this.setPosition(x, y);
 
         // if did not move and not transitioning, just go to layout
-        if ( didNotMove && !this.isTransitioning ) {
+        if (didNotMove && !this.isTransitioning) {
             this.layoutPosition();
             return;
         }
@@ -981,7 +982,7 @@
         var transX = x - curX;
         var transY = y - curY;
         var transitionStyle = {};
-        transitionStyle.transform = this.getTranslate( transX, transY );
+        transitionStyle.transform = this.getTranslate(transX, transY);
 
         this.transition({
             to: transitionStyle,
@@ -992,7 +993,7 @@
         });
     };
 
-    proto.getTranslate = function( x, y ) {
+    proto.getTranslate = function (x, y) {
         // flip cooridinates if origin on right or bottom
         var isOriginLeft = this.layout._getOption('originLeft');
         var isOriginTop = this.layout._getOption('originTop');
@@ -1002,16 +1003,16 @@
     };
 
 // non transition + transform support
-    proto.goTo = function( x, y ) {
-        this.setPosition( x, y );
+    proto.goTo = function (x, y) {
+        this.setPosition(x, y);
         this.layoutPosition();
     };
 
     proto.moveTo = proto._transitionTo;
 
-    proto.setPosition = function( x, y ) {
-        this.position.x = parseInt( x, 10 );
-        this.position.y = parseInt( y, 10 );
+    proto.setPosition = function (x, y) {
+        this.position.x = parseInt(x, 10);
+        this.position.y = parseInt(y, 10);
     };
 
 // ----- transition ----- //
@@ -1022,13 +1023,13 @@
      */
 
 // non transition, just trigger callback
-    proto._nonTransition = function( args ) {
-        this.css( args.to );
-        if ( args.isCleaning ) {
-            this._removeStyles( args.to );
+    proto._nonTransition = function (args) {
+        this.css(args.to);
+        if (args.isCleaning) {
+            this._removeStyles(args.to);
         }
-        for ( var prop in args.onTransitionEnd ) {
-            args.onTransitionEnd[ prop ].call( this );
+        for (var prop in args.onTransitionEnd) {
+            args.onTransitionEnd[prop].call(this);
         }
     };
 
@@ -1040,39 +1041,39 @@
      *   @param {Boolean} isCleaning - removes transition styles after transition
      *   @param {Function} onTransitionEnd - callback
      */
-    proto.transition = function( args ) {
+    proto.transition = function (args) {
         // redirect to nonTransition if no transition duration
-        if ( !parseFloat( this.layout.options.transitionDuration ) ) {
-            this._nonTransition( args );
+        if (!parseFloat(this.layout.options.transitionDuration)) {
+            this._nonTransition(args);
             return;
         }
 
         var _transition = this._transn;
         // keep track of onTransitionEnd callback by css property
-        for ( var prop in args.onTransitionEnd ) {
-            _transition.onEnd[ prop ] = args.onTransitionEnd[ prop ];
+        for (var prop in args.onTransitionEnd) {
+            _transition.onEnd[prop] = args.onTransitionEnd[prop];
         }
         // keep track of properties that are transitioning
-        for ( prop in args.to ) {
-            _transition.ingProperties[ prop ] = true;
+        for (prop in args.to) {
+            _transition.ingProperties[prop] = true;
             // keep track of properties to clean up when transition is done
-            if ( args.isCleaning ) {
-                _transition.clean[ prop ] = true;
+            if (args.isCleaning) {
+                _transition.clean[prop] = true;
             }
         }
 
         // set from styles
-        if ( args.from ) {
-            this.css( args.from );
+        if (args.from) {
+            this.css(args.from);
             // force redraw. http://blog.alexmaccaw.com/css-transitions
             var h = this.element.offsetHeight;
             // hack for JSHint to hush about unused var
             h = null;
         }
         // enable transition
-        this.enableTransition( args.to );
+        this.enableTransition(args.to);
         // set styles that are transitioning
-        this.css( args.to );
+        this.css(args.to);
 
         this.isTransitioning = true;
 
@@ -1080,18 +1081,18 @@
 
 // dash before all cap letters, including first for
 // WebkitTransform => -webkit-transform
-    function toDashedAll( str ) {
-        return str.replace( /([A-Z])/g, function( $1 ) {
+    function toDashedAll(str) {
+        return str.replace(/([A-Z])/g, function ($1) {
             return '-' + $1.toLowerCase();
         });
     }
 
-    var transitionProps = 'opacity,' + toDashedAll( transformProperty );
+    var transitionProps = 'opacity,' + toDashedAll(transformProperty);
 
-    proto.enableTransition = function(/* style */) {
+    proto.enableTransition = function (/* style */) {
         // HACK changing transitionProperty during a transition
         // will cause transition to jump
-        if ( this.isTransitioning ) {
+        if (this.isTransitioning) {
             return;
         }
 
@@ -1114,17 +1115,17 @@
             transitionDelay: this.staggerDelay || 0
         });
         // listen for transition end event
-        this.element.addEventListener( transitionEndEvent, this, false );
+        this.element.addEventListener(transitionEndEvent, this, false);
     };
 
 // ----- events ----- //
 
-    proto.onwebkitTransitionEnd = function( event ) {
-        this.ontransitionend( event );
+    proto.onwebkitTransitionEnd = function (event) {
+        this.ontransitionend(event);
     };
 
-    proto.onotransitionend = function( event ) {
-        this.ontransitionend( event );
+    proto.onotransitionend = function (event) {
+        this.ontransitionend(event);
     };
 
 // properties that I munge to make my life easier
@@ -1132,41 +1133,41 @@
         '-webkit-transform': 'transform'
     };
 
-    proto.ontransitionend = function( event ) {
+    proto.ontransitionend = function (event) {
         // disregard bubbled events from children
-        if ( event.target !== this.element ) {
+        if (event.target !== this.element) {
             return;
         }
         var _transition = this._transn;
         // get property name of transitioned property, convert to prefix-free
-        var propertyName = dashedVendorProperties[ event.propertyName ] || event.propertyName;
+        var propertyName = dashedVendorProperties[event.propertyName] || event.propertyName;
 
         // remove property that has completed transitioning
-        delete _transition.ingProperties[ propertyName ];
+        delete _transition.ingProperties[propertyName];
         // check if any properties are still transitioning
-        if ( isEmptyObj( _transition.ingProperties ) ) {
+        if (isEmptyObj(_transition.ingProperties)) {
             // all properties have completed transitioning
             this.disableTransition();
         }
         // clean style
-        if ( propertyName in _transition.clean ) {
+        if (propertyName in _transition.clean) {
             // clean up style
-            this.element.style[ event.propertyName ] = '';
-            delete _transition.clean[ propertyName ];
+            this.element.style[event.propertyName] = '';
+            delete _transition.clean[propertyName];
         }
         // trigger onTransitionEnd callback
-        if ( propertyName in _transition.onEnd ) {
-            var onTransitionEnd = _transition.onEnd[ propertyName ];
-            onTransitionEnd.call( this );
-            delete _transition.onEnd[ propertyName ];
+        if (propertyName in _transition.onEnd) {
+            var onTransitionEnd = _transition.onEnd[propertyName];
+            onTransitionEnd.call(this);
+            delete _transition.onEnd[propertyName];
         }
 
-        this.emitEvent( 'transitionEnd', [ this ] );
+        this.emitEvent('transitionEnd', [this]);
     };
 
-    proto.disableTransition = function() {
+    proto.disableTransition = function () {
         this.removeTransitionStyles();
-        this.element.removeEventListener( transitionEndEvent, this, false );
+        this.element.removeEventListener(transitionEndEvent, this, false);
         this.isTransitioning = false;
     };
 
@@ -1174,13 +1175,13 @@
      * removes style property from element
      * @param {Object} style
      **/
-    proto._removeStyles = function( style ) {
+    proto._removeStyles = function (style) {
         // clean up transition styles
         var cleanStyle = {};
-        for ( var prop in style ) {
-            cleanStyle[ prop ] = '';
+        for (var prop in style) {
+            cleanStyle[prop] = '';
         }
-        this.css( cleanStyle );
+        this.css(cleanStyle);
     };
 
     var cleanTransitionStyle = {
@@ -1189,52 +1190,52 @@
         transitionDelay: ''
     };
 
-    proto.removeTransitionStyles = function() {
+    proto.removeTransitionStyles = function () {
         // remove transition
-        this.css( cleanTransitionStyle );
+        this.css(cleanTransitionStyle);
     };
 
 // ----- stagger ----- //
 
-    proto.stagger = function( delay ) {
-        delay = isNaN( delay ) ? 0 : delay;
+    proto.stagger = function (delay) {
+        delay = isNaN(delay) ? 0 : delay;
         this.staggerDelay = delay + 'ms';
     };
 
 // ----- show/hide/remove ----- //
 
 // remove element from DOM
-    proto.removeElem = function() {
-        this.element.parentNode.removeChild( this.element );
+    proto.removeElem = function () {
+        this.element.parentNode.removeChild(this.element);
         // remove display: none
-        this.css({ display: '' });
-        this.emitEvent( 'remove', [ this ] );
+        this.css({display: ''});
+        this.emitEvent('remove', [this]);
     };
 
-    proto.remove = function() {
+    proto.remove = function () {
         // just remove element if no transition support or no transition
-        if ( !transitionProperty || !parseFloat( this.layout.options.transitionDuration ) ) {
+        if (!transitionProperty || !parseFloat(this.layout.options.transitionDuration)) {
             this.removeElem();
             return;
         }
 
         // start transition
-        this.once( 'transitionEnd', function() {
+        this.once('transitionEnd', function () {
             this.removeElem();
         });
         this.hide();
     };
 
-    proto.reveal = function() {
+    proto.reveal = function () {
         delete this.isHidden;
         // remove display: none
-        this.css({ display: '' });
+        this.css({display: ''});
 
         var options = this.layout.options;
 
         var onTransitionEnd = {};
         var transitionEndProperty = this.getHideRevealTransitionEndProperty('visibleStyle');
-        onTransitionEnd[ transitionEndProperty ] = this.onRevealTransitionEnd;
+        onTransitionEnd[transitionEndProperty] = this.onRevealTransitionEnd;
 
         this.transition({
             from: options.hiddenStyle,
@@ -1244,10 +1245,10 @@
         });
     };
 
-    proto.onRevealTransitionEnd = function() {
+    proto.onRevealTransitionEnd = function () {
         // check if still visible
         // during transition, item may have been hidden
-        if ( !this.isHidden ) {
+        if (!this.isHidden) {
             this.emitEvent('reveal');
         }
     };
@@ -1257,29 +1258,29 @@
      * @param {String} styleProperty - hiddenStyle/visibleStyle
      * @returns {String}
      */
-    proto.getHideRevealTransitionEndProperty = function( styleProperty ) {
-        var optionStyle = this.layout.options[ styleProperty ];
+    proto.getHideRevealTransitionEndProperty = function (styleProperty) {
+        var optionStyle = this.layout.options[styleProperty];
         // use opacity
-        if ( optionStyle.opacity ) {
+        if (optionStyle.opacity) {
             return 'opacity';
         }
         // get first property
-        for ( var prop in optionStyle ) {
+        for (var prop in optionStyle) {
             return prop;
         }
     };
 
-    proto.hide = function() {
+    proto.hide = function () {
         // set flag
         this.isHidden = true;
         // remove display: none
-        this.css({ display: '' });
+        this.css({display: ''});
 
         var options = this.layout.options;
 
         var onTransitionEnd = {};
         var transitionEndProperty = this.getHideRevealTransitionEndProperty('hiddenStyle');
-        onTransitionEnd[ transitionEndProperty ] = this.onHideTransitionEnd;
+        onTransitionEnd[transitionEndProperty] = this.onHideTransitionEnd;
 
         this.transition({
             from: options.visibleStyle,
@@ -1290,16 +1291,16 @@
         });
     };
 
-    proto.onHideTransitionEnd = function() {
+    proto.onHideTransitionEnd = function () {
         // check if still hidden
         // during transition, item may have been un-hidden
-        if ( this.isHidden ) {
-            this.css({ display: 'none' });
+        if (this.isHidden) {
+            this.css({display: 'none'});
             this.emitEvent('hide');
         }
     };
 
-    proto.destroy = function() {
+    proto.destroy = function () {
         this.css({
             position: '',
             left: '',
@@ -1321,23 +1322,23 @@
  * MIT license
  */
 
-( function( window, factory ) {
+(function (window, factory) {
     'use strict';
     // universal module definition
     /* jshint strict: false */ /* globals define, module, require */
-    if ( typeof define == 'function' && define.amd ) {
+    if (typeof define == 'function' && define.amd) {
         // AMD - RequireJS
-        define( 'outlayer/outlayer',[
+        define('outlayer/outlayer', [
                 'ev-emitter/ev-emitter',
                 'get-size/get-size',
                 'fizzy-ui-utils/utils',
                 './item'
             ],
-            function( EvEmitter, getSize, utils, Item ) {
-                return factory( window, EvEmitter, getSize, utils, Item);
+            function (EvEmitter, getSize, utils, Item) {
+                return factory(window, EvEmitter, getSize, utils, Item);
             }
         );
-    } else if ( typeof module == 'object' && module.exports ) {
+    } else if (typeof module == 'object' && module.exports) {
         // CommonJS - Browserify, Webpack
         module.exports = factory(
             window,
@@ -1357,14 +1358,15 @@
         );
     }
 
-}( window, function factory( window, EvEmitter, getSize, utils, Item ) {
+}(window, function factory(window, EvEmitter, getSize, utils, Item) {
     'use strict';
 
 // ----- vars ----- //
 
     var console = window.console;
     var jQuery = window.jQuery;
-    var noop = function() {};
+    var noop = function () {
+    };
 
 // -------------------------- Outlayer -------------------------- //
 
@@ -1379,35 +1381,35 @@
      * @param {Object} options
      * @constructor
      */
-    function Outlayer( element, options ) {
-        var queryElement = utils.getQueryElement( element );
-        if ( !queryElement ) {
-            if ( console ) {
-                console.error( 'Bad element for ' + this.constructor.namespace +
-                    ': ' + ( queryElement || element ) );
+    function Outlayer(element, options) {
+        var queryElement = utils.getQueryElement(element);
+        if (!queryElement) {
+            if (console) {
+                console.error('Bad element for ' + this.constructor.namespace +
+                    ': ' + (queryElement || element));
             }
             return;
         }
         this.element = queryElement;
         // add jQuery
-        if ( jQuery ) {
-            this.$element = jQuery( this.element );
+        if (jQuery) {
+            this.$element = jQuery(this.element);
         }
 
         // options
-        this.options = utils.extend( {}, this.constructor.defaults );
-        this.option( options );
+        this.options = utils.extend({}, this.constructor.defaults);
+        this.option(options);
 
         // add id for Outlayer.getFromElement
         var id = ++GUID;
         this.element.outlayerGUID = id; // expando
-        instances[ id ] = this; // associate via id
+        instances[id] = this; // associate via id
 
         // kick it off
         this._create();
 
         var isInitLayout = this._getOption('initLayout');
-        if ( isInitLayout ) {
+        if (isInitLayout) {
             this.layout();
         }
     }
@@ -1440,23 +1442,23 @@
 
     var proto = Outlayer.prototype;
 // inherit EvEmitter
-    utils.extend( proto, EvEmitter.prototype );
+    utils.extend(proto, EvEmitter.prototype);
 
     /**
      * set options
      * @param {Object} opts
      */
-    proto.option = function( opts ) {
-        utils.extend( this.options, opts );
+    proto.option = function (opts) {
+        utils.extend(this.options, opts);
     };
 
     /**
      * get backwards compatible option value, check old name
      */
-    proto._getOption = function( option ) {
-        var oldOption = this.constructor.compatOptions[ option ];
-        return oldOption && this.options[ oldOption ] !== undefined ?
-            this.options[ oldOption ] : this.options[ option ];
+    proto._getOption = function (option) {
+        var oldOption = this.constructor.compatOptions[option];
+        return oldOption && this.options[oldOption] !== undefined ?
+            this.options[oldOption] : this.options[option];
     };
 
     Outlayer.compatOptions = {
@@ -1470,26 +1472,26 @@
         resizeContainer: 'isResizingContainer'
     };
 
-    proto._create = function() {
+    proto._create = function () {
         // get items from children
         this.reloadItems();
         // elements that affect layout, but are not laid out
         this.stamps = [];
-        this.stamp( this.options.stamp );
+        this.stamp(this.options.stamp);
         // set container style
-        utils.extend( this.element.style, this.options.containerStyle );
+        utils.extend(this.element.style, this.options.containerStyle);
 
         // bind resize method
         var canBindResize = this._getOption('resize');
-        if ( canBindResize ) {
+        if (canBindResize) {
             this.bindResize();
         }
     };
 
 // goes through all children again and gets bricks in proper order
-    proto.reloadItems = function() {
+    proto.reloadItems = function () {
         // collection of item elements
-        this.items = this._itemize( this.element.children );
+        this.items = this._itemize(this.element.children);
     };
 
 
@@ -1498,17 +1500,17 @@
      * @param {Array or NodeList or HTMLElement} elems
      * @returns {Array} items - collection of new Outlayer Items
      */
-    proto._itemize = function( elems ) {
+    proto._itemize = function (elems) {
 
-        var itemElems = this._filterFindItemElements( elems );
+        var itemElems = this._filterFindItemElements(elems);
         var Item = this.constructor.Item;
 
         // create new Outlayer Items for collection
         var items = [];
-        for ( var i=0; i < itemElems.length; i++ ) {
+        for (var i = 0; i < itemElems.length; i++) {
             var elem = itemElems[i];
-            var item = new Item( elem, this );
-            items.push( item );
+            var item = new Item(elem, this);
+            items.push(item);
         }
 
         return items;
@@ -1519,16 +1521,16 @@
      * @param {Array or NodeList or HTMLElement} elems
      * @returns {Array} items - item elements
      */
-    proto._filterFindItemElements = function( elems ) {
-        return utils.filterFindElements( elems, this.options.itemSelector );
+    proto._filterFindItemElements = function (elems) {
+        return utils.filterFindElements(elems, this.options.itemSelector);
     };
 
     /**
      * getter method for getting item elements
      * @returns {Array} elems - collection of item elements
      */
-    proto.getItemElements = function() {
-        return this.items.map( function( item ) {
+    proto.getItemElements = function () {
+        return this.items.map(function (item) {
             return item.element;
         });
     };
@@ -1538,7 +1540,7 @@
     /**
      * lays out all items
      */
-    proto.layout = function() {
+    proto.layout = function () {
         this._resetLayout();
         this._manageStamps();
 
@@ -1546,7 +1548,7 @@
         var layoutInstant = this._getOption('layoutInstant');
         var isInstant = layoutInstant !== undefined ?
             layoutInstant : !this._isLayoutInited;
-        this.layoutItems( this.items, isInstant );
+        this.layoutItems(this.items, isInstant);
 
         // flag for initalized
         this._isLayoutInited = true;
@@ -1558,13 +1560,13 @@
     /**
      * logic before any new layout
      */
-    proto._resetLayout = function() {
+    proto._resetLayout = function () {
         this.getSize();
     };
 
 
-    proto.getSize = function() {
-        this.size = getSize( this.element );
+    proto.getSize = function () {
+        this.size = getSize(this.element);
     };
 
     /**
@@ -1577,21 +1579,21 @@
      * @param {String} size - width or height
      * @private
      */
-    proto._getMeasurement = function( measurement, size ) {
-        var option = this.options[ measurement ];
+    proto._getMeasurement = function (measurement, size) {
+        var option = this.options[measurement];
         var elem;
-        if ( !option ) {
+        if (!option) {
             // default to 0
-            this[ measurement ] = 0;
+            this[measurement] = 0;
         } else {
             // use option as an element
-            if ( typeof option == 'string' ) {
-                elem = this.element.querySelector( option );
-            } else if ( option instanceof HTMLElement ) {
+            if (typeof option == 'string') {
+                elem = this.element.querySelector(option);
+            } else if (option instanceof HTMLElement) {
                 elem = option;
             }
             // use size of element, if element
-            this[ measurement ] = elem ? getSize( elem )[ size ] : option;
+            this[measurement] = elem ? getSize(elem)[size] : option;
         }
     };
 
@@ -1599,10 +1601,10 @@
      * layout a collection of item elements
      * @api public
      */
-    proto.layoutItems = function( items, isInstant ) {
-        items = this._getItemsForLayout( items );
+    proto.layoutItems = function (items, isInstant) {
+        items = this._getItemsForLayout(items);
 
-        this._layoutItems( items, isInstant );
+        this._layoutItems(items, isInstant);
 
         this._postLayout();
     };
@@ -1613,8 +1615,8 @@
      * @param {Array} items
      * @returns {Array} items
      */
-    proto._getItemsForLayout = function( items ) {
-        return items.filter( function( item ) {
+    proto._getItemsForLayout = function (items) {
+        return items.filter(function (item) {
             return !item.isIgnored;
         });
     };
@@ -1624,26 +1626,26 @@
      * @param {Array} items
      * @param {Boolean} isInstant
      */
-    proto._layoutItems = function( items, isInstant ) {
-        this._emitCompleteOnItems( 'layout', items );
+    proto._layoutItems = function (items, isInstant) {
+        this._emitCompleteOnItems('layout', items);
 
-        if ( !items || !items.length ) {
+        if (!items || !items.length) {
             // no items, emit event with empty array
             return;
         }
 
         var queue = [];
 
-        items.forEach( function( item ) {
+        items.forEach(function (item) {
             // get x/y object from method
-            var position = this._getItemLayoutPosition( item );
+            var position = this._getItemLayoutPosition(item);
             // enqueue
             position.item = item;
             position.isInstant = isInstant || item.isLayoutInstant;
-            queue.push( position );
-        }, this );
+            queue.push(position);
+        }, this);
 
-        this._processLayoutQueue( queue );
+        this._processLayoutQueue(queue);
     };
 
     /**
@@ -1651,7 +1653,7 @@
      * @param {Outlayer.Item} item
      * @returns {Object} x and y position
      */
-    proto._getItemLayoutPosition = function( /* item */ ) {
+    proto._getItemLayoutPosition = function ( /* item */) {
         return {
             x: 0,
             y: 0
@@ -1664,21 +1666,21 @@
      * thx @paul_irish
      * @param {Array} queue
      */
-    proto._processLayoutQueue = function( queue ) {
+    proto._processLayoutQueue = function (queue) {
         this.updateStagger();
-        queue.forEach( function( obj, i ) {
-            this._positionItem( obj.item, obj.x, obj.y, obj.isInstant, i );
-        }, this );
+        queue.forEach(function (obj, i) {
+            this._positionItem(obj.item, obj.x, obj.y, obj.isInstant, i);
+        }, this);
     };
 
 // set stagger from option in milliseconds number
-    proto.updateStagger = function() {
+    proto.updateStagger = function () {
         var stagger = this.options.stagger;
-        if ( stagger === null || stagger === undefined ) {
+        if (stagger === null || stagger === undefined) {
             this.stagger = 0;
             return;
         }
-        this.stagger = getMilliseconds( stagger );
+        this.stagger = getMilliseconds(stagger);
         return this.stagger;
     };
 
@@ -1689,13 +1691,13 @@
      * @param {Number} y - vertical position
      * @param {Boolean} isInstant - disables transitions
      */
-    proto._positionItem = function( item, x, y, isInstant, i ) {
-        if ( isInstant ) {
+    proto._positionItem = function (item, x, y, isInstant, i) {
+        if (isInstant) {
             // if not transition, just set CSS
-            item.goTo( x, y );
+            item.goTo(x, y);
         } else {
-            item.stagger( i * this.stagger );
-            item.moveTo( x, y );
+            item.stagger(i * this.stagger);
+            item.moveTo(x, y);
         }
     };
 
@@ -1703,19 +1705,19 @@
      * Any logic you want to do after each layout,
      * i.e. size the container
      */
-    proto._postLayout = function() {
+    proto._postLayout = function () {
         this.resizeContainer();
     };
 
-    proto.resizeContainer = function() {
+    proto.resizeContainer = function () {
         var isResizingContainer = this._getOption('resizeContainer');
-        if ( !isResizingContainer ) {
+        if (!isResizingContainer) {
             return;
         }
         var size = this._getContainerSize();
-        if ( size ) {
-            this._setContainerMeasure( size.width, true );
-            this._setContainerMeasure( size.height, false );
+        if (size) {
+            this._setContainerMeasure(size.width, true);
+            this._setContainerMeasure(size.height, false);
         }
     };
 
@@ -1731,22 +1733,22 @@
      * @param {Number} measure - size of width or height
      * @param {Boolean} isWidth
      */
-    proto._setContainerMeasure = function( measure, isWidth ) {
-        if ( measure === undefined ) {
+    proto._setContainerMeasure = function (measure, isWidth) {
+        if (measure === undefined) {
             return;
         }
 
         var elemSize = this.size;
         // add padding and border width if border box
-        if ( elemSize.isBorderBox ) {
+        if (elemSize.isBorderBox) {
             measure += isWidth ? elemSize.paddingLeft + elemSize.paddingRight +
-            elemSize.borderLeftWidth + elemSize.borderRightWidth :
-            elemSize.paddingBottom + elemSize.paddingTop +
-            elemSize.borderTopWidth + elemSize.borderBottomWidth;
+                elemSize.borderLeftWidth + elemSize.borderRightWidth :
+                elemSize.paddingBottom + elemSize.paddingTop +
+                elemSize.borderTopWidth + elemSize.borderBottomWidth;
         }
 
-        measure = Math.max( measure, 0 );
-        this.element.style[ isWidth ? 'width' : 'height' ] = measure + 'px';
+        measure = Math.max(measure, 0);
+        this.element.style[isWidth ? 'width' : 'height'] = measure + 'px';
     };
 
     /**
@@ -1754,29 +1756,31 @@
      * @param {String} eventName
      * @param {Array} items - Outlayer.Items
      */
-    proto._emitCompleteOnItems = function( eventName, items ) {
+    proto._emitCompleteOnItems = function (eventName, items) {
         var _this = this;
+
         function onComplete() {
-            _this.dispatchEvent( eventName + 'Complete', null, [ items ] );
+            _this.dispatchEvent(eventName + 'Complete', null, [items]);
         }
 
         var count = items.length;
-        if ( !items || !count ) {
+        if (!items || !count) {
             onComplete();
             return;
         }
 
         var doneCount = 0;
+
         function tick() {
             doneCount++;
-            if ( doneCount == count ) {
+            if (doneCount == count) {
                 onComplete();
             }
         }
 
         // bind callback
-        items.forEach( function( item ) {
-            item.once( eventName, tick );
+        items.forEach(function (item) {
+            item.once(eventName, tick);
         });
     };
 
@@ -1786,22 +1790,22 @@
      * @param {Event} event - original event
      * @param {Array} args - extra arguments
      */
-    proto.dispatchEvent = function( type, event, args ) {
+    proto.dispatchEvent = function (type, event, args) {
         // add original event to arguments
-        var emitArgs = event ? [ event ].concat( args ) : args;
-        this.emitEvent( type, emitArgs );
+        var emitArgs = event ? [event].concat(args) : args;
+        this.emitEvent(type, emitArgs);
 
-        if ( jQuery ) {
+        if (jQuery) {
             // set this.$element
-            this.$element = this.$element || jQuery( this.element );
-            if ( event ) {
+            this.$element = this.$element || jQuery(this.element);
+            if (event) {
                 // create jQuery event
-                var $event = jQuery.Event( event );
+                var $event = jQuery.Event(event);
                 $event.type = type;
-                this.$element.trigger( $event, args );
+                this.$element.trigger($event, args);
             } else {
                 // just trigger with type if no event available
-                this.$element.trigger( type, args );
+                this.$element.trigger(type, args);
             }
         }
     };
@@ -1814,9 +1818,9 @@
      * ignored items do not get skipped in layout
      * @param {Element} elem
      */
-    proto.ignore = function( elem ) {
-        var item = this.getItem( elem );
-        if ( item ) {
+    proto.ignore = function (elem) {
+        var item = this.getItem(elem);
+        if (item) {
             item.isIgnored = true;
         }
     };
@@ -1825,9 +1829,9 @@
      * return item to layout collection
      * @param {Element} elem
      */
-    proto.unignore = function( elem ) {
-        var item = this.getItem( elem );
-        if ( item ) {
+    proto.unignore = function (elem) {
+        var item = this.getItem(elem);
+        if (item) {
             delete item.isIgnored;
         }
     };
@@ -1836,32 +1840,32 @@
      * adds elements to stamps
      * @param {NodeList, Array, Element, or String} elems
      */
-    proto.stamp = function( elems ) {
-        elems = this._find( elems );
-        if ( !elems ) {
+    proto.stamp = function (elems) {
+        elems = this._find(elems);
+        if (!elems) {
             return;
         }
 
-        this.stamps = this.stamps.concat( elems );
+        this.stamps = this.stamps.concat(elems);
         // ignore
-        elems.forEach( this.ignore, this );
+        elems.forEach(this.ignore, this);
     };
 
     /**
      * removes elements to stamps
      * @param {NodeList, Array, or Element} elems
      */
-    proto.unstamp = function( elems ) {
-        elems = this._find( elems );
-        if ( !elems ){
+    proto.unstamp = function (elems) {
+        elems = this._find(elems);
+        if (!elems) {
             return;
         }
 
-        elems.forEach( function( elem ) {
+        elems.forEach(function (elem) {
             // filter out removed stamp elements
-            utils.removeFrom( this.stamps, elem );
-            this.unignore( elem );
-        }, this );
+            utils.removeFrom(this.stamps, elem);
+            this.unignore(elem);
+        }, this);
     };
 
     /**
@@ -1869,38 +1873,38 @@
      * @param {NodeList, Array, Element, or String} elems
      * @returns {Array} elems
      */
-    proto._find = function( elems ) {
-        if ( !elems ) {
+    proto._find = function (elems) {
+        if (!elems) {
             return;
         }
         // if string, use argument as selector string
-        if ( typeof elems == 'string' ) {
-            elems = this.element.querySelectorAll( elems );
+        if (typeof elems == 'string') {
+            elems = this.element.querySelectorAll(elems);
         }
-        elems = utils.makeArray( elems );
+        elems = utils.makeArray(elems);
         return elems;
     };
 
-    proto._manageStamps = function() {
-        if ( !this.stamps || !this.stamps.length ) {
+    proto._manageStamps = function () {
+        if (!this.stamps || !this.stamps.length) {
             return;
         }
 
         this._getBoundingRect();
 
-        this.stamps.forEach( this._manageStamp, this );
+        this.stamps.forEach(this._manageStamp, this);
     };
 
 // update boundingLeft / Top
-    proto._getBoundingRect = function() {
+    proto._getBoundingRect = function () {
         // get bounding rect for container element
         var boundingRect = this.element.getBoundingClientRect();
         var size = this.size;
         this._boundingRect = {
             left: boundingRect.left + size.paddingLeft + size.borderLeftWidth,
             top: boundingRect.top + size.paddingTop + size.borderTopWidth,
-            right: boundingRect.right - ( size.paddingRight + size.borderRightWidth ),
-            bottom: boundingRect.bottom - ( size.paddingBottom + size.borderBottomWidth )
+            right: boundingRect.right - (size.paddingRight + size.borderRightWidth),
+            bottom: boundingRect.bottom - (size.paddingBottom + size.borderBottomWidth)
         };
     };
 
@@ -1914,10 +1918,10 @@
      * @param {Element} elem
      * @returns {Object} offset - has left, top, right, bottom
      */
-    proto._getElementOffset = function( elem ) {
+    proto._getElementOffset = function (elem) {
         var boundingRect = elem.getBoundingClientRect();
         var thisRect = this._boundingRect;
-        var size = getSize( elem );
+        var size = getSize(elem);
         var offset = {
             left: boundingRect.left - thisRect.left - size.marginLeft,
             top: boundingRect.top - thisRect.top - size.marginTop,
@@ -1936,29 +1940,29 @@
     /**
      * Bind layout to window resizing
      */
-    proto.bindResize = function() {
-        window.addEventListener( 'resize', this );
+    proto.bindResize = function () {
+        window.addEventListener('resize', this);
         this.isResizeBound = true;
     };
 
     /**
      * Unbind layout to window resizing
      */
-    proto.unbindResize = function() {
-        window.removeEventListener( 'resize', this );
+    proto.unbindResize = function () {
+        window.removeEventListener('resize', this);
         this.isResizeBound = false;
     };
 
-    proto.onresize = function() {
+    proto.onresize = function () {
         this.resize();
     };
 
-    utils.debounceMethod( Outlayer, 'onresize', 100 );
+    utils.debounceMethod(Outlayer, 'onresize', 100);
 
-    proto.resize = function() {
+    proto.resize = function () {
         // don't trigger if size did not change
         // or if resize was unbound. See #9
-        if ( !this.isResizeBound || !this.needsResizeLayout() ) {
+        if (!this.isResizeBound || !this.needsResizeLayout()) {
             return;
         }
 
@@ -1969,8 +1973,8 @@
      * check if layout is needed post layout
      * @returns Boolean
      */
-    proto.needsResizeLayout = function() {
-        var size = getSize( this.element );
+    proto.needsResizeLayout = function () {
+        var size = getSize(this.element);
         // check that this.size and size are there
         // IE8 triggers resize on body size change, so they might not be
         var hasSizes = this.size && size;
@@ -1984,11 +1988,11 @@
      * @param {Array or NodeList or Element} elems
      * @returns {Array} items - Outlayer.Items
      **/
-    proto.addItems = function( elems ) {
-        var items = this._itemize( elems );
+    proto.addItems = function (elems) {
+        var items = this._itemize(elems);
         // add items to collection
-        if ( items.length ) {
-            this.items = this.items.concat( items );
+        if (items.length) {
+            this.items = this.items.concat(items);
         }
         return items;
     };
@@ -1997,50 +2001,50 @@
      * Layout newly-appended item elements
      * @param {Array or NodeList or Element} elems
      */
-    proto.appended = function( elems ) {
-        var items = this.addItems( elems );
-        if ( !items.length ) {
+    proto.appended = function (elems) {
+        var items = this.addItems(elems);
+        if (!items.length) {
             return;
         }
         // layout and reveal just the new items
-        this.layoutItems( items, true );
-        this.reveal( items );
+        this.layoutItems(items, true);
+        this.reveal(items);
     };
 
     /**
      * Layout prepended elements
      * @param {Array or NodeList or Element} elems
      */
-    proto.prepended = function( elems ) {
-        var items = this._itemize( elems );
-        if ( !items.length ) {
+    proto.prepended = function (elems) {
+        var items = this._itemize(elems);
+        if (!items.length) {
             return;
         }
         // add items to beginning of collection
         var previousItems = this.items.slice(0);
-        this.items = items.concat( previousItems );
+        this.items = items.concat(previousItems);
         // start new layout
         this._resetLayout();
         this._manageStamps();
         // layout new stuff without transition
-        this.layoutItems( items, true );
-        this.reveal( items );
+        this.layoutItems(items, true);
+        this.reveal(items);
         // layout previous items
-        this.layoutItems( previousItems );
+        this.layoutItems(previousItems);
     };
 
     /**
      * reveal a collection of items
      * @param {Array of Outlayer.Items} items
      */
-    proto.reveal = function( items ) {
-        this._emitCompleteOnItems( 'reveal', items );
-        if ( !items || !items.length ) {
+    proto.reveal = function (items) {
+        this._emitCompleteOnItems('reveal', items);
+        if (!items || !items.length) {
             return;
         }
         var stagger = this.updateStagger();
-        items.forEach( function( item, i ) {
-            item.stagger( i * stagger );
+        items.forEach(function (item, i) {
+            item.stagger(i * stagger);
             item.reveal();
         });
     };
@@ -2049,14 +2053,14 @@
      * hide a collection of items
      * @param {Array of Outlayer.Items} items
      */
-    proto.hide = function( items ) {
-        this._emitCompleteOnItems( 'hide', items );
-        if ( !items || !items.length ) {
+    proto.hide = function (items) {
+        this._emitCompleteOnItems('hide', items);
+        if (!items || !items.length) {
             return;
         }
         var stagger = this.updateStagger();
-        items.forEach( function( item, i ) {
-            item.stagger( i * stagger );
+        items.forEach(function (item, i) {
+            item.stagger(i * stagger);
             item.hide();
         });
     };
@@ -2065,18 +2069,18 @@
      * reveal item elements
      * @param {Array}, {Element}, {NodeList} items
      */
-    proto.revealItemElements = function( elems ) {
-        var items = this.getItems( elems );
-        this.reveal( items );
+    proto.revealItemElements = function (elems) {
+        var items = this.getItems(elems);
+        this.reveal(items);
     };
 
     /**
      * hide item elements
      * @param {Array}, {Element}, {NodeList} items
      */
-    proto.hideItemElements = function( elems ) {
-        var items = this.getItems( elems );
-        this.hide( items );
+    proto.hideItemElements = function (elems) {
+        var items = this.getItems(elems);
+        this.hide(items);
     };
 
     /**
@@ -2085,11 +2089,11 @@
      * @param {Function} callback
      * @returns {Outlayer.Item} item
      */
-    proto.getItem = function( elem ) {
+    proto.getItem = function (elem) {
         // loop through items to get the one that matches
-        for ( var i=0; i < this.items.length; i++ ) {
+        for (var i = 0; i < this.items.length; i++) {
             var item = this.items[i];
-            if ( item.element == elem ) {
+            if (item.element == elem) {
                 // return item
                 return item;
             }
@@ -2101,15 +2105,15 @@
      * @param {Array} elems
      * @returns {Array} items - Outlayer.Items
      */
-    proto.getItems = function( elems ) {
-        elems = utils.makeArray( elems );
+    proto.getItems = function (elems) {
+        elems = utils.makeArray(elems);
         var items = [];
-        elems.forEach( function( elem ) {
-            var item = this.getItem( elem );
-            if ( item ) {
-                items.push( item );
+        elems.forEach(function (elem) {
+            var item = this.getItem(elem);
+            if (item) {
+                items.push(item);
             }
-        }, this );
+        }, this);
 
         return items;
     };
@@ -2118,45 +2122,45 @@
      * remove element(s) from instance and DOM
      * @param {Array or NodeList or Element} elems
      */
-    proto.remove = function( elems ) {
-        var removeItems = this.getItems( elems );
+    proto.remove = function (elems) {
+        var removeItems = this.getItems(elems);
 
-        this._emitCompleteOnItems( 'remove', removeItems );
+        this._emitCompleteOnItems('remove', removeItems);
 
         // bail if no items to remove
-        if ( !removeItems || !removeItems.length ) {
+        if (!removeItems || !removeItems.length) {
             return;
         }
 
-        removeItems.forEach( function( item ) {
+        removeItems.forEach(function (item) {
             item.remove();
             // remove item from collection
-            utils.removeFrom( this.items, item );
-        }, this );
+            utils.removeFrom(this.items, item);
+        }, this);
     };
 
 // ----- destroy ----- //
 
 // remove and disable Outlayer instance
-    proto.destroy = function() {
+    proto.destroy = function () {
         // clean up dynamic styles
         var style = this.element.style;
         style.height = '';
         style.position = '';
         style.width = '';
         // destroy items
-        this.items.forEach( function( item ) {
+        this.items.forEach(function (item) {
             item.destroy();
         });
 
         this.unbindResize();
 
         var id = this.element.outlayerGUID;
-        delete instances[ id ]; // remove reference to instance by id
+        delete instances[id]; // remove reference to instance by id
         delete this.element.outlayerGUID;
         // remove data for jQuery
-        if ( jQuery ) {
-            jQuery.removeData( this.element, this.constructor.namespace );
+        if (jQuery) {
+            jQuery.removeData(this.element, this.constructor.namespace);
         }
 
     };
@@ -2168,10 +2172,10 @@
      * @param {Element} elem
      * @returns {Outlayer}
      */
-    Outlayer.data = function( elem ) {
-        elem = utils.getQueryElement( elem );
+    Outlayer.data = function (elem) {
+        elem = utils.getQueryElement(elem);
         var id = elem && elem.outlayerGUID;
-        return id && instances[ id ];
+        return id && instances[id];
     };
 
 
@@ -2181,41 +2185,41 @@
      * create a layout class
      * @param {String} namespace
      */
-    Outlayer.create = function( namespace, options ) {
+    Outlayer.create = function (namespace, options) {
         // sub-class Outlayer
-        var Layout = subclass( Outlayer );
+        var Layout = subclass(Outlayer);
         // apply new options and compatOptions
-        Layout.defaults = utils.extend( {}, Outlayer.defaults );
-        utils.extend( Layout.defaults, options );
-        Layout.compatOptions = utils.extend( {}, Outlayer.compatOptions  );
+        Layout.defaults = utils.extend({}, Outlayer.defaults);
+        utils.extend(Layout.defaults, options);
+        Layout.compatOptions = utils.extend({}, Outlayer.compatOptions);
 
         Layout.namespace = namespace;
 
         Layout.data = Outlayer.data;
 
         // sub-class Item
-        Layout.Item = subclass( Item );
+        Layout.Item = subclass(Item);
 
         // -------------------------- declarative -------------------------- //
 
-        utils.htmlInit( Layout, namespace );
+        utils.htmlInit(Layout, namespace);
 
         // -------------------------- jQuery bridge -------------------------- //
 
         // make into jQuery plugin
-        if ( jQuery && jQuery.bridget ) {
-            jQuery.bridget( namespace, Layout );
+        if (jQuery && jQuery.bridget) {
+            jQuery.bridget(namespace, Layout);
         }
 
         return Layout;
     };
 
-    function subclass( Parent ) {
+    function subclass(Parent) {
         function SubClass() {
-            Parent.apply( this, arguments );
+            Parent.apply(this, arguments);
         }
 
-        SubClass.prototype = Object.create( Parent.prototype );
+        SubClass.prototype = Object.create(Parent.prototype);
         SubClass.prototype.constructor = SubClass;
 
         return SubClass;
@@ -2231,18 +2235,18 @@
 
 // munge time-like parameter into millisecond number
 // '0.4s' -> 40
-    function getMilliseconds( time ) {
-        if ( typeof time == 'number' ) {
+    function getMilliseconds(time) {
+        if (typeof time == 'number') {
             return time;
         }
-        var matches = time.match( /(^\d*\.?\d*)(\w*)/ );
+        var matches = time.match(/(^\d*\.?\d*)(\w*)/);
         var num = matches && matches[1];
         var unit = matches && matches[2];
-        if ( !num.length ) {
+        if (!num.length) {
             return 0;
         }
-        num = parseFloat( num );
-        var mult = msUnits[ unit ] || 1;
+        num = parseFloat(num);
+        var mult = msUnits[unit] || 1;
         return num * mult;
     }
 
@@ -2263,17 +2267,17 @@
  * by David DeSandro
  */
 
-( function( window, factory ) {
+(function (window, factory) {
     // universal module definition
     /* jshint strict: false */ /*globals define, module, require */
-    if ( typeof define == 'function' && define.amd ) {
+    if (typeof define == 'function' && define.amd) {
         // AMD
-        define( [
+        define([
                 'outlayer/outlayer',
                 'get-size/get-size'
             ],
-            factory );
-    } else if ( typeof module == 'object' && module.exports ) {
+            factory);
+    } else if (typeof module == 'object' && module.exports) {
         // CommonJS
         module.exports = factory(
             require('outlayer'),
@@ -2287,8 +2291,7 @@
         );
     }
 
-}( window, function factory( Outlayer, getSize ) {
-
+}(window, function factory(Outlayer, getSize) {
 
 
 // -------------------------- masonryDefinition -------------------------- //
@@ -2298,30 +2301,30 @@
     // isFitWidth -> fitWidth
     Masonry.compatOptions.fitWidth = 'isFitWidth';
 
-    Masonry.prototype._resetLayout = function() {
+    Masonry.prototype._resetLayout = function () {
         this.getSize();
-        this._getMeasurement( 'columnWidth', 'outerWidth' );
-        this._getMeasurement( 'gutter', 'outerWidth' );
+        this._getMeasurement('columnWidth', 'outerWidth');
+        this._getMeasurement('gutter', 'outerWidth');
         this.measureColumns();
 
         // reset column Y
         this.colYs = [];
-        for ( var i=0; i < this.cols; i++ ) {
-            this.colYs.push( 0 );
+        for (var i = 0; i < this.cols; i++) {
+            this.colYs.push(0);
         }
 
         this.maxY = 0;
     };
 
-    Masonry.prototype.measureColumns = function() {
+    Masonry.prototype.measureColumns = function () {
         this.getContainerWidth();
         // if columnWidth is 0, default to outerWidth of first item
-        if ( !this.columnWidth ) {
+        if (!this.columnWidth) {
             var firstItem = this.items[0];
             var firstItemElem = firstItem && firstItem.element;
             // columnWidth fall back to item of first element
-            this.columnWidth = firstItemElem && getSize( firstItemElem ).outerWidth ||
-                    // if first elem has no width, default to size of container
+            this.columnWidth = firstItemElem && getSize(firstItemElem).outerWidth ||
+                // if first elem has no width, default to size of container
                 this.containerWidth;
         }
 
@@ -2334,33 +2337,33 @@
         var excess = columnWidth - containerWidth % columnWidth;
         // if overshoot is less than a pixel, round up, otherwise floor it
         var mathMethod = excess && excess < 1 ? 'round' : 'floor';
-        cols = Math[ mathMethod ]( cols );
-        this.cols = Math.max( cols, 1 );
+        cols = Math[mathMethod](cols);
+        this.cols = Math.max(cols, 1);
     };
 
-    Masonry.prototype.getContainerWidth = function() {
+    Masonry.prototype.getContainerWidth = function () {
         // container is parent if fit width
         var isFitWidth = this._getOption('fitWidth');
         var container = isFitWidth ? this.element.parentNode : this.element;
         // check that this.size and size are there
         // IE8 triggers resize on body size change, so they might not be
-        var size = getSize( container );
+        var size = getSize(container);
         this.containerWidth = size && size.innerWidth;
     };
 
-    Masonry.prototype._getItemLayoutPosition = function( item ) {
+    Masonry.prototype._getItemLayoutPosition = function (item) {
         item.getSize();
         // how many columns does this brick span
         var remainder = item.size.outerWidth % this.columnWidth;
         var mathMethod = remainder && remainder < 1 ? 'round' : 'ceil';
         // round if off by 1 pixel, otherwise use ceil
-        var colSpan = Math[ mathMethod ]( item.size.outerWidth / this.columnWidth );
-        colSpan = Math.min( colSpan, this.cols );
+        var colSpan = Math[mathMethod](item.size.outerWidth / this.columnWidth);
+        colSpan = Math.min(colSpan, this.cols);
 
-        var colGroup = this._getColGroup( colSpan );
+        var colGroup = this._getColGroup(colSpan);
         // get the minimum Y value from the columns
-        var minimumY = Math.min.apply( Math, colGroup );
-        var shortColIndex = colGroup.indexOf( minimumY );
+        var minimumY = Math.min.apply(Math, colGroup);
+        var shortColIndex = colGroup.indexOf(minimumY);
 
         // position the brick
         var position = {
@@ -2371,8 +2374,8 @@
         // apply setHeight to necessary columns
         var setHeight = minimumY + item.size.outerHeight;
         var setSpan = this.cols + 1 - colGroup.length;
-        for ( var i = 0; i < setSpan; i++ ) {
-            this.colYs[ shortColIndex + i ] = setHeight;
+        for (var i = 0; i < setSpan; i++) {
+            this.colYs[shortColIndex + i] = setHeight;
         }
 
         return position;
@@ -2382,8 +2385,8 @@
      * @param {Number} colSpan - number of columns the element spans
      * @returns {Array} colGroup
      */
-    Masonry.prototype._getColGroup = function( colSpan ) {
-        if ( colSpan < 2 ) {
+    Masonry.prototype._getColGroup = function (colSpan) {
+        if (colSpan < 2) {
             // if brick spans only one column, use all the column Ys
             return this.colYs;
         }
@@ -2392,66 +2395,66 @@
         // how many different places could this brick fit horizontally
         var groupCount = this.cols + 1 - colSpan;
         // for each group potential horizontal position
-        for ( var i = 0; i < groupCount; i++ ) {
+        for (var i = 0; i < groupCount; i++) {
             // make an array of colY values for that one group
-            var groupColYs = this.colYs.slice( i, i + colSpan );
+            var groupColYs = this.colYs.slice(i, i + colSpan);
             // and get the max value of the array
-            colGroup[i] = Math.max.apply( Math, groupColYs );
+            colGroup[i] = Math.max.apply(Math, groupColYs);
         }
         return colGroup;
     };
 
-    Masonry.prototype._manageStamp = function( stamp ) {
-        var stampSize = getSize( stamp );
-        var offset = this._getElementOffset( stamp );
+    Masonry.prototype._manageStamp = function (stamp) {
+        var stampSize = getSize(stamp);
+        var offset = this._getElementOffset(stamp);
         // get the columns that this stamp affects
         var isOriginLeft = this._getOption('originLeft');
         var firstX = isOriginLeft ? offset.left : offset.right;
         var lastX = firstX + stampSize.outerWidth;
-        var firstCol = Math.floor( firstX / this.columnWidth );
-        firstCol = Math.max( 0, firstCol );
-        var lastCol = Math.floor( lastX / this.columnWidth );
+        var firstCol = Math.floor(firstX / this.columnWidth);
+        firstCol = Math.max(0, firstCol);
+        var lastCol = Math.floor(lastX / this.columnWidth);
         // lastCol should not go over if multiple of columnWidth #425
         lastCol -= lastX % this.columnWidth ? 0 : 1;
-        lastCol = Math.min( this.cols - 1, lastCol );
+        lastCol = Math.min(this.cols - 1, lastCol);
         // set colYs to bottom of the stamp
 
         var isOriginTop = this._getOption('originTop');
-        var stampMaxY = ( isOriginTop ? offset.top : offset.bottom ) +
+        var stampMaxY = (isOriginTop ? offset.top : offset.bottom) +
             stampSize.outerHeight;
-        for ( var i = firstCol; i <= lastCol; i++ ) {
-            this.colYs[i] = Math.max( stampMaxY, this.colYs[i] );
+        for (var i = firstCol; i <= lastCol; i++) {
+            this.colYs[i] = Math.max(stampMaxY, this.colYs[i]);
         }
     };
 
-    Masonry.prototype._getContainerSize = function() {
-        this.maxY = Math.max.apply( Math, this.colYs );
+    Masonry.prototype._getContainerSize = function () {
+        this.maxY = Math.max.apply(Math, this.colYs);
         var size = {
             height: this.maxY
         };
 
-        if ( this._getOption('fitWidth') ) {
+        if (this._getOption('fitWidth')) {
             size.width = this._getContainerFitWidth();
         }
 
         return size;
     };
 
-    Masonry.prototype._getContainerFitWidth = function() {
+    Masonry.prototype._getContainerFitWidth = function () {
         var unusedCols = 0;
         // count unused columns
         var i = this.cols;
-        while ( --i ) {
-            if ( this.colYs[i] !== 0 ) {
+        while (--i) {
+            if (this.colYs[i] !== 0) {
                 break;
             }
             unusedCols++;
         }
         // fit container to columns that have been used
-        return ( this.cols - unusedCols ) * this.columnWidth - this.gutter;
+        return (this.cols - unusedCols) * this.columnWidth - this.gutter;
     };
 
-    Masonry.prototype.needsResizeLayout = function() {
+    Masonry.prototype.needsResizeLayout = function () {
         var previousWidth = this.containerWidth;
         this.getContainerWidth();
         return previousWidth != this.containerWidth;

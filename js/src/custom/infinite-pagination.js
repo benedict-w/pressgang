@@ -5,11 +5,11 @@
  * when the user scrolls to the bottom of the page.
  *
  */
-(function($) {
+(function ($) {
 
-    $(document).ready(function($) {
+    $(document).ready(function ($) {
 
-        if (typeof(infinite_pagination) !== 'undefined') {
+        if (typeof (infinite_pagination) !== 'undefined') {
 
             var $spinner = $('<div id="infinite-pagination-spinner" class="spinner"></div>');
 
@@ -80,16 +80,20 @@
 
                                     // if there are images fadein only after fully loaded
                                     if ($items.find('img').length) {
-                                        $items.imagesLoaded(function() {
-                                            $items.each(function(i) {
+                                        $items.imagesLoaded(function () {
+                                            $items.each(function (i) {
                                                 var $item = $(this);
-                                                animate_queue.push(function() { $item.fadeIn(100); });
+                                                animate_queue.push(function () {
+                                                    $item.fadeIn(100);
+                                                });
                                             });
                                         });
                                     } else {
-                                        $items.each(function(i) {
+                                        $items.each(function (i) {
                                             var $item = $(this);
-                                            animate_queue.push(function() { $item.fadeIn(100); });
+                                            animate_queue.push(function () {
+                                                $item.fadeIn(100);
+                                            });
                                         });
                                     }
 

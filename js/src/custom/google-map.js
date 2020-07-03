@@ -6,7 +6,7 @@ function initMap() {
 
         var el = items[i];
 
-        var location = { lat: Number(el.dataset.lat), lng: Number(el.dataset.lng) };
+        var location = {lat: Number(el.dataset.lat), lng: Number(el.dataset.lng)};
 
         var map = new google.maps.Map(el, {
             zoom: parseInt(el.dataset.zoom),

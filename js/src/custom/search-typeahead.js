@@ -3,9 +3,9 @@
  *
  * See - http://twitter.github.io/typeahead.js/examples/
  */
-(function($) {
+(function ($) {
 
-    $(function() {
+    $(function () {
 
         var engine = new Bloodhound({
             datumTokenizer: function (datum) {
@@ -29,7 +29,7 @@
             displayKey: 'title',
             source: engine.ttAdapter(),
             templates: {
-                suggestion: function(data){
+                suggestion: function (data) {
                     return '<a href="' + data.link + '">' + data.title + '</a>';
                 }
             }

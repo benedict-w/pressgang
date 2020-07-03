@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
 
     // setup stacktables
     $('.stacktable').stacktable();

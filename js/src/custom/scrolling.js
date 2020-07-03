@@ -1,6 +1,6 @@
-(function($) {
+(function ($) {
 
-    $(function() {
+    $(function () {
 
         var offset = $('.navbar-fixed-top').parent('header').outerHeight() + $('#wpadminbar').outerHeight();
 
@@ -23,7 +23,7 @@
             return false;
         });
 
-        $('body').scrollspy({ target: '.navbar', offset: offset });
+        $('body').scrollspy({target: '.navbar', offset: offset});
 
     });
 

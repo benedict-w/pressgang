@@ -1,7 +1,6 @@
-(function($) {
+(function ($) {
 
-    $(function() {
-
+    $(function () {
 
 
     });

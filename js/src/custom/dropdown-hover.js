@@ -3,11 +3,11 @@
  *
  * See - https://stackoverflow.com/a/42183824/664125
  */
-;(function($) {
+;(function ($) {
 
-    $(function() {
+    $(function () {
 
-        var toggleDropdown = function(e) {
+        var toggleDropdown = function (e) {
             var _d = $(e.target).closest('.dropdown'),
                 _m = $('.dropdown-menu', _d);
 
@@ -18,12 +18,12 @@
                     _d.toggleClass('show', shouldOpen);
                     _d.parents('.menu').hide().show(0); // fix safari redraw bug - https://stackoverflow.com/questions/31587890/safari-on-mac-not-updating-redrawing-after-hover-effect
                     $('[data-toggle="dropdown"]', _d).attr('aria-expanded', shouldOpen);
-                },e.type === 'mouseleave' ? 200 : 0);
+                }, e.type === 'mouseleave' ? 200 : 0);
             }
         };
 
         $('body')
-            .on('mouseenter mouseleave','.dropdown',toggleDropdown)
+            .on('mouseenter mouseleave', '.dropdown', toggleDropdown)
             .on('click', '.dropdown-menu a', toggleDropdown);
 
 

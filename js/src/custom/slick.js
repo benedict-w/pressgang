@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
 
     // setup slick
     $('[data-slick]').slick();

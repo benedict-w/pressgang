@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
     $(function () {
 
         var $grid = $('.grid');
@@ -9,10 +9,10 @@
 
         // layout masonry after each image loads
         $grid.imagesLoaded()
-            .always( function() {
+            .always(function () {
                 $grid.masonry('layout');
             })
-            .progress( function() {
+            .progress(function () {
                 $grid.masonry('layout');
             });
 

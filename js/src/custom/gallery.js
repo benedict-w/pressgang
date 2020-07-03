@@ -1,6 +1,6 @@
-(function($) {
+(function ($) {
 
-    $(function(){
+    $(function () {
 
         /**
          * Setup magnific-popup on the gallery
@@ -12,7 +12,7 @@
             delegate: 'a',
             type: 'image',
             image: {
-                titleSrc: function(item) {
+                titleSrc: function (item) {
                     return item.el.find('img').attr('alt');
                 }
             },

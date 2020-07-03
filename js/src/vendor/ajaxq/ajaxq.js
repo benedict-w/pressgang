@@ -21,7 +21,7 @@
 
     // Register an $.ajaxq function, which follows the $.ajax interface, but allows a queue name which will force only one request per queue to fire.
     // opts can be the regular $.ajax settings plainObject, or a callback returning the settings object, to be evaluated just prior to the actual call to $.ajax.
-    $.ajaxq = function(qname, opts) {
+    $.ajaxq = function (qname, opts) {
 
         if (typeof opts === "undefined") {
             throw ("AjaxQ: queue name is not provided");
@@ -39,16 +39,16 @@
         var deferredOpts = typeof opts === 'function';
         // Create a deep copy of the arguments, and enqueue this request.
         var clonedOptions = !deferredOpts ? $.extend(true, {}, opts) : null;
-        enqueue(function() {
+        enqueue(function () {
             // Send off the ajax request now that the item has been removed from the queue
             var jqXHR = $.ajax.apply(window, [deferredOpts ? opts() : clonedOptions]);
 
             // Notify the returned deferred object with the correct context when the jqXHR is done or fails
             // Note that 'always' will automatically be fired once one of these are called: http://api.jquery.com/category/deferred-object/.
-            jqXHR.done(function() {
+            jqXHR.done(function () {
                 deferred.resolve.apply(this, arguments);
             });
-            jqXHR.fail(function() {
+            jqXHR.fail(function () {
                 deferred.reject.apply(this, arguments);
             });
 
@@ -67,8 +67,7 @@
                 queues[qname] = [];
                 var xhr = cb();
                 activeReqs[qname] = xhr;
-            }
-            else {
+            } else {
                 queues[qname].push(cb);
             }
         }
@@ -83,8 +82,7 @@
             if (nextCallback) {
                 var xhr = nextCallback();
                 activeReqs[qname] = xhr;
-            }
-            else {
+            } else {
                 delete queues[qname];
                 delete activeReqs[qname];
             }
@@ -93,10 +91,10 @@
 
     // Register a $.postq and $.getq method to provide shortcuts for $.get and $.post
     // Copied from jQuery source to make sure the functions share the same defaults as $.get and $.post.
-    $.each( [ "getq", "postq" ], function( i, method ) {
-        $[ method ] = function( qname, url, data, callback, type ) {
+    $.each(["getq", "postq"], function (i, method) {
+        $[method] = function (qname, url, data, callback, type) {
 
-            if ( $.isFunction( data ) ) {
+            if ($.isFunction(data)) {
                 type = type || callback;
                 callback = data;
                 data = undefined;
@@ -112,29 +110,29 @@
         };
     });
 
-    var isQueueRunning = function(qname) {
+    var isQueueRunning = function (qname) {
         return (queues.hasOwnProperty(qname) && queues[qname].length > 0) || activeReqs.hasOwnProperty(qname);
     };
 
-    var isAnyQueueRunning = function() {
+    var isAnyQueueRunning = function () {
         for (var i in queues) {
             if (isQueueRunning(i)) return true;
         }
         return false;
     };
 
-    $.ajaxq.isRunning = function(qname) {
+    $.ajaxq.isRunning = function (qname) {
         if (qname) return isQueueRunning(qname);
         else return isAnyQueueRunning();
     };
 
-    $.ajaxq.getActiveRequest = function(qname) {
+    $.ajaxq.getActiveRequest = function (qname) {
         if (!qname) throw ("AjaxQ: queue name is required");
 
         return activeReqs[qname];
     };
 
-    $.ajaxq.abort = function(qname) {
+    $.ajaxq.abort = function (qname) {
         if (!qname) throw ("AjaxQ: queue name is required");
 
         var current = $.ajaxq.getActiveRequest(qname);
@@ -143,15 +141,14 @@
         if (current) current.abort();
     };
 
-    $.ajaxq.clear = function(qname) {
+    $.ajaxq.clear = function (qname) {
         if (!qname) {
             for (var i in queues) {
                 if (queues.hasOwnProperty(i)) {
                     queues[i] = [];
                 }
             }
-        }
-        else {
+        } else {
             if (queues[qname]) {
                 queues[qname] = [];
             }

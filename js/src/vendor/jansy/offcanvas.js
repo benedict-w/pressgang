@@ -17,15 +17,16 @@
  * limitations under the License.
  * ======================================================================== */
 
-+function ($) { "use strict";
++function ($) {
+    "use strict";
 
     // OFFCANVAS PUBLIC CLASS DEFINITION
     // =================================
     var isIphone = (navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i))
     var OffCanvas = function (element, options) {
         this.$element = $(element)
-        this.options  = $.extend({}, OffCanvas.DEFAULTS, options)
-        this.state    = null
+        this.options = $.extend({}, OffCanvas.DEFAULTS, options)
+        this.state = null
         this.placement = null
         this.$calcClone = null
 
@@ -41,11 +42,11 @@
 
         // Backdrop is added to dropdown on it's open, if device is touchable (or desctop FF, https://github.com/twbs/bootstrap/issues/13748)
         // and dropdown is not inside .navbar-nav. So we remove it
-        $(this.$element).on('shown.bs.dropdown', $.proxy(function(e) {
+        $(this.$element).on('shown.bs.dropdown', $.proxy(function (e) {
             $(this.$element).find('.dropdown .dropdown-backdrop').remove()
         }, this))
 
-        if (typeof(this.options.disablescrolling) === "boolean") {
+        if (typeof (this.options.disablescrolling) === "boolean") {
             this.options.disableScrolling = this.options.disablescrolling
             delete this.options.disablescrolling
         }
@@ -73,9 +74,11 @@
     OffCanvas.prototype.offset = function () {
         switch (this.placement) {
             case 'left':
-            case 'right':  return this.$element.outerWidth()
+            case 'right':
+                return this.$element.outerWidth()
             case 'top':
-            case 'bottom': return this.$element.outerHeight()
+            case 'bottom':
+                return this.$element.outerHeight()
         }
     }
 
@@ -93,6 +96,7 @@
         var vertical = $(window).height() / this.$element.height()
 
         var element = this.$element
+
         function ab(a, b) {
             if (element.css(b) === 'auto') return a
             if (element.css(a) === 'auto') return b
@@ -112,18 +116,22 @@
 
     OffCanvas.prototype.opposite = function (placement) {
         switch (placement) {
-            case 'top':    return 'bottom'
-            case 'left':   return 'right'
-            case 'bottom': return 'top'
-            case 'right':  return 'left'
+            case 'top':
+                return 'bottom'
+            case 'left':
+                return 'right'
+            case 'bottom':
+                return 'top'
+            case 'right':
+                return 'left'
         }
     }
 
-    OffCanvas.prototype.getCanvasElements = function() {
+    OffCanvas.prototype.getCanvasElements = function () {
         // Return a set containing the canvas plus all fixed elements
         var canvas = this.options.canvas ? $(this.options.canvas) : this.$element
 
-        var fixed_elements = canvas.find('*').filter(function() {
+        var fixed_elements = canvas.find('*').filter(function () {
             return getComputedStyle(this).getPropertyValue('position') === 'fixed'
         }).not(this.options.exclude)
 
@@ -141,7 +149,7 @@
         var placement = this.placement
         var opposite = this.opposite(placement)
 
-        elements.each(function() {
+        elements.each(function () {
             if ($(this).css(placement) !== 'auto')
                 $(this).css(placement, (parseInt($(this).css(placement), 10) || 0) + offset)
 
@@ -154,7 +162,7 @@
             .emulateTransitionEnd(350)
     }
 
-    OffCanvas.prototype.disableScrolling = function() {
+    OffCanvas.prototype.disableScrolling = function () {
         var bodyWidth = $('body').width()
         var prop = 'padding-right'
 
@@ -171,18 +179,18 @@
         if ($('body').width() > bodyWidth) {
             var padding = parseInt($('body').css(prop), 10) + $('body').width() - bodyWidth
 
-            setTimeout(function() {
+            setTimeout(function () {
                 $('body').css(prop, padding)
             }, 1)
         }
         //disable scrolling on mobiles (they ignore overflow:hidden)
-        $('body').on('touchmove.bs', function(e) {
+        $('body').on('touchmove.bs', function (e) {
             if (!$(event.target).closest('.offcanvas').length)
                 e.preventDefault();
         });
     }
 
-    OffCanvas.prototype.enableScrolling = function() {
+    OffCanvas.prototype.enableScrolling = function () {
         $('body').off('touchmove.bs');
         $('body').removeClass('lockIphone');
     }
@@ -210,7 +218,7 @@
             this.$element.css(placement); // Workaround: Need to get the CSS property for it to be applied before the next line of code
         }
 
-        elements.addClass('canvas-sliding').each(function() {
+        elements.addClass('canvas-sliding').each(function () {
             var $this = $(this)
             if ($this.data('offcanvas-style') === undefined) $this.data('offcanvas-style', $this.attr('style') || '')
             if ($this.css('position') === 'static' && !isIphone) $this.css('position', 'relative')
@@ -232,7 +240,7 @@
             this.$element.trigger('shown.bs.offcanvas')
         }
 
-        setTimeout($.proxy(function() {
+        setTimeout($.proxy(function () {
             this.$element.addClass('in')
             this.slide(elements, offset, $.proxy(complete, this))
         }, this), 1)
@@ -260,7 +268,7 @@
             this.$element.removeClass('in')
 
             elements.removeClass('canvas-sliding')
-            elements.add(this.$element).add('body').each(function() {
+            elements.add(this.$element).add('body').each(function () {
                 $(this).attr('style', $(this).data('offcanvas-style')).removeData('offcanvas-style')
             })
 
@@ -273,7 +281,7 @@
 
         elements.removeClass('canvas-slid').addClass('canvas-sliding')
 
-        setTimeout($.proxy(function() {
+        setTimeout($.proxy(function () {
             this.slide(elements, offset, $.proxy(complete, this))
         }, this), 1)
     }
@@ -320,7 +328,7 @@
             var self = this;
             if ($.support.transition) {
                 this.$backdrop
-                    .one($.support.transition.end, function() {
+                    .one($.support.transition.end, function () {
                         self.$backdrop.remove();
                         callback()
                         self.$backdrop = null;
@@ -334,7 +342,7 @@
 
             if (this.options.canvas && $(this.options.canvas)[0] !== $('body')[0]) {
                 var canvas = this.options.canvas
-                setTimeout(function() {
+                setTimeout(function () {
                     $(canvas).removeClass('limit-backdrop')
                 }, time)
             }
@@ -343,7 +351,7 @@
         }
     }
 
-    OffCanvas.prototype.calcClone = function() {
+    OffCanvas.prototype.calcClone = function () {
         this.$calcClone = $('.offcanvas-clone')
 
         if (!this.$calcClone.length) {
@@ -367,7 +375,7 @@
         this.$element.removeClass('in')
 
         elements.removeClass('canvas-slid')
-        elements.add(this.$element).add('body').each(function() {
+        elements.add(this.$element).add('body').each(function () {
             $(this).attr('style', $(this).data('offcanvas-style')).removeData('offcanvas-style')
         })
 
@@ -387,8 +395,8 @@
 
     $.fn.offcanvas = function (option) {
         return this.each(function () {
-            var $this   = $(this)
-            var data    = $this.data('bs.offcanvas')
+            var $this = $(this)
+            var data = $this.data('bs.offcanvas')
             var options = $.extend({}, OffCanvas.DEFAULTS, $this.data(), typeof option === 'object' && option)
 
             if (!data) $this.data('bs.offcanvas', (data = new OffCanvas(this, options)))
@@ -412,12 +420,12 @@
     // =================
 
     $(document).on('click.bs.offcanvas.data-api', '[data-toggle=offcanvas]', function (e) {
-        var $this   = $(this), href
-        var target  = $this.attr('data-target')
+        var $this = $(this), href
+        var target = $this.attr('data-target')
             || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '') //strip for ie7
         var $canvas = $(target)
-        var data    = $canvas.data('bs.offcanvas')
-        var option  = data ? 'toggle' : $this.data()
+        var data = $canvas.data('bs.offcanvas')
+        var option = data ? 'toggle' : $this.data()
 
         e.preventDefault();
         e.stopPropagation()
