@@ -70,6 +70,7 @@ class FacebookPixel {
         if ($track_logged_in || (!$track_logged_in && !is_user_logged_in()) ) {
 
             if ($facebook_pixel_id = urlencode(get_theme_mod('facebook-pixel-id'))) {
+
                 \Timber::render('facebook-pixel.twig', array(
                     'facebook_pixel_id' => $facebook_pixel_id,
                 ));
