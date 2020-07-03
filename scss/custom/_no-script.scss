@@ -1,0 +1,13 @@
+noscript {
+  display: block;
+  @extend .alert;
+  @extend .alert-danger;
+  margin: 0;
+  position: absolute;
+  top: $header-height;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+  border-radius: 0;
+  text-align: center;
+}
