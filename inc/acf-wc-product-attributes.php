@@ -2,6 +2,13 @@
 
 namespace Pressgang;
 
+/**
+ * Class AcfWcProductAttributes
+ *
+ * See - https://www.advancedcustomfields.com/resources/custom-location-rules/
+ *
+ * @package Pressgang
+ */
 class AcfWcProductAttributes {
 
     /**
