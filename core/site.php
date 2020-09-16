@@ -199,7 +199,7 @@ class Site extends \TimberSite
 
                 // limit to SEO recommended length
                 if (strlen($description) > 155) {
-                    $description = substr($description, 0, 155);
+                    $description = mb_substr($description, 0, 155);
                     $description = \TimberHelper::trim_words($description, str_word_count($description) - 1);
                 }
 
