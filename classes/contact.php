@@ -3,7 +3,7 @@
 namespace PressGang;
 
 /**
- * Class Vimeo
+ * Class Contact
  *
  * @package PressGang
  */
@@ -33,9 +33,10 @@ class Contact {
      * Loop $_POST['contact'] array and send a contact message
      *
      * @param $args
+     * @param $template - twig template for compiling into message
      * @return string
      */
-    public function send_message($args = array(), $content = null)
+    public function send_message($args = array(), $template = null)
     {
         $message = '';
 
@@ -62,13 +63,20 @@ class Contact {
             // send email
             if (!empty($args['email']) && !empty($args['name']) && !empty($args['message'])) {
 
-                foreach($args as $key => &$val) {
-                    if (!in_array($key, array('recaptcha', 'to', 'success', 'message'))) {
-                        $message .= sprintf("%s: %s\r\n", ucwords($key), $val);
+                if($template) {
+
+                    $message = Timber::compile($template, $args);
+
+                } else {
+                    foreach($args as $key => &$val) {
+                        if (!in_array($key, array('recaptcha', 'to', 'success', 'message'))) {
+                            $message .= sprintf("%s: %s\r\n", ucwords($key), $val);
+                        }
                     }
+
+                    $message .= sprintf("\r\nMessage: %s\r\n", $args['message']);
                 }
 
-                $message .= sprintf("\r\nMessage: %s\r\n", $args['message']);
 
                 // TODO spoofing FROM can cause spam issues
                 // add_action('wp_mail_from', function() use ($args) { return $args['email']; });
