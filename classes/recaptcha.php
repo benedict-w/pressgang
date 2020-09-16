@@ -28,11 +28,11 @@ trait Recaptcha {
             )
         );
 
-        $context  = stream_context_create($opts);
+        $context = stream_context_create($opts);
         $response = file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
         $result = json_decode($response);
 
-        return $result->success;
+        return $result && $result->success && $result->score > 0.8;
     }
 
 }
