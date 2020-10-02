@@ -4,6 +4,7 @@
     {% include 'head.twig' %}
 {% endblock %}
 <body class="{{ body_class }}">
+{% do action('wp_body_open') %}
 {% block body %}
     <div id="wrap">
         <noscript>
