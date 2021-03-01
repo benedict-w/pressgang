@@ -20,7 +20,7 @@ class CookieConsent {
         $this->implied_consent_text = __("This site uses cookies, as described in our Policy. You can disable cookies as mentioned in our Privacy Policy. By continuing to use this website without disabling the cookies, you consent to our use of those cookies which you have not disabled.", THEMENAME);
         $this->button_text = __("OK", THEMENAME);
         $this->privacy_link_text = __("View privacy policy", THEMENAME);
-        $this->privacy_url = "/privacy";
+        $this->privacy_url = get_privacy_policy_url();
 
         Scripts::$scripts['js-cookie'] = array(
             'src' => get_template_directory_uri() . '/js/src/vendor/js-cookie/js.cookie.2.1.4.js',
