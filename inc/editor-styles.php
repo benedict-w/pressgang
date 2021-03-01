@@ -9,7 +9,7 @@ class EditorStyles {
      */
     public function __construct()
     {
-        add_action('init', array($this, 'add_editor_styles'));
+        add_action('admin_init', array($this, 'add_editor_styles'));
     }
 
     /**
@@ -21,7 +21,7 @@ class EditorStyles {
      */
     public function add_editor_styles() {
         add_theme_support('editor-styles');
-        add_editor_style(get_stylesheet_directory_uri() . '/css/editor-styles.css' );
+        add_editor_style('/css/editor-styles.css');
     }
 
 }
