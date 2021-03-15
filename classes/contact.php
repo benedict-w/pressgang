@@ -22,7 +22,7 @@ class Contact {
      *
      */
     public function __construct($to = null, $subject = null, $has_recaptcha = false) {
-        $this->to = $to ? $to : get_option('admin_email');
+        $this->to = sanitize_email($to ? $to : get_option('admin_email'));
         $this->subject = $subject ? $subject : __("New Contact Message", THEMENAME);
         $this->has_recaptcha = $has_recaptcha;
     }
@@ -86,7 +86,7 @@ class Contact {
 
                 if (!$this->has_recaptcha || ($this->has_recaptcha && $this->verify_recaptcha())) {
                     if (wp_mail($this->to, $subject, $message)) {
-                        $this->success = __("Thank you your message was sent.", THEMENAME);
+                        $this->success = __("Thank you, your message was sent.", THEMENAME);
 
                         // register google analytics tracking
                         add_action('wp_footer', array($this, 'send_ga_event'));
