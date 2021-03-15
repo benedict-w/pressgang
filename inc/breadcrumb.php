@@ -60,7 +60,9 @@ class Breadcrumb {
 
             if ( is_archive() && !is_tax() && !is_category() && !is_tag() ) {
 
-                $this->append_link(post_type_archive_title($prefix, false), 'breadcrumb-archive breadcrumb-current');
+                $archive_title = apply_filters('get_the_archive_title', post_type_archive_title($prefix, false),);
+
+                $this->append_link($archive_title, 'breadcrumb-archive breadcrumb-current');
 
             }
 
@@ -78,7 +80,9 @@ class Breadcrumb {
                     }
                 }
 
-                $this->append_link(get_queried_object()->name, 'breadcrumb-taxonomy breadcrumb-current');
+                $archive_title = apply_filters('get_the_archive_title', get_queried_object()->name);
+
+                $this->append_link($archive_title, 'breadcrumb-taxonomy breadcrumb-current');
 
             }
 
@@ -236,6 +240,8 @@ class Breadcrumb {
         $archive_title = $post_type === 'post'
             ? get_the_title(get_option('page_for_posts', true))
             : $post_type_object->labels->name;
+
+        $archive_title = apply_filters('get_the_archive_title', $archive_title);
 
         $this->append_link($archive_title, "breadcrumb-{$post_type}", $post_type_archive);
     }
