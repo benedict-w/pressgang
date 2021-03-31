@@ -12,7 +12,7 @@ class GoogleTagManager {
     public function __construct() {
         add_action('customize_register', array($this, 'customizer'));
         add_action('wp_head', array($this, 'script'), 500);
-        add_action('wp_footer', array($this, 'no_script'));
+        add_action('wp_body_open', array($this, 'no_script'));
     }
 
     /**
