@@ -1,0 +1,21 @@
+<script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        'transactionId': '{{ transaction_id }}',
+        'transactionAffiliation': '{{ transaction_affiliation }}',
+        'transactionTotal': {{ transaction_total }},
+        'transactionTax': {{ transaction_tax }},
+        'transactionShipping': {{ transaction_shipping }},
+        'transactionProducts': [
+            {% for item in transaction_products %}
+            {
+                'sku': '{{ item.sku }}',
+                'name': '{{ item.name }}',
+                'category': '{{ item.category }}',
+                'price': {{ item.price }},
+                'quantity': {{ item.quantity }}
+            }{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ]
+    });
+</script>
