@@ -2,6 +2,8 @@
 
 namespace PressGang;
 
+require_once(__DIR__ . '/flash.php');
+
 /**
  * Class Contact
  *
@@ -11,24 +13,36 @@ class Contact {
 
     use Recaptcha;
 
-    public $success = false;
-    public $error = false;
-    public $subject = '';
-    public $to = '';
-    public $has_recaptcha = false;
+    public static $action = 'contact_form';
 
     /**
-     * __construct
+     * Contact constructor.
      *
+     * @param null $to
+     * @param null $subject
+     * @param bool $has_recaptcha
+     * @param null $template - template to use for the message
      */
-    public function __construct($to = null, $subject = null, $has_recaptcha = false) {
-        $this->to = sanitize_email($to ? $to : get_option('admin_email'));
-        $this->subject = $subject ? $subject : __("New Contact Message", THEMENAME);
-        $this->has_recaptcha = $has_recaptcha;
+    public function __construct($to = null, $subject = null, $has_recaptcha = false, $template = null) {
+        $to = sanitize_email($to ? $to : get_option('admin_email'));
+        $subject = $subject ? $subject : __("New Contact Message", THEMENAME);
+        $has_recaptcha = $has_recaptcha;
+
+        $flash = Flash::get('contact');
+
+        Flash::add('contact', [
+            'to' => $flash['to'] ?? $to,
+            'subject' =>  $flash['subject'] ?? $subject,
+            'has_recaptcha' => $flash['has_recaptcha'] ?? $has_recaptcha,
+            'success' => $flash['success'] ?? false,
+            'error' => $flash['error'] ?? false,
+            'old' => $flash['old'] ?? [],
+            'template' => $flash['template'] ?? $template,
+        ]);
     }
 
     /**
-     * send_contact_message
+     * post_form
      *
      * Loop $_POST['contact'] array and send a contact message
      *
@@ -36,9 +50,20 @@ class Contact {
      * @param $template - twig template for compiling into message
      * @return string
      */
-    public function send_message($args = array(), $template = null)
+    public static function post_form()
     {
+        $flash = Flash::get('contact');
+
         $message = '';
+        $to = $flash['to'] ?? get_option('admin_email');
+        $subject = $flash['subject'] ?? __("New Contact Message", THEMENAME);
+        $has_recaptcha = $flash['has_recaptcha'] ?? false;
+        $args = $flash['args'] ?? null;
+        $template = $flash['template'] ?? null;
+        $success = false;
+        $error = false;
+        $old = [];
+
 
         // filter post inputs if available
         if (isset($_POST['contact'])) {
@@ -46,19 +71,23 @@ class Contact {
             foreach ($_POST['contact'] as $key => &$val) {
                 switch ($key) {
                     case 'email' :
-                        $args[$key] = filter_var($val, FILTER_SANITIZE_EMAIL);
+                        $val = filter_var($val, FILTER_SANITIZE_EMAIL);
                         break;
 
                     case 'name':
                     case 'message':
-                        $args[$key] = filter_var($val, FILTER_SANITIZE_STRING);
+                        $val = filter_var($val, FILTER_SANITIZE_STRING);
                         break;
 
                     default :
-                        $args[$key] = filter_var($val, FILTER_SANITIZE_STRING);
+                        $val = filter_var($val, FILTER_SANITIZE_STRING);
                         break;
                 }
+
+                $args[$key] = $val;
             }
+
+            $old = $args;
 
             // send email
             if (!empty($args['email']) && !empty($args['name']) && !empty($args['message'])) {
@@ -77,37 +106,43 @@ class Contact {
                     $message .= sprintf("\r\nMessage: %s\r\n", $args['message']);
                 }
 
-
                 // TODO spoofing FROM can cause spam issues
                 // add_action('wp_mail_from', function() use ($args) { return $args['email']; });
                 // add_action('wp_mail_from_name', function() use ($args) { return $args['name']; });
 
-                $subject = isset($args['subject']) ? $args['subject'] : $this->subject;
+                $subject = isset($args['subject']) ? $args['subject'] : $subject;
 
-                if (!$this->has_recaptcha || ($this->has_recaptcha && $this->verify_recaptcha())) {
-                    if (wp_mail($this->to, $subject, $message)) {
-                        $this->success = __("Thank you, your message was sent.", THEMENAME);
+                if (!$has_recaptcha || ($has_recaptcha && static::verify_recaptcha())) {
+                    if (wp_mail($to, $subject, $message)) {
+                        $success = __("Thank you, your message was sent.", THEMENAME);
 
                         // register google analytics tracking
-                        add_action('wp_footer', array($this, 'send_ga_event'));
+                        add_action('wp_footer', array('PressGang\Contact', 'send_ga_event'));
                     }
                 } else {
-                    $this->error = __("Recaptcha failed please contact us by email or phone", THEMENAME);
+                    $error = __("Recaptcha failed please contact us by email or phone", THEMENAME);
                 }
 
             } else {
-                $this->error = __("Please complete all required form fields", THEMENAME);
+                $error = __("Please complete all required form fields", THEMENAME);
             }
         }
 
-        return $this->success;
+        Flash::add('contact', [
+            'success' => $success,
+            'error' => $error,
+            'old' => $old,
+        ]);
+
+        wp_safe_redirect(filter_input(INPUT_POST, '_wp_http_referer', FILTER_SANITIZE_STRING));
+        exit;
     }
 
     /**
      * Track Google Analytics Event
      *
      */
-    public function send_ga_event() {
+    public static function send_ga_event() {
 
         $track_logged_in = get_theme_mod('track-logged-in');
 
@@ -118,3 +153,6 @@ class Contact {
         <?php endif;
     }
 }
+
+add_action(sprintf('admin_post_%s', Contact::$action), array('PressGang\Contact', 'post_form'));
+add_action(sprintf('admin_post_nopriv_%s', Contact::$action), array('PressGang\Contact', 'post_form'));

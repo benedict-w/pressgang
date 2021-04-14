@@ -8,7 +8,7 @@ trait Recaptcha {
      * verify_recaptcha
      *
      */
-    protected function verify_recaptcha () {
+    protected static function verify_recaptcha () {
 
         $google_recaptcha_secret = filter_var(get_theme_mod('google-recaptcha-secret', FILTER_SANITIZE_STRING));
 

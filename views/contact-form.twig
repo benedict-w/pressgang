@@ -1,4 +1,6 @@
-<form class="contact-form form-horizontal" method="post">
+<form class="contact-form form-horizontal" method="post" action="{{ (fn('admin_url', 'admin-post.php')|e('esc_url')) }}">
+    {% do fn('wp_nonce_field', action) %}
+    <input type="hidden" name="action" value="{{ action|e('html_attr') }}">
     <div class="form-group">
         <label for="name" class="col-sm-2 control-label">{{ __("Name", THEMENAME) }}</label>
         <div class="col-sm-10">
