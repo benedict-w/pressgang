@@ -134,7 +134,10 @@ class Contact {
             'old' => $old,
         ]);
 
-        wp_safe_redirect(filter_input(INPUT_POST, '_wp_http_referer', FILTER_SANITIZE_STRING));
+        $redirect = filter_input(INPUT_POST, '_wp_http_referer', FILTER_SANITIZE_STRING);
+        $redirect .= '?success=' . time(); // cache  buster
+
+        wp_safe_redirect($redirect);
         exit;
     }
 
