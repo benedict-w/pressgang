@@ -31,14 +31,15 @@ class Contact {
         $flash = Flash::get('contact');
 
         Flash::add('contact', [
-            'to' => $flash['to'] ?? $to,
-            'subject' =>  $flash['subject'] ?? $subject,
-            'has_recaptcha' => $flash['has_recaptcha'] ?? $has_recaptcha,
+            'to' => $to,
+            'subject' => $subject,
+            'has_recaptcha' => $has_recaptcha,
             'success' => $flash['success'] ?? false,
             'error' => $flash['error'] ?? false,
             'old' => $flash['old'] ?? [],
-            'template' => $flash['template'] ?? $template,
+            'template' => $template,
         ]);
+
     }
 
     /**
@@ -53,7 +54,6 @@ class Contact {
     public static function post_form()
     {
         $flash = Flash::get('contact');
-
         $message = '';
         $to = $flash['to'] ?? get_option('admin_email');
         $subject = $flash['subject'] ?? __("New Contact Message", THEMENAME);
@@ -129,9 +129,13 @@ class Contact {
         }
 
         Flash::add('contact', [
+            'to' => $to,
+            'subject' => $subject,
+            'has_recaptcha' => $has_recaptcha,
             'success' => $success,
             'error' => $error,
             'old' => $old,
+            'template' => $template,
         ]);
 
         $redirect = filter_input(INPUT_POST, '_wp_http_referer', FILTER_SANITIZE_STRING);
