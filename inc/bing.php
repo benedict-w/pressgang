@@ -7,7 +7,7 @@ class Bing {
     /**
      * __construct
      *
-     * Adds a google-webmaster customizer field, the value is added in site.php
+     * Adds a bing customizer field
      *
      * @return void
      */
