@@ -40,14 +40,14 @@ class BingUniversalEventTracking {
         }
 
         $wp_customize->add_setting(
-            'bing_uet_id',
+            'bing-uet-id',
             array(
                 'default' => '',
                 'sanitize_callback' => 'sanitize_text_field',
             )
         );
 
-        $wp_customize->add_control(new \WP_Customize_Control($wp_customize, 'bing_uet', array(
+        $wp_customize->add_control(new \WP_Customize_Control($wp_customize, 'bing-uet-id', array(
             'label' => __("Bing UET ID", THEMENAME),
             'description' => sprintf(__("See %s"), 'https://help.ads.microsoft.com/apex/index/3/en/56705'),
             'section'  => 'bing',
@@ -79,7 +79,7 @@ class BingUniversalEventTracking {
 
         if (($track_logged_in || (!$track_logged_in && !is_user_logged_in())) && (!EXPLICIT_CONSENT || $this->consented)) {
 
-            if ($bing_uet_id = get_theme_mod('bing_uet_id')) {
+            if ($bing_uet_id = get_theme_mod('bing-uet-id')) {
                 \Timber::render('bing-uet.twig', array(
                     'bing_uet_id' => $bing_uet_id,
                 ));
