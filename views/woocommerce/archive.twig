@@ -3,7 +3,6 @@
 {% block main %}
 
     {% do action('woocommerce_before_main_content') %}
-    {% do action( 'woocommerce_before_shop_loop') %}
 
     <header class="woocommerce-products-header">
         {% if fn('apply_filters', 'woocommerce_show_page_title', true) %}
@@ -12,6 +11,8 @@
 
         {% do action('woocommerce_archive_description') %}
     </header>
+
+    {% do action( 'woocommerce_before_shop_loop') %}
 
     {% set no_cols = fn('wc_get_loop_prop', 'columns') %}
     {% set items = shop_page_display == 'subcategories' ? product_categories : products %}
