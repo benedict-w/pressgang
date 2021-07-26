@@ -57,6 +57,8 @@ class FacebookVerify {
         $facebook_domain_verification = get_theme_mod('facebook_domain_verification');
 
         if($facebook_domain_verification) {
+
+            $facebook_domain_verification = esc_attr($facebook_domain_verification);
             echo "<meta name=\"facebook-domain-verification\" content=\"{$facebook_domain_verification}\" />";
         }
     }
