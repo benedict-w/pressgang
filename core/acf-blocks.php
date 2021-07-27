@@ -18,7 +18,7 @@ class AcfBlocks
     public function __construct()
     {
         add_action('acf/init', array($this, 'setup'));
-        add_filter('block_categories', array($this, 'add_custom_categories'));
+        add_filter('block_categories_all', array($this, 'add_custom_categories'));
 
         // Fix in WordPress 5.11 ?
         // add_filter('render_block', array($this, 'disable_wpautop'), 20, 2);
