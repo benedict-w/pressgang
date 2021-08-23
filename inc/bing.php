@@ -22,9 +22,9 @@ class Bing {
      */
     public function customizer($wp_customize) {
 
-        if (!isset($wp_customize->sections['bing'])) {
-            $wp_customize->add_section('bing', array(
-                'title' => __("Bing", THEMENAME),
+        if (!isset($wp_customize->sections['microsoft'])) {
+            $wp_customize->add_section('microsoft', array(
+                'title' => __("Microsoft", THEMENAME),
             ));
         }
 
@@ -39,7 +39,7 @@ class Bing {
         $wp_customize->add_control(new \WP_Customize_Control($wp_customize, 'bing_verification_code', array(
             'label' => __("Bing Verification Code", THEMENAME),
             'description' => sprintf(__("See %s"), 'goo.gl/xeaAOv'),
-            'section'  => 'bing',
+            'section'  => 'microsoft',
         )));
     }
 }

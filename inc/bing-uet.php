@@ -33,9 +33,9 @@ class BingUniversalEventTracking {
      */
     public function customizer($wp_customize) {
 
-        if (!isset($wp_customize->sections['bing'])) {
-            $wp_customize->add_section('bing', array(
-                'title' => __("Bing", THEMENAME),
+        if (!isset($wp_customize->sections['microsoft'])) {
+            $wp_customize->add_section('microsoft', array(
+                'title' => __("Microsoft", THEMENAME),
             ));
         }
 
@@ -50,7 +50,7 @@ class BingUniversalEventTracking {
         $wp_customize->add_control(new \WP_Customize_Control($wp_customize, 'bing-uet-id', array(
             'label' => __("Bing UET ID", THEMENAME),
             'description' => sprintf(__("See %s"), 'https://help.ads.microsoft.com/apex/index/3/en/56705'),
-            'section'  => 'bing',
+            'section'  => 'microsoft',
         )));
 
         // track logged in users?
@@ -64,7 +64,7 @@ class BingUniversalEventTracking {
 
         $wp_customize->add_control(new \WP_Customize_Control($wp_customize, 'bing-track-logged-in', array(
             'label' => __("Track Logged In Users?", THEMENAME),
-            'section'  => 'bing',
+            'section'  => 'microsoft',
             'type' => 'checkbox',
         )));
     }

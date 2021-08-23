@@ -33,9 +33,9 @@ class ClarityTracking {
      */
     public function customizer($wp_customize) {
 
-        if (!isset($wp_customize->sections['clarity'])) {
-            $wp_customize->add_section('clarity', array(
-                'title' => __("Clarity", THEMENAME),
+        if (!isset($wp_customize->sections['microsoft'])) {
+            $wp_customize->add_section('microsoft', array(
+                'title' => __("Microsoft", THEMENAME),
             ));
         }
 
@@ -50,7 +50,7 @@ class ClarityTracking {
         $wp_customize->add_control(new \WP_Customize_Control($wp_customize, 'clarity-id', array(
             'label' => __("Clartiy ID", THEMENAME),
             'description' => sprintf(__("See %s"), 'https://docs.microsoft.com/en-us/clarity/'),
-            'section'  => 'clarity',
+            'section'  => 'microsoft',
         )));
 
         // track logged in users?
@@ -80,7 +80,7 @@ class ClarityTracking {
         if (($track_logged_in || (!$track_logged_in && !is_user_logged_in())) && (!EXPLICIT_CONSENT || $this->consented)) {
 
             if ($clarity_id = get_theme_mod('clarity-id')) {
-                \Timber::render('clarity.twig', array(
+                \Timber::render('microsoft-clarity.twig', array(
                     'clarity_id' => $clarity_id,
                 ));
             }
