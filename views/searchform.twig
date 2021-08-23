@@ -5,7 +5,7 @@
         <div class="input-group">
             <meta itemprop="target" content="{{ site.url }}?s={search_term_string}">
             <label for="s" class="sr-only">{{ __("Search", THEMENAME) }}</label>
-            <input id="s" name="s" type="text" value="{{ get_search_query()|e('html_attr') }}" placeholder="{{ __("Search", THEMENAME) }}" class="form-control" itemprop="query-input">
+            <input id="s" name="s" type="text" value="{{ get_search_query()|e('html_attr') }}" placeholder="{{ __("Search", THEMENAME) }}" class="form-control" itemprop="query-input" required>
             <span class="input-group-btn">
                 <button id="search-submit" type="submit" class="btn"><span class="fa fa-search"></span> {{ __("Search", THEMENAME) }}</button>
             </span>
