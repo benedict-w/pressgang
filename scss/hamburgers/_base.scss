@@ -2,8 +2,10 @@
 // ==================================================
 .hamburger {
   padding: $hamburger-padding-y $hamburger-padding-x;
-  display: inline-block;
+  display: flex;
   cursor: pointer;
+
+  -webkit-appearance: none;
 
   transition-property: opacity, filter;
   transition-duration: $hamburger-hover-transition-duration;

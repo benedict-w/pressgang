@@ -2,6 +2,9 @@ $blur-up-px: 10px !default;
 $blur-up-duration: 400ms !default;
 
 img {
+  &[data-sizes="auto"] {
+    display: block;
+  }
   &.blur-up {
     will-change: filter;
     backface-visibility: hidden;
