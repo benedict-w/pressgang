@@ -69,9 +69,9 @@ class Hotjar {
 
         if ($track_logged_in || (!$track_logged_in && !is_user_logged_in()) ) {
 
-            if ($google_analytics_id = urlencode(get_theme_mod('hotjar-id'))) {
+            if ($hotjar_id = urlencode(get_theme_mod('hotjar-id'))) {
                 \Timber::render('hotjar.twig', array(
-                    'hotjar_id' => $google_analytics_id,
+                    'hotjar_id' => $hotjar_id,
                 ));
             }
         }
