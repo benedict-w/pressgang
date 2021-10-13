@@ -192,7 +192,7 @@ class Site extends \TimberSite
                     if (empty($description)) {
                         // TODO get_preview is rendering block content
                         // $description = $post->get_preview(50, false, false, true);
-                        $description = strip_shortcodes($post->post_content);
+                        $description = strip_tags(strip_shortcodes($post->post_content));
                     }
 
                     // finally use the blog description
