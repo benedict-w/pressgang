@@ -122,10 +122,10 @@ class InfinitePagination {
      * @param $query
      */
     public function set_query_offset(&$query) {
-        if ($query->is_paged && $query->query_vars['paged'] > 1) {
+        if (!is_admin() && $query->is_paged && $query->query_vars['paged'] > 1) {
             $offset = get_option('posts_per_page');
             $page_offset = $offset + (($query->query_vars['paged'] - 2) * $this->posts_per_page);
-            // $query->set('offset', $page_offset + 1);
+            $query->set('offset', $page_offset + 1);
         }
     }
 }
