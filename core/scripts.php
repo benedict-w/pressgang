@@ -61,16 +61,17 @@ class Scripts {
 
             if (isset($args['src']) && $args['src']) {
 
+                // TODO filemtime()
+                $ver = isset($args['version']) ? $args['version'] : (isset($args['ver']) ? $args['ver'] : '1.0.0');
+
                 // register scripts
-                add_action('wp_loaded', function () use ($args) {
-                    // TODO filemtime()
-                    $ver = isset($args['version']) ? $args['version'] : (isset($args['ver']) ? $args['ver'] : '1.0.0');
+                add_action('wp_loaded', function () use ($args, $ver) {
                     wp_register_script($args['handle'], $args['src'], $args['deps'], $ver, $args['in_footer']);
                 });
 
                 // enqueue on given hook
-                add_action($args['hook'], function () use ($args) {
-                    wp_enqueue_script($args['handle']);
+                add_action($args['hook'], function () use ($args, $ver) {
+                    wp_enqueue_script($args['handle'], $args['src'], $args['deps'], $ver, $args['in_footer']);
                 }, 20);
             }
 
