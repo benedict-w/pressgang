@@ -34,6 +34,14 @@ class Filters
 
                 return $permalink;
             }, 10, 1);
+
+            // disable edit page for these pages
+            // TODO could set up a JS scroll-spy function to change the edit button link?
+            add_action('admin_bar_menu', function ($wp_admin_bar) {
+                if (is_page_template('page-templates/single-page.php')) {
+                    $wp_admin_bar->remove_node('edit');
+                }
+            }, 999);
         }
     }
 
