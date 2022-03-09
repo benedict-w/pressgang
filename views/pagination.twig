@@ -1,27 +1,29 @@
-<nav aria-label="{{ __("Pagination", THEMENAME) }}">
-    <ul class="pagination">
-        {% if pagination.prev.link|length %}
-            <li class="page-item">
-                <a href="{{ pagination.prev.link|relative }}" aria-label="{{ __("Previous", THEMENAME) }}" class="page-link page-prev">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-        {% endif %}
-        {% for page in pagination.pages %}
-            <li class="page-item {% if page.current %}active{% endif %}">
-                {% if page.link %}
-                    <a href="{{ page.link|relative }}" class="page-link">{{ page.title }}</a>
-                {% else %}
-                    <span class="page-link">{{ page.title }}</span>
-                {% endif %}
-            </li>
-        {% endfor %}
-        {% if pagination.next.link|length %}
-            <li class="page-item">
-                <a href="{{ pagination.next.link|relative }}" aria-label="{{ __("Next", THEMENAME) }}" class="page-link page-next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        {% endif %}
-    </ul>
-</nav>
+{% if pagination.pages %}
+    <nav aria-label="{{ __("Pagination", THEMENAME) }}">
+        <ul class="pagination">
+            {% if pagination.prev.link|length %}
+                <li class="page-item">
+                    <a href="{{ pagination.prev.link|relative }}" aria-label="{{ __("Previous", THEMENAME) }}" class="page-link page-prev">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% for page in pagination.pages %}
+                <li class="page-item {% if page.current %}active{% endif %}">
+                    {% if page.link %}
+                        <a href="{{ page.link|relative }}" class="page-link">{{ page.title }}</a>
+                    {% else %}
+                        <span class="page-link">{{ page.title }}</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+            {% if pagination.next.link|length %}
+                <li class="page-item">
+                    <a href="{{ pagination.next.link|relative }}" aria-label="{{ __("Next", THEMENAME) }}" class="page-link page-next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
