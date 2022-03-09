@@ -9,9 +9,9 @@ class AcfGoogleMaps {
      *
      */
     public function __construct() {
-
         add_action('acf/init', array($this, 'set_google_maps_key'));
         add_action('customize_register', array($this, 'customizer'));
+        add_filter('acf/fields/google_map/api', array($this, 'get_google_maps_key'));
     }
 
     /**
@@ -19,10 +19,25 @@ class AcfGoogleMaps {
      *
      */
     public function set_google_maps_key() {
-
         if ($google_maps_key = filter_var(get_theme_mod('acf_google_maps_key'), FILTER_SANITIZE_STRING)) {
             acf_update_setting('acf_google_maps_key', $google_maps_key);
         }
+    }
+
+    /**
+     * Added after ACF update
+     * see - https://support.advancedcustomfields.com/forums/topic/google-map-not-displaying-on-wp-backend/
+     *
+     * @param $api
+     * @return mixed
+     */
+    public function get_google_maps_key($api) {
+
+        if ($google_maps_key = filter_var(get_theme_mod('acf_google_maps_key'), FILTER_SANITIZE_STRING)) {
+            $api['key'] = $google_maps_key;
+        }
+
+        return $api;
     }
 
     /**
@@ -55,5 +70,7 @@ class AcfGoogleMaps {
         )));
     }
 }
+
+
 
 new AcfGoogleMaps();
