@@ -4,15 +4,16 @@
   {
     "@context": "http://schema.org",
     "@type": "Person",
-    "givenName": "{{ given_name }}",
-    "familyName": "{{ family_name }}",
-    "image": "{{ image }}",
-    "url": "{{ url }}",
-    "jobTitle": "{{ job_title }}",
-    "awards": "{{ awards }}",
+    "givenName": "{{ given_name|e('html_attr') }}",
+    "familyName": "{{ family_name|e('html_attr') }}",
+    "image": "{{ image|e('html_attr') }}",
+    "url": "{{ url|e('html_attr') }}",
+    "jobTitle": "{{ job_title|e('html_attr') }}",
+    "awards": "{{ awards|e('html_attr') }}",
     "worksFor": {
-      "@id": "{{ works_for }}"
+      "@id": "{{ works_for|e('html_attr') }}"
     },
-    "workLocation": "{{ work_location }}"
+    "workLocation": "{{ work_location|e('html_attr') }}",
+    "description": "{{ description|e('html_attr') }}"
   }
 {% endblock %}

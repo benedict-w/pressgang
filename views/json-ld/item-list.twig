@@ -6,7 +6,7 @@
   {% for item in items %}
     {
       "@type": "ListItem",
-      "position": {{ loop.index }},
+      "position": {{ loop.index|e('html_attr') }},
       "url": "{{ item.link }}"
     }{% if not loop.last %},{% endif %}
     {% endfor %}

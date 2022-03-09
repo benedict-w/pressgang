@@ -4,19 +4,19 @@
   {
     "@context": "http://schema.org",
     "@type": "JobPosting",
-    "title": "{{ title }}",
-    "description": "{{ description }}",
+    "title": "{{ title|e('html_attr') }}",
+    "description": "{{ description|e('html_attr') }}",
     "hiringOrganization": {
-      "@id": "{{ hiring_organization }}"
+      "@id": "{{ hiring_organization|e('html_attr') }}"
     },
-    "jobLocation": "{{ job_location }}",
-    "employmentType": "{{ employment_type }}",
+    "jobLocation": "{{ job_location|e('html_attr') }}",
+    "employmentType": "{{ employment_type|e('html_attr') }}",
     "baseSalary": {
       "@type": "MonetaryAmount",
-      "currency": "{{ currency }}",
+      "currency": "{{ currency|e('html_attr') }}",
       "value": "{{ base_salary }}"
     },
-    "datePosted": "{{ date_posted }}",
-    "validThrough": "{{ valid_through }}"
+    "datePosted": "{{ date_posted|e('html_attr') }}",
+    "validThrough": "{{ valid_through|e('html_attr') }}"
   }
 {% endblock %}

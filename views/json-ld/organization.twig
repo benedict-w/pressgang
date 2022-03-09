@@ -4,23 +4,24 @@
   {
     "@context": "http://schema.org",
     "@type": "Organization",
-    "@id": "{{ id }}",
-    "name": "{{ name }}",
-    "logo": "{{ logo }}",
+    "@id": "{{ id|e('html_attr') }}",
+    "name": "{{ name|e('html_attr') }}",
+    "logo": "{{ logo|e('html_attr') }}",
+    "image": "{{ image.src|e('html_attr') }}",
     "sameAs": [
       {% for url in same_as %}
-      "{{ url }}"{{ not loop.last ? ',' }}
+      "{{ url|e('html_attr') }}"{{ not loop.last ? ',' }}
       {% endfor %}
     ],
     "address": {
       "@type": "PostalAddress",
-      "addressLocality": "{{ address_locality }}",
-      "addressRegion": "{{ address_region }}",
-      "postalCode": "{{ postal_code }}",
-      "streetAddress": "{{ street_address }}"
+      "addressLocality": "{{ address_locality|e('html_attr') }}",
+      "addressRegion": "{{ address_region|e('html_attr') }}",
+      "postalCode": "{{ postal_code|e('html_attr') }}",
+      "streetAddress": "{{ street_address|e('html_attr') }}"
     },
-    "email": "{{ email }}",
-    "telephone": "{{ telephone }}",
-    "vatID": "{{ vat_id }}"
+    "email": "{{ email|e('html_attr') }}",
+    "telephone": "{{ telephone|e('html_attr') }}",
+    "vatID": "{{ vat_id|e('html_attr') }}"
   }
 {% endblock %}

@@ -4,33 +4,33 @@
 {
     "@context": "http://schema.org",
     "@type": "Recipe",
-    "name": "{{ name }}",
+    "name": "{{ name|e('html_attr') }}",
     "image": [
     {% for image in images %}
-        "{{ image }}"{% if not loop.last %},{% endif %}
+        "{{ image|e('html_attr') }}"{% if not loop.last %},{% endif %}
     {% endfor %}
     ],
-    "datePublished": "{{ date_published }}",
-    "description": "{{ description }}",
-    {% if prep_time %}"prepTime": "{{ prep_time }}",{% endif %}
-    {% if cook_time %}"cookTime": "{{ cook_time }}",{% endif %}
-    {% if total_time %}"totalTime": "{{ total_time }}",{% endif %}
+    "datePublished": "{{ date_published|e('html_attr') }}",
+    "description": "{{ description|e('html_attr') }}",
+    {% if prep_time %}"prepTime": "{{ prep_time|e('html_attr') }}",{% endif %}
+    {% if cook_time %}"cookTime": "{{ cook_time|e('html_attr') }}",{% endif %}
+    {% if total_time %}"totalTime": "{{ total_time|e('html_attr') }}",{% endif %}
     {% if keywords %}
-    "keywords": "{{ keywords|join(', ') }}",
+    "keywords": "{{ keywords|join(', ')|e('html_attr') }}",
     {% endif %}
     {% if recipe_yield %}
-    "recipeYield": "{{ '%d servings'|format(recipe_yield) }}",
+    "recipeYield": "{{ '%d servings'|format(recipe_yield)|e('html_attr') }}",
     {% endif %}
     {% if recipe_category %}
-    "recipeCategory": "{{ recipe_category }}",
+    "recipeCategory": "{{ recipe_category|e('html_attr') }}",
     {% endif %}
     {% if recipe_cuisine %}
-        "recipeCuisine": "{{ recipe_cuisine }}",
+        "recipeCuisine": "{{ recipe_cuisine|e('html_attr') }}",
     {% endif %}
     {% if recipe_ingredients %}
         "recipeIngredient": [
         {% for ingredient in recipe_ingredients %}
-            "{{ ingredient }}"{% if not loop.last %},{% endif %}
+            "{{ ingredient|e('html_attr') }}"{% if not loop.last %},{% endif %}
         {% endfor %}
     ],
     {% endif %}
@@ -39,7 +39,7 @@
         {% for step in recipe_instructions %}
             {
                 "@type": "HowToStep",
-                "text": "{{ step }}"
+                "text": "{{ step|e('html_attr') }}"
             }{% if not loop.last %},{% endif %}
         {% endfor %}
     ]

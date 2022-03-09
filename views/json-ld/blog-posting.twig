@@ -5,14 +5,14 @@
   "@context": "http://schema.org",
   "@type": "BlogPosting",
   "publisher": {
-    "@id": "{{ publisher }}"
+    "@id": "{{ publisher|e('html_attr') }}"
   },
-  "author": "{{ author }}",
+  "author": "{{ author|e('html_attr') }}",
   "headline": "{{ headline|e('html_attr') }}",
   "articleBody": "{{ article_body|e('html_attr') }}",
-  "image": "{{ image }}",
-  "datePublished": "{{ date_published }}",
-  "dateModified": "{{ date_modified }}",
-  "mainEntityOfPage": "{{ main_entity_of_page }}"
+  "image": "{{ image|e('html_attr') }}",
+  "datePublished": "{{ date_published|e('html_attr') }}",
+  "dateModified": "{{ date_modified|e('html_attr') }}",
+  "mainEntityOfPage": "{{ main_entity_of_page|e('html_attr') }}"
   }
 {% endblock %}

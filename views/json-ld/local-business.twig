@@ -4,15 +4,15 @@
 {
     "@context": "http://schema.org",
     "@type": "LocalBusiness",
-    "parent_organization": "{{ parent_organization }}",
-    "name": "{{ name }}",
-    "description": "{{ description }}",
+    "parent_organization": "{{ parent_organization|e('html_attr') }}",
+    "name": "{{ name|e('html_attr') }}",
+    "description": "{{ description|e('html_attr') }}",
     "address": {
         "@type": "PostalAddress",
-        "addressLocality": "{{ address_locality }},
-        "addressRegion": "{{ address_region }}",
-        "streetAddress": "{{ street_address }}"
+        "addressLocality": "{{ address_locality|e('html_attr') }},
+        "addressRegion": "{{ address_region|e('html_attr') }}",
+        "streetAddress": "{{ street_address|e('html_attr') }}"
     },
-    "telephone": "{{ telephone }}"
+    "telephone": "{{ telephone|e('html_attr') }}"
 }
 {% endblock %}

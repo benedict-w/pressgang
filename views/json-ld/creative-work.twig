@@ -6,23 +6,23 @@
   "@type": "creativeWork",
   "creator": {
     "@type": "organization",
-    "name": "{{ organization.name }}",
-    "sameAs": "{{ organization.same_as }}"
+    "name": "{{ organization.name|e('html_attr') }}",
+    "sameAs": "{{ organization.same_as|e('html_attr') }}"
   },
   {% if contributors %}
   "contributor" : [
   {% for contributor in contributors %}
     {
       "@type": "organization",
-      "name": "{{ contributor.name }}"
+      "name": "{{ contributor.name|e('html_attr') }}"
     }{% if not loop.last %},{% endif %}
   {% endfor %}
   ],
   {% endif %}
-  "url": "{{ url }}",
-  "headline": "{{ headline }}",
-  "description": "{{ description }}",
-  "thumbnailUrl": "{{ thumbnail_url }}",
-  "keywords": "{{ keywords }}"
+  "url": "{{ url|e('html_attr') }}",
+  "headline": "{{ headline|e('html_attr') }}",
+  "description": "{{ description|e('html_attr') }}",
+  "thumbnailUrl": "{{ thumbnail_url|e('html_attr') }}",
+  "keywords": "{{ keywords|e('html_attr') }}"
 }
 {% endblock %}

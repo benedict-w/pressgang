@@ -4,12 +4,12 @@
   {
   "@context": "http://schema.org",
   "@type": "event",
-  "name": "{{ name }}",
-  "description": "{{ description }}",
-  "image": "{{ image }}",
-  "url": "{{ url }}",
-  "startDate": "{{ start_date }}",
-  "endDate": "{{ end_date }}",
-  "location": "{{ location }}"
+  "name": "{{ name|e('html_attr') }}",
+  "description": "{{ description|e('html_attr') }}",
+  "image": "{{ image|e('html_attr') }}",
+  "url": "{{ url|e('html_attr') }}",
+  "startDate": "{{ start_date|e('html_attr') }}",
+  "endDate": "{{ end_date|e('html_attr') }}",
+  "location": "{{ location|e('html_attr') }}"
   }
 {% endblock %}

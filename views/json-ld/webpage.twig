@@ -5,12 +5,12 @@
   "@context": "http://schema.org",
   "@type": "WebPage",
   "publisher": {
-    "@id": "{{ publisher }}"
+    "@id": "{{ publisher|e('html_attr') }}"
   },
-  "headline": "{{ headline }}",
-  "image": "{{ image }}",
-  "mainContentOfPage": "{{ main_content_of_page }}",
-  "primaryImageOfPage": "{{ primary_image_of_page }}",
-  "lastReviewed": "{{ last_reviewed }}"
+  "headline": "{{ headline|e('html_attr') }}",
+  "image": "{{ image|e('html_attr') }}",
+  "mainContentOfPage": "{{ main_content_of_page|e('html_attr') }}",
+  "primaryImageOfPage": "{{ primary_image_of_page|e('html_attr') }}",
+  "lastReviewed": "{{ last_reviewed|e('html_attr') }}"
   }
 {% endblock %}

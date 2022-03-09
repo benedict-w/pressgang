@@ -4,12 +4,12 @@
   {
     "@context": "http://schema.org",
     "@type": "WebSite",
-    "@id": "{{ id }}",
-    "name": "{{ name }}",
-    "url": "{{ url }}",
+    "@id": "{{ id|e('html_attr') }}",
+    "name": "{{ name|e('html_attr') }}",
+    "url": "{{ url|e('html_attr') }}",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "{{ url }}?s={search_term_string}",
+      "target": "{{ url|e('html_attr') }}?s={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   }
