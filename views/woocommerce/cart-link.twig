@@ -1,4 +1,4 @@
 <a id="cart-link" href="{{ cart_link|e('esc_url') }}">
-    {{ __("Cart", THEMENAME) }}
-    <span class="number-of-items">({{ cart_contents_count|e }})</span>
+    {{ __("Cart", 'woocommerce') }}
+    <span class="number-of-items">({{ cart_contents_count|default(0)|e }})</span>
 </a>
