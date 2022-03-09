@@ -91,7 +91,6 @@ class DuplicatePost {
 
 			$new_post_id = wp_insert_post( $args );
 
-
 			// get all current post terms and add them to the new post draft
 			if ( $taxonomies = get_object_taxonomies( get_post_type( $post ) ) ) {
 				foreach ( $taxonomies as $taxonomy ) {
@@ -110,7 +109,7 @@ class DuplicatePost {
 					}
 
 					foreach ( $meta_values as $meta_value ) {
-						add_post_meta( $new_post_id, $meta_key, $meta_value );
+						add_post_meta( $new_post_id, $meta_key, maybe_unserialize($meta_value) );
 					}
 				}
 			}
