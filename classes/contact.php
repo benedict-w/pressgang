@@ -3,6 +3,7 @@
 namespace PressGang;
 
 require_once(__DIR__ . '/flash.php');
+require_once(__DIR__ . '/recaptcha.php');
 
 /**
  * Class Contact
@@ -26,7 +27,6 @@ class Contact {
     public function __construct($to = null, $subject = null, $has_recaptcha = false, $template = null) {
         $to = sanitize_email($to ? $to : get_option('admin_email'));
         $subject = $subject ? $subject : __("New Contact Message", THEMENAME);
-        $has_recaptcha = $has_recaptcha;
 
         $flash = Flash::get('contact');
 
