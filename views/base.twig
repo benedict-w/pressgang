@@ -11,22 +11,22 @@
             <strong>{{ __("Warning!", THEMENAME) }}</strong> {{ __("Your browser does not support JavaScript!", THEMENAME) }}
         </noscript>
         {% block header %}
-        <header id="header">
-            {% include 'header.twig' %}
-        </header>
+            <header id="header">
+                {% include 'header.twig' %}
+            </header>
         {% endblock %}
         {% block main %}
-        <main id="main">
-            {% block content %}
-                {{  __("Sorry, there is no content to display!", THEMENAME) }}
-            {% endblock %}
-        </main>
+            <main id="main">
+                {% block content %}
+                    {{ __("Sorry, there is no content to display!", THEMENAME) }}
+                {% endblock %}
+            </main>
         {% endblock %}
     </div>
     {% block footer %}
-    <footer id="footer">
-        {% include 'footer.twig' %}
-    </footer>
+        <footer id="footer">
+            {% include 'footer.twig' %}
+        </footer>
     {% endblock %}
 {% endblock %}
 {{ wp_footer }}
