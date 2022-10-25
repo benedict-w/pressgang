@@ -20,7 +20,7 @@ class GoogleAnalyticsWooCommerce {
      */
     public function script () {
 
-        if (class_exists('woocommerce') && is_order_received_page() && get_theme_mod('google-analytics-id')) {
+        if (class_exists('woocommerce') && is_order_received_page()) {
 
             global $wp;
             $order_id = absint($wp->query_vars['order-received']);
