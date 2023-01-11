@@ -2,6 +2,8 @@
 
 namespace PressGang;
 
+use Timber\Timber;
+
 require_once('loader.php');
 
 /**
@@ -69,10 +71,10 @@ class Site extends \TimberSite
             add_filter('timber_context', array($this, 'add_woocommerce_to_context'));
         }
 
-        // switch on twig caching if production
-        if (class_exists( 'Timber')){
-            \Timber::$cache = !WP_DEBUG;
-        }
+	    // switch on twig caching if production
+	    if ( class_exists( 'Timber' ) ) {
+		    Timber::$cache = \defined( 'TIMBER_CACHE' ) ? TIMBER_CACHE : ! WP_DEBUG;
+	    }
 
         // add a theme color
         $this->theme_color = Config::get('theme-color');
