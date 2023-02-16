@@ -19,7 +19,7 @@ class AcfGoogleMaps {
      *
      */
     public function set_google_maps_key() {
-        if ($google_maps_key = filter_var(get_theme_mod('acf_google_maps_key'), FILTER_SANITIZE_STRING)) {
+        if ($google_maps_key = filter_var(get_theme_mod('acf_google_maps_key'), FILTER_SANITIZE_SPECIAL_CHARS)) {
             acf_update_setting('acf_google_maps_key', $google_maps_key);
         }
     }
@@ -33,7 +33,7 @@ class AcfGoogleMaps {
      */
     public function get_google_maps_key($api) {
 
-        if ($google_maps_key = filter_var(get_theme_mod('acf_google_maps_key'), FILTER_SANITIZE_STRING)) {
+        if ($google_maps_key = filter_var(get_theme_mod('acf_google_maps_key'), FILTER_SANITIZE_SPECIAL_CHARS)) {
             $api['key'] = $google_maps_key;
         }
 
