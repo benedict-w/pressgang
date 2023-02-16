@@ -25,7 +25,7 @@ class Scripts {
     public function __construct() {
         static::$scripts = Config::get('scripts');
         add_action('init', array('PressGang\Scripts', 'register_scripts'));
-        add_action('init', array($this, 'modify_jquery'));
+        // add_action('init', array($this, 'modify_jquery'));
         add_filter('script_loader_tag', array('PressGang\Scripts', 'add_script_attrs'), 10, 3);
     }
 
