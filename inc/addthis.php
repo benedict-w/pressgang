@@ -2,6 +2,10 @@
 
 namespace PressGang;
 
+if (!defined('EXPLICIT_CONSENT')) {
+	define("EXPLICIT_CONSENT", false);
+}
+
 class AddThis {
 
     protected $consented = false;
