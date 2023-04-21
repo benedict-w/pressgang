@@ -63,24 +63,22 @@ class Site extends \TimberSite
         add_filter('timber_context', array($this, 'add_to_context'));
         add_filter('get_twig', array($this, 'add_to_twig'));
 
-        add_filter('meta_description', array('PressGang\Site', 'meta_description'));
-
-        // add_filter('wp_headers', array($this, 'add_ie_header'));
-
         if (class_exists('WooCommerce')) {
             add_filter('timber_context', array($this, 'add_woocommerce_to_context'));
         }
 
-	    // switch on twig caching if production
-	    if ( class_exists( 'Timber' ) ) {
-		    Timber::$cache = \defined( 'TIMBER_CACHE' ) ? TIMBER_CACHE : ! WP_DEBUG;
-	    }
+        // switch on twig caching if production
+        if (class_exists('Timber')) {
+            Timber::$cache = \defined('TIMBER_CACHE') ? TIMBER_CACHE : !WP_DEBUG;
+        }
 
         // add a theme color
         $this->theme_color = Config::get('theme-color');
 
         // disable default ypast meta description (we'll add it ourselves)
-        add_filter('wpseo_metadesc', function() { return false; });
+        add_filter('wpseo_metadesc', function () {
+            return false;
+        });
 
         parent::__construct($site_name_or_id);
     }
@@ -91,7 +89,8 @@ class Site extends \TimberSite
      * @param $context
      * @return mixed
      */
-    public function add_to_context($context) {
+    public function add_to_context($context)
+    {
         $context['site'] = $this;
 
         $context = \apply_filters("site_context", $context);
@@ -104,7 +103,8 @@ class Site extends \TimberSite
      * @param $context
      * @return mixed
      */
-    public function add_woocommerce_to_context($context) {
+    public function add_woocommerce_to_context($context)
+    {
 
         global $woocommerce;
 
@@ -124,7 +124,8 @@ class Site extends \TimberSite
      *
      * Add Custom Functions to Twig
      */
-    public function add_to_twig( $twig ) {
+    public function add_to_twig($twig)
+    {
         $twig->addFunction(new \Twig_SimpleFunction('esc_attr', 'esc_attr'));
         $twig->addFunction(new \Twig_SimpleFunction('esc_url', 'esc_url'));
         $twig->addFunction(new \Twig_SimpleFunction('get_search_query', 'get_search_query'));
@@ -216,6 +217,8 @@ class Site extends \TimberSite
             }
         }
 
+        $description = apply_filters('meta_description', $description);
+
         return $description;
     }
 
@@ -226,7 +229,8 @@ class Site extends \TimberSite
      *
      * see - http://stackoverflow.com/questions/14198594/bad-value-x-ua-compatible-for-attribute-http-equiv-on-element-meta
      */
-    public function add_ie_header() {
+    public function add_ie_header()
+    {
         if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)) {
             header('X-UA-Compatible: IE=edge,chrome=1');
         }
@@ -237,7 +241,8 @@ class Site extends \TimberSite
      *
      * Set the timber post context for WooCommerce teaser-product.twig
      */
-    public static function timber_set_product($post) {
+    public static function timber_set_product($post)
+    {
         global $product;
         $product = wc_get_product($post->ID);
 
