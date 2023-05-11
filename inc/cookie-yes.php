@@ -9,7 +9,7 @@ class CookieYes {
 	 */
 	public function __construct() {
 		add_action('customize_register', array($this, 'customizer'));
-		add_action('wp_head', [$this, 'cookieyes_header_script']);
+		add_action('wp_enqueue_scripts', [$this, 'cookieyes_header_script']);
 	}
 
 	/**
@@ -48,7 +48,7 @@ class CookieYes {
 	public function cookieyes_header_script() {
 
 		if ($cookieyes_id = get_theme_mod('cookieyes-id')) {
-            echo "<script id=\"cookieyes\" type=\"text/javascript\" src=\"https://cdn-cookieyes.com/client_data/{$cookieyes_id}/script.js\"></script>";
+            wp_enqueue_script('cookie-yes', "https://cdn-cookieyes.com/client_data/{$cookieyes_id}/script.js", []);
 		}
 	}
 
