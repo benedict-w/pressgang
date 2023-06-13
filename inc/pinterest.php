@@ -48,7 +48,7 @@ class Pinterest {
      * @return void
      */
     public function script () {
-        $pinterest = filter_var(get_theme_mod('pinterest'), FILTER_SANITIZE_STRING);
+        $pinterest = filter_var(get_theme_mod('pinterest'), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         if ($pinterest) : ?>
             <meta name="p:domain_verify" content="<?php echo $pinterest; ?>" />
