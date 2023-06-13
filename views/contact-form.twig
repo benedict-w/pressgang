@@ -32,13 +32,13 @@
     {% if success %}
     <div class="form-group">
         <div class="col-sm-10 col-sm-offset-2">
-            <p class="alert alert-success">{{ success }}</p>
+            <p class="alert alert-success">{{ __("Thank you your message has been submitted") }}</p>
         </div>
     </div>
     {% elseif error %}
     <div class="form-group">
         <div class="col-sm-10 col-sm-offset-2">
-            <p class="alert alert-danger">{{ error }}</p>
+            <p class="alert alert-danger">{{ __("Sorry there was an issue submitting the message please contact us at info@laurentgiles.co.uk") }}</p>
         </div>
     </div>
     {% endif %}

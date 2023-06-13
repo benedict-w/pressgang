@@ -2,6 +2,8 @@
 
 namespace PressGang;
 
+require_once __DIR__ . '/../../pressgang/classes/contact.php';
+
 /**
  * Class ContactForm
  *
@@ -43,16 +45,17 @@ class ContactForm extends \Pressgang\Shortcode {
     {
         $args = shortcode_atts($this->get_defaults(), $atts);
 
-        $contact = new Contact($args['to'], $args['subject']);
+        $contact = new \PressGang\Contact($args['to'], $args['subject'], $args['recaptcha']);
+        $flash = \PressGang\Flash::get('contact');
 
-        $contact->send_message($args);
+        $success = $flash['success'] ?? null;
 
-        $args['success'] = $contact->success;
-        $args['error'] = $contact->error;
+        $context['success'] = isset($_GET['success']);
+        $context['error'] = $flash['error'] ?? null;
+        $context['old'] = $success ? [] : $flash['old'] ?? []; // clears form on success
+        $context['action'] = $contact::$action;
 
-        $this->context = $args;
-
-        return \Timber::compile($this->template, $this->context);
+        return \Timber::compile($this->template, $context);
     }
 
 }
